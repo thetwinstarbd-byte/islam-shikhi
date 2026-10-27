@@ -15,24 +15,22 @@ jobs:
           out=""
           add() { out="${out}$1"$'\n'; }
 
-          add "== Maven: adhan2 versions"
-          add "$(curl -sS -m 30 https://repo1.maven.org/maven2/com/batoulapps/adhan/adhan2/maven-metadata.xml | grep -E '<latest>|<release>|<version>' | tr -d ' ' | tail -8)"
-          add "== Maven: room-runtime"
-          add "$(curl -sS -m 30 https://dl.google.com/dl/android/maven2/androidx/room/room-runtime/maven-metadata.xml | grep -E '<version>' | tr -d ' ' | grep -E '2\.6|2\.7' | tail -6)"
-          add "== Maven: ksp 2.0.20"
-          add "$(curl -sS -m 30 https://repo1.maven.org/maven2/com/google/devtools/ksp/symbol-processing-gradle-plugin/maven-metadata.xml | grep -E '<version>2\.0\.20' | tr -d ' ')"
-
-          add "== quran-json LICENSE (head)"
-          add "$(curl -sS -m 30 https://raw.githubusercontent.com/risan/quran-json/main/LICENSE | head -5)"
-          add "== quran-json README: source/licence lines"
-          add "$(curl -sS -m 30 https://raw.githubusercontent.com/risan/quran-json/main/README.md | grep -i -E 'licen|tanzil|bengali|bn|source|translat' | head -25)"
-          add "== quran-json dist listing"
-          add "$(curl -sS -m 30 https://api.github.com/repos/risan/quran-json/contents/dist | python3 -c "import sys,json; print(' '.join(f['name']+':'+str(f['size']) for f in json.load(sys.stdin)))")"
-          add "== quran_bn.json head"
-          add "$(curl -sS -m 30 https://raw.githubusercontent.com/risan/quran-json/main/dist/quran_bn.json | head -c 700)"
-          add "== tanzil bengali translation header"
-          add "$(curl -sS -m 30 https://tanzil.net/trans/bn.bengali | tail -n 25 | head -c 1500)"
-
+          add "== adhan2 pom license"
+          add "$(curl -sS -m 30 https://repo1.maven.org/maven2/com/batoulapps/adhan/adhan2/0.0.7/adhan2-0.0.7.pom | grep -i -E -A3 '<license>' | tr -d ' ' | head -8)"
+          add "== adhan2 artifacts"
+          add "$(curl -sS -m 30 https://repo1.maven.org/maven2/com/batoulapps/adhan/adhan2/0.0.7/ | grep -o 'href="[^"]*"' | tr '\n' ' ')"
+          for id in bn.bengali bn.hoque; do
+            add "== tanzil translation header: $id"
+            add "$(curl -sS -m 30 https://tanzil.net/trans/$id | grep -E '^#' | head -40)"
+            add "lines: $(curl -sS -m 30 https://tanzil.net/trans/$id | grep -c -E '^[0-9]+\|[0-9]+\|')"
+          done
+          add "== tanzil quran text (uthmani) head/license"
+          curl -sS -m 60 -o q.txt "https://tanzil.net/pub/download/index.php?quranType=uthmani&outType=txt-2&agree=true"
+          add "bytes: $(wc -c < q.txt) lines: $(grep -c -E '^[0-9]+\|[0-9]+\|' q.txt)"
+          add "$(head -c 400 q.txt)"
+          add "$(grep -E '^#' q.txt | head -30)"
+          add "== tanzil text licence page"
+          add "$(curl -sS -m 30 https://tanzil.net/docs/text_license | sed 's/<[^>]*>//g' | tr -s ' \n' | head -c 1800)"
           echo "$out"
           msg=$(echo "$out" | sed 's/%/%25/g' | sed ':a;N;$!ba;s/\n/%0A/g')
           echo "::notice title=PROBE::${msg}"
