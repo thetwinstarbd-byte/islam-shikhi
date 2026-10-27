@@ -1,0 +1,38 @@
+name: Build Debug APK
+
+# main-এ প্রতিটি push-এ GitHub নিজেই অ্যাপ বিল্ড করে APK বানায়।
+# APK পেতে: GitHub রিপোজিটরি > Actions > সর্বশেষ রান > নিচে Artifacts > islam-shikhi-debug-apk
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:   # Actions ট্যাব থেকে হাতে চালানোর বাটন
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: কোড নামানো
+        uses: actions/checkout@v4
+
+      - name: Java 17 সেটআপ
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # gradle-wrapper.jar রিপোজিটরিতে নেই, তাই এখানে Gradle 8.9 সরাসরি সেট করা হয়েছে
+      - name: Gradle সেটআপ
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Debug APK বিল্ড
+        run: gradle :app:assembleDebug --stacktrace
+
+      - name: APK আপলোড
+        uses: actions/upload-artifact@v4
+        with:
+          name: islam-shikhi-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
