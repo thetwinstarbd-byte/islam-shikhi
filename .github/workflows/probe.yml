@@ -1,0 +1,38 @@
+name: Probe sources (temporary)
+
+# সাময়িক: ডেটা উৎস ও লাইব্রেরির সংস্করণ যাচাই। কাজ শেষে মুছে ফেলা হবে।
+on:
+  push:
+    paths: [".github/workflows/probe.yml"]
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: probe
+        run: |
+          set +e
+          out=""
+          add() { out="${out}$1"$'\n'; }
+
+          add "== Maven: adhan2 versions"
+          add "$(curl -sS -m 30 https://repo1.maven.org/maven2/com/batoulapps/adhan/adhan2/maven-metadata.xml | grep -E '<latest>|<release>|<version>' | tr -d ' ' | tail -8)"
+          add "== Maven: room-runtime"
+          add "$(curl -sS -m 30 https://dl.google.com/dl/android/maven2/androidx/room/room-runtime/maven-metadata.xml | grep -E '<version>' | tr -d ' ' | grep -E '2\.6|2\.7' | tail -6)"
+          add "== Maven: ksp 2.0.20"
+          add "$(curl -sS -m 30 https://repo1.maven.org/maven2/com/google/devtools/ksp/symbol-processing-gradle-plugin/maven-metadata.xml | grep -E '<version>2\.0\.20' | tr -d ' ')"
+
+          add "== quran-json LICENSE (head)"
+          add "$(curl -sS -m 30 https://raw.githubusercontent.com/risan/quran-json/main/LICENSE | head -5)"
+          add "== quran-json README: source/licence lines"
+          add "$(curl -sS -m 30 https://raw.githubusercontent.com/risan/quran-json/main/README.md | grep -i -E 'licen|tanzil|bengali|bn|source|translat' | head -25)"
+          add "== quran-json dist listing"
+          add "$(curl -sS -m 30 https://api.github.com/repos/risan/quran-json/contents/dist | python3 -c "import sys,json; print(' '.join(f['name']+':'+str(f['size']) for f in json.load(sys.stdin)))")"
+          add "== quran_bn.json head"
+          add "$(curl -sS -m 30 https://raw.githubusercontent.com/risan/quran-json/main/dist/quran_bn.json | head -c 700)"
+          add "== tanzil bengali translation header"
+          add "$(curl -sS -m 30 https://tanzil.net/trans/bn.bengali | tail -n 25 | head -c 1500)"
+
+          echo "$out"
+          msg=$(echo "$out" | sed 's/%/%25/g' | sed ':a;N;$!ba;s/\n/%0A/g')
+          echo "::notice title=PROBE::${msg}"
