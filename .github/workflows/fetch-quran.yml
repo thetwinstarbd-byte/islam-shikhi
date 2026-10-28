@@ -1,0 +1,39 @@
+name: Fetch Quran text (temporary)
+
+# সাময়িক: Tanzil-এর আরবি টেক্সট (CC BY 3.0) অ্যাসেটে আনে। কপিরাইট ব্লক অপরিবর্তিত থাকে।
+# কাজ শেষে এই ফাইল মুছে ফেলা হবে।
+on:
+  push:
+    paths: [".github/workflows/fetch-quran.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ডাউনলোড ও যাচাই
+        run: |
+          set -e
+          mkdir -p app/src/main/assets/quran
+          curl -sS -m 90 -o app/src/main/assets/quran/quran-uthmani.txt \
+            "https://tanzil.net/pub/download/index.php?quranType=uthmani&outType=txt-2&agree=true"
+          f=app/src/main/assets/quran/quran-uthmani.txt
+          n=$(grep -c -E '^[0-9]+\|[0-9]+\|' $f)
+          echo "ayah lines: $n"
+          [ "$n" -eq 6236 ]
+          grep -q "Creative Commons Attribution 3.0" $f
+          grep -q "PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK" $f
+          # প্রতিটি সূরার আয়াত সংখ্যা: প্রথম ও শেষ সূরা দ্রুত যাচাই
+          [ "$(grep -c -E '^1\|[0-9]+\|' $f)" -eq 7 ]
+          [ "$(grep -c -E '^114\|[0-9]+\|' $f)" -eq 6 ]
+          [ "$(grep -c -E '^2\|[0-9]+\|' $f)" -eq 286 ]
+      - name: কমিট ও পুশ
+        run: |
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+          git add app/src/main/assets/quran/quran-uthmani.txt
+          git commit -m "কুরআনের আরবি টেক্সট (Tanzil, CC BY 3.0) যোগ" || echo "কোনো পরিবর্তন নেই"
+          git push origin HEAD:main
