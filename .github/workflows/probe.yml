@@ -1,0 +1,20 @@
+name: Probe adhan2 (temporary)
+on:
+  workflow_dispatch:
+  push:
+    paths: [".github/workflows/probe.yml"]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: adhan2 versions and their Kotlin version
+        run: |
+          base=https://repo1.maven.org/maven2/com/batoulapps/adhan/adhan2
+          vs=$(curl -s $base/maven-metadata.xml | grep -o '<version>[^<]*' | sed 's/<version>//')
+          out="versions: $(echo $vs | tr '\n' ' ')"
+          for v in $vs; do
+            k=$(curl -s $base-jvm/$v/adhan2-jvm-$v.module | grep -o '"kotlin-stdlib"[^}]*' | grep -o '"requires": *"[^"]*"' | head -1)
+            kv=$(curl -s $base-jvm/$v/adhan2-jvm-$v.pom | grep -A1 'kotlin-stdlib' | grep -o '<version>[^<]*' | head -1)
+            out="$out | $v -> $k $kv"
+          done
+          echo "::notice title=adhan2::$out"
