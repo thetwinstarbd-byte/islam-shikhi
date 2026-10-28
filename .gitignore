@@ -25,3 +25,5 @@ Thumbs.db
 # APK/AAB (বিল্ড আউটপুট)
 *.apk
 *.aab
+__pycache__/
+*.pyc
