@@ -25,4 +25,4 @@
 | লাইব্রেরি | লাইসেন্স |
 |---|---|
 | AndroidX / Jetpack Compose / Material 3 | Apache 2.0 |
-| adhan2 (নামাজের সময় গণনা) | MIT |
+| adhan2 0.0.5 (নামাজের সময় গণনা; নতুন সংস্করণ Kotlin 2.4 লাগায়, তাই এটি) | MIT |
