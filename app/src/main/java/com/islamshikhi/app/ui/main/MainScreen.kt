@@ -18,7 +18,14 @@ import com.islamshikhi.app.domain.model.UserProfile
 import com.islamshikhi.app.ui.assistant.AssistantScreen
 import com.islamshikhi.app.ui.home.HomeScreen
 import com.islamshikhi.app.ui.ibadah.IbadahScreen
+import com.islamshikhi.app.ui.ibadah.CalendarScreen
+import com.islamshikhi.app.ui.ibadah.DuaScreen
+import com.islamshikhi.app.ui.ibadah.PrayerScreen
+import com.islamshikhi.app.ui.ibadah.QiblaScreen
+import com.islamshikhi.app.ui.ibadah.TasbihScreen
+import com.islamshikhi.app.ui.ibadah.TrackerScreen
 import com.islamshikhi.app.ui.navigation.AppTab
+import com.islamshikhi.app.ui.navigation.Routes
 import com.islamshikhi.app.ui.profile.ProfileScreen
 import com.islamshikhi.app.ui.quran.QuranScreen
 
@@ -38,12 +45,15 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
         }
     }
 
+    val go: (String) -> Unit = { route -> navController.navigate(route) { launchSingleTop = true } }
+    val back: () -> Unit = { navController.popBackStack() }
+
     Scaffold(
         bottomBar = {
             NavigationBar {
                 AppTab.entries.forEach { tab ->
                     NavigationBarItem(
-                        selected = currentRoute == tab.route,
+                        selected = currentRoute?.startsWith(tab.route) == true,
                         onClick = { openTab(tab) },
                         icon = { Icon(tab.icon, contentDescription = tab.label) },
                         label = { Text(tab.label) }
@@ -57,10 +67,18 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
             startDestination = AppTab.HOME.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(AppTab.HOME.route) { HomeScreen(profile = profile, onOpenTab = openTab) }
-            composable(AppTab.IBADAH.route) { IbadahScreen() }
-            composable(AppTab.QURAN.route) { QuranScreen() }
-            composable(AppTab.ASSISTANT.route) { AssistantScreen() }
+            composable(AppTab.HOME.route) {
+                HomeScreen(profile = profile, onOpenTab = openTab, onNavigate = go)
+            }
+            composable(AppTab.IBADAH.route) { IbadahScreen(onNavigate = go) }
+            composable(AppTab.QURAN.route) { QuranScreen(onNavigate = go) }
+            composable(AppTab.ASSISTANT.route) { AssistantScreen(onNavigate = go) }
+            composable(Routes.DUA) { DuaScreen(onBack = back) }
+            composable(Routes.PRAYER) { PrayerScreen(onBack = back) }
+            composable(Routes.QIBLA) { QiblaScreen(onBack = back) }
+            composable(Routes.CALENDAR) { CalendarScreen(onBack = back) }
+            composable(Routes.TASBIH) { TasbihScreen(onBack = back) }
+            composable(Routes.TRACKER) { TrackerScreen(onBack = back) }
             composable(AppTab.PROFILE.route) { ProfileScreen(profile = profile, onResetData = onResetData) }
         }
     }

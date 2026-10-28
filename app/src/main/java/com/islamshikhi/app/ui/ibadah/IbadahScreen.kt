@@ -1,21 +1,19 @@
 package com.islamshikhi.app.ui.ibadah
 
 import androidx.compose.runtime.Composable
-import com.islamshikhi.app.ui.common.FeatureItem
-import com.islamshikhi.app.ui.common.FeatureListScreen
+import com.islamshikhi.app.ui.common.MenuCard
+import com.islamshikhi.app.ui.common.ScreenColumn
+import com.islamshikhi.app.ui.navigation.Routes
 
+/** ইবাদত ট্যাবের হাব: প্রতিটি কার্ডে চাপলে সংশ্লিষ্ট পাতা খোলে। */
 @Composable
-fun IbadahScreen() {
-    FeatureListScreen(
-        title = "ইবাদত",
-        intro = "দৈনন্দিন ইবাদতের সব সুবিধা এখানে একসঙ্গে থাকবে।",
-        items = listOf(
-            FeatureItem("নামাজের সময়", "পাঁচ ওয়াক্তের সময়, কাউন্টডাউন ও নোটিফিকেশন।", 5),
-            FeatureItem("দোয়া ও যিকির", "আরবি, বাংলা উচ্চারণ, অর্থ ও সূত্রসহ।", 4),
-            FeatureItem("ডিজিটাল তাসবিহ", "গণনা ও দৈনিক লক্ষ্য।", 4),
-            FeatureItem("কিবলা কম্পাস", "কাবার দিক নির্দেশনা।", 5),
-            FeatureItem("হিজরি ক্যালেন্ডার", "গুরুত্বপূর্ণ দিন ও মাস।", 5),
-            FeatureItem("আমল ট্র্যাকার", "প্রতিদিনের আমলের হিসাব ও অগ্রগতি।", 8)
-        )
-    )
+fun IbadahScreen(onNavigate: (String) -> Unit) {
+    ScreenColumn("ইবাদত") {
+        MenuCard("নামাজের সময়", "পাঁচ ওয়াক্ত, কাউন্টডাউন, নোটিফিকেশন ও রিমাইন্ডার") { onNavigate(Routes.PRAYER) }
+        MenuCard("দোয়া ও যিকির", "আরবি, উচ্চারণ, অর্থ ও সূত্রসহ; বুকমার্ক ও নোট") { onNavigate(Routes.DUA) }
+        MenuCard("ডিজিটাল তাসবিহ", "গণনা ও দৈনিক লক্ষ্য") { onNavigate(Routes.TASBIH) }
+        MenuCard("কিবলা", "কাবার দিক নির্দেশনা") { onNavigate(Routes.QIBLA) }
+        MenuCard("হিজরি ক্যালেন্ডার", "হিজরি মাস ও তারিখ") { onNavigate(Routes.CALENDAR) }
+        MenuCard("আমল ট্র্যাকার", "নামাজ ও দৈনিক আমলের হিসাব, সাপ্তাহিক সারাংশ") { onNavigate(Routes.TRACKER) }
+    }
 }

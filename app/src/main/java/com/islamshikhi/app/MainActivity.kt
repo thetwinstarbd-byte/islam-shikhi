@@ -18,7 +18,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val repository = (application as IslamShikhiApp).container.profileRepository
+        val container = (application as IslamShikhiApp).container
+        val repository = container.profileRepository
         // Flow covariant হওয়ায় UserProfile? হিসেবে নেওয়া যায়; null মানে এখনও লোড হচ্ছে।
         val profileFlow: Flow<UserProfile?> = repository.profile
 
@@ -36,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     !current.onboardingCompleted -> OnboardingScreen()
                     else -> MainScreen(
                         profile = current,
-                        onResetData = { scope.launch { repository.clearAll() } }
+                        onResetData = { scope.launch { container.resetEverything() } }
                     )
                 }
             }
