@@ -18,7 +18,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.islamshikhi.app.domain.model.UserProfile
 import com.islamshikhi.app.ui.assistant.AssistantScreen
+import com.islamshikhi.app.ui.about.AboutScreen
 import com.islamshikhi.app.ui.assistant.MasailScreen
+import com.islamshikhi.app.ui.common.rememberContainer
+import com.islamshikhi.app.ui.habits.HabitsScreen
+import com.islamshikhi.app.ui.info.InfoDetailScreen
+import com.islamshikhi.app.ui.info.InfoListScreen
+import com.islamshikhi.app.ui.quiz.QuizScreen
+import com.islamshikhi.app.ui.zakat.ZakatScreen
+import com.islamshikhi.app.data.user.UserKeys
 import com.islamshikhi.app.ui.assistant.MasalaDetailScreen
 import com.islamshikhi.app.ui.home.HomeScreen
 import com.islamshikhi.app.ui.ibadah.IbadahScreen
@@ -42,6 +50,7 @@ import com.islamshikhi.app.ui.quran.QuranSearchScreen
 @Composable
 fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
     val navController = rememberNavController()
+    val content = rememberContainer().content
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
 
@@ -122,7 +131,72 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
                 )
             }
             composable(Routes.BOOKMARKS) { BookmarksScreen(onBack = back, onNavigate = go) }
-            composable(AppTab.PROFILE.route) { ProfileScreen(profile = profile, onResetData = onResetData) }
+            composable(Routes.ZAKAT) { ZakatScreen(onBack = back, onNavigate = go) }
+            composable(Routes.QUIZ) { QuizScreen(onBack = back) }
+            composable(Routes.HABITS) { HabitsScreen(onBack = back, onNavigate = go) }
+            composable(Routes.ABOUT) { AboutScreen(onBack = back, onNavigate = go) }
+
+            composable(Routes.KIDS) {
+                InfoListScreen(
+                    title = "শিশুদের শিক্ষা",
+                    intro = "বয়সোপযোগী ইসলামিক শিক্ষা, বাবা-মা শিশুর সঙ্গে বসে পড়তে পারেন। প্রতিটি পাঠে সূত্র দেওয়া আছে।",
+                    warning = null,
+                    loader = { content.kids() },
+                    onBack = back,
+                    onOpen = { go(Routes.kid(it)) }
+                )
+            }
+            composable(Routes.KID_DETAIL, arguments = listOf(navArgument("id") { type = NavType.StringType })) { entry ->
+                InfoDetailScreen(
+                    id = entry.arguments?.getString("id").orEmpty(),
+                    headerTitle = "শিশুদের শিক্ষা",
+                    loader = { content.kids() },
+                    bookmarkKey = UserKeys::kidKey,
+                    onBack = back
+                )
+            }
+
+            composable(Routes.EMERGENCY) {
+                InfoListScreen(
+                    title = "জরুরি গাইড",
+                    intro = "অসুস্থতা, সফর, মৃত্যু ও বিপদের সময় সাধারণ ইসলামিক নির্দেশনা।",
+                    warning = "জীবনের ঝুঁকি বা গুরুতর অসুস্থতা হলে আগে জরুরি সেবায় ফোন করুন (বাংলাদেশে ৯৯৯) বা হাসপাতালে যান। এই অ্যাপ চিকিৎসা বা জরুরি সেবার বিকল্প নয়।",
+                    loader = { content.emergency() },
+                    onBack = back,
+                    onOpen = { go(Routes.emergency(it)) }
+                )
+            }
+            composable(Routes.EMERGENCY_DETAIL, arguments = listOf(navArgument("id") { type = NavType.StringType })) { entry ->
+                InfoDetailScreen(
+                    id = entry.arguments?.getString("id").orEmpty(),
+                    headerTitle = "জরুরি গাইড",
+                    loader = { content.emergency() },
+                    bookmarkKey = null,
+                    onBack = back
+                )
+            }
+
+            composable(Routes.LIBRARY) {
+                InfoListScreen(
+                    title = "ইসলামিক লাইব্রেরি",
+                    intro = "সংক্ষিপ্ত নিবন্ধ ও শেখার গাইড। প্রতিটি অংশে সূত্র দেওয়া আছে।",
+                    warning = null,
+                    loader = { content.library() },
+                    onBack = back,
+                    onOpen = { go(Routes.library(it)) }
+                )
+            }
+            composable(Routes.LIBRARY_DETAIL, arguments = listOf(navArgument("id") { type = NavType.StringType })) { entry ->
+                InfoDetailScreen(
+                    id = entry.arguments?.getString("id").orEmpty(),
+                    headerTitle = "লাইব্রেরি",
+                    loader = { content.library() },
+                    bookmarkKey = UserKeys::libraryKey,
+                    onBack = back
+                )
+            }
+
+            composable(AppTab.PROFILE.route) { ProfileScreen(profile = profile, onResetData = onResetData, onNavigate = go) }
         }
     }
 }

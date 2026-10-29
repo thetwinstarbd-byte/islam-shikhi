@@ -35,12 +35,15 @@ import com.islamshikhi.app.domain.model.AppLanguage
 import com.islamshikhi.app.domain.model.Gender
 import com.islamshikhi.app.domain.model.ThemeMode
 import com.islamshikhi.app.domain.model.UserProfile
+import com.islamshikhi.app.ui.common.MenuCard
 import com.islamshikhi.app.ui.common.labelBn
+import com.islamshikhi.app.ui.navigation.Routes
 
 @Composable
 fun ProfileScreen(
     profile: UserProfile,
     onResetData: () -> Unit,
+    onNavigate: (String) -> Unit,
     viewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory)
 ) {
     var showResetDialog by remember { mutableStateOf(false) }
@@ -59,6 +62,11 @@ fun ProfileScreen(
             "সব তথ্য শুধু এই ফোনে সংরক্ষিত। লিঙ্গ শুধু প্রাসঙ্গিক বিষয় সাজাতে ব্যবহৃত হয়, পরিচয় যাচাইয়ের জন্য নয়।",
             style = MaterialTheme.typography.bodySmall
         )
+
+        MenuCard("বুকমার্ক", "সংরক্ষিত দোয়া, আয়াত, মাসআলা ও পাঠ") { onNavigate(Routes.BOOKMARKS) }
+        MenuCard("আমল ট্র্যাকার", "প্রতিদিনের আমল ও সাপ্তাহিক অগ্রগতি") { onNavigate(Routes.TRACKER) }
+        MenuCard("অভ্যাস ও মনোযোগ", "ব্যক্তিগত লক্ষ্য, স্ক্রিন টাইমের নোট ও সাপ্তাহিক সারাংশ") { onNavigate(Routes.HABITS) }
+        MenuCard("অ্যাপ সম্পর্কে", "গোপনীয়তা, কনটেন্টের যাচাই-অবস্থা, উৎস ও লাইসেন্স") { onNavigate(Routes.ABOUT) }
 
         SectionTitle("লিঙ্গ")
         Gender.entries.forEach { item ->

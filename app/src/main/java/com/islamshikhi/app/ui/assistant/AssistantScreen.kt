@@ -15,5 +15,10 @@ fun AssistantScreen(onNavigate: (String) -> Unit) {
                 "এখনও আলেম দ্বারা পর্যালোচিত নয়। জটিল বা ব্যক্তিগত বিষয়ে যোগ্য আলেমের পরামর্শ নিন।"
         )
         MenuCard("মাসআলা", "ওজু, নামাজ, রোজা, যাকাত, হজসহ বিভাগভিত্তিক প্রশ্নোত্তর") { onNavigate(Routes.MASAIL) }
+        MenuCard("যাকাত ক্যালকুলেটর", "আনুমানিক হিসাব; চূড়ান্ত ফতোয়া নয়") { onNavigate(Routes.ZAKAT) }
+        MenuCard("শিশুদের শিক্ষা", "বয়সোপযোগী ইসলামিক শিক্ষা ও গল্প") { onNavigate(Routes.KIDS) }
+        MenuCard("ইসলামিক কুইজ", "নিজেকে যাচাই করুন") { onNavigate(Routes.QUIZ) }
+        MenuCard("জরুরি গাইড", "অসুস্থতা, সফর ও জানাজার প্রাথমিক নির্দেশনা") { onNavigate(Routes.EMERGENCY) }
+        MenuCard("ইসলামিক লাইব্রেরি", "সংক্ষিপ্ত নিবন্ধ ও শেখার গাইড") { onNavigate(Routes.LIBRARY) }
     }
 }

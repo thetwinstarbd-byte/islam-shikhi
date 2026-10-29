@@ -3,6 +3,7 @@ package com.islamshikhi.app.ui.assistant
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -50,7 +51,7 @@ fun MasailScreen(profile: UserProfile, onBack: () -> Unit, onOpen: (String) -> U
 }
 
 @Composable
-private fun MasailList(data: MasalaData, profile: UserProfile, onOpen: (String) -> Unit) {
+private fun ColumnScope.MasailList(data: MasalaData, profile: UserProfile, onOpen: (String) -> Unit) {
     var selected by remember { mutableStateOf("all") }
     var query by remember { mutableStateOf("") }
 
