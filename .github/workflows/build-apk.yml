@@ -47,3 +47,10 @@ jobs:
           name: islam-shikhi-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+
+      # APK আপলোডের পরে, যেন পরীক্ষা ব্যর্থ হলেও APK পাওয়া যায়; কিন্তু রান লাল হয়ে জানান দেয়।
+      - name: কনটেন্ট নিয়ম যাচাই (সূত্র, আইডি, যাচাই-অবস্থা)
+        run: python3 tools/check_content.py
+
+      - name: ইউনিট টেস্ট
+        run: gradle :app:testDebugUnitTest --console=plain

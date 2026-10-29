@@ -1,0 +1,42 @@
+name: Build Signed Release APK
+
+# হাতে চালানোর ওয়ার্কফ্লো: Actions > Build Signed Release APK > Run workflow।
+# আগে docs/RELEASE.md অনুযায়ী চারটি Secret সেট করতে হবে। Secret না থাকলে এই রান ব্যর্থ হবে।
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Keystore তৈরি (Secret থেকে, রিপোজিটরিতে থাকে না)
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          test -n "$KEYSTORE_BASE64" || { echo "::error::KEYSTORE_BASE64 Secret সেট করা নেই (docs/RELEASE.md দেখুন)"; exit 1; }
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
+
+      - name: Release APK বিল্ড
+        env:
+          KEYSTORE_FILE: ${{ runner.temp }}/release.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: gradle :app:assembleRelease --console=plain
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: islam-shikhi-release-apk
+          path: app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
