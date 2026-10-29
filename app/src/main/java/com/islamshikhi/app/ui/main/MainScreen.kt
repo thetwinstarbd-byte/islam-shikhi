@@ -18,6 +18,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.islamshikhi.app.domain.model.UserProfile
 import com.islamshikhi.app.ui.assistant.AssistantScreen
+import com.islamshikhi.app.ui.assistant.MasailScreen
+import com.islamshikhi.app.ui.assistant.MasalaDetailScreen
 import com.islamshikhi.app.ui.home.HomeScreen
 import com.islamshikhi.app.ui.ibadah.IbadahScreen
 import com.islamshikhi.app.ui.ibadah.CalendarScreen
@@ -104,6 +106,19 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
                     chapterId = entry.arguments?.getInt("chapter") ?: 1,
                     startAyah = entry.arguments?.getInt("ayah") ?: 1,
                     onBack = back
+                )
+            }
+            composable(Routes.MASAIL) {
+                MasailScreen(profile = profile, onBack = back, onOpen = { go(Routes.masala(it)) })
+            }
+            composable(
+                route = Routes.MASALA_DETAIL,
+                arguments = listOf(navArgument("id") { type = NavType.StringType })
+            ) { entry ->
+                MasalaDetailScreen(
+                    id = entry.arguments?.getString("id").orEmpty(),
+                    onBack = back,
+                    onOpen = { go(Routes.masala(it)) }
                 )
             }
             composable(Routes.BOOKMARKS) { BookmarksScreen(onBack = back, onNavigate = go) }

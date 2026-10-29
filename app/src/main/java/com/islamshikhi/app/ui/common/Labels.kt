@@ -20,6 +20,15 @@ fun AgeGroup.labelBn(): String = when (this) {
     AgeGroup.SENIOR -> "বয়স্ক"
 }
 
+/** মাসআলা/কনটেন্টের audience তালিকা থেকে ছোট লেবেল; সবার জন্য হলে null (কিছু দেখানো হয় না)। */
+fun audienceLabelBn(audience: List<String>): String? = when {
+    "ALL" in audience || audience.isEmpty() -> null
+    "FEMALE" in audience && "MALE" in audience -> null
+    "FEMALE" in audience -> "নারীদের জন্য প্রাসঙ্গিক"
+    "MALE" in audience -> "পুরুষদের জন্য প্রাসঙ্গিক"
+    else -> null
+}
+
 fun AppLanguage.labelBn(): String = when (this) {
     AppLanguage.BANGLA -> "বাংলা"
     AppLanguage.ENGLISH -> "English"
