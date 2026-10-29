@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -27,7 +29,12 @@ import com.islamshikhi.app.ui.ibadah.TrackerScreen
 import com.islamshikhi.app.ui.navigation.AppTab
 import com.islamshikhi.app.ui.navigation.Routes
 import com.islamshikhi.app.ui.profile.ProfileScreen
+import com.islamshikhi.app.ui.bookmarks.BookmarksScreen
+import com.islamshikhi.app.ui.quran.MemorizeScreen
+import com.islamshikhi.app.ui.quran.QuranNoticeScreen
+import com.islamshikhi.app.ui.quran.QuranReaderScreen
 import com.islamshikhi.app.ui.quran.QuranScreen
+import com.islamshikhi.app.ui.quran.QuranSearchScreen
 
 /** সেটআপ শেষ হওয়ার পর মূল স্ক্রিন: নিচে পাঁচ ট্যাব, ভেতরে Navigation Compose। */
 @Composable
@@ -79,6 +86,27 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
             composable(Routes.CALENDAR) { CalendarScreen(onBack = back) }
             composable(Routes.TASBIH) { TasbihScreen(onBack = back) }
             composable(Routes.TRACKER) { TrackerScreen(onBack = back) }
+            composable(Routes.QURAN_SEARCH) {
+                QuranSearchScreen(onBack = back, onOpen = { chapter, ayah -> go(Routes.quranRead(chapter, ayah)) })
+            }
+            composable(Routes.QURAN_NOTICE) { QuranNoticeScreen(onBack = back) }
+            composable(Routes.QURAN_MEMORIZE) {
+                MemorizeScreen(onBack = back, onOpenChapter = { go(Routes.quranRead(it)) })
+            }
+            composable(
+                route = Routes.QURAN_READ,
+                arguments = listOf(
+                    navArgument("chapter") { type = NavType.IntType },
+                    navArgument("ayah") { type = NavType.IntType; defaultValue = 1 }
+                )
+            ) { entry ->
+                QuranReaderScreen(
+                    chapterId = entry.arguments?.getInt("chapter") ?: 1,
+                    startAyah = entry.arguments?.getInt("ayah") ?: 1,
+                    onBack = back
+                )
+            }
+            composable(Routes.BOOKMARKS) { BookmarksScreen(onBack = back, onNavigate = go) }
             composable(AppTab.PROFILE.route) { ProfileScreen(profile = profile, onResetData = onResetData) }
         }
     }
