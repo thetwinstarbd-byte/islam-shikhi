@@ -175,25 +175,33 @@ private fun GoalCard(done: Int, goal: Int, onChange: (Int) -> Unit) {
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("আজকের পড়ার লক্ষ্য", style = MaterialTheme.typography.labelLarge)
-            Text(
-                "${DateFormatBn.digits(done)} / ${DateFormatBn.digits(goal)} আয়াত",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text("আজকের পড়ার লক্ষ্য", style = MaterialTheme.typography.labelLarge)
+                    Text(
+                        "${DateFormatBn.digits(done)} / ${DateFormatBn.digits(goal)} আয়াত",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedButton(onClick = { onChange((goal - 5).coerceAtLeast(5)) }) { Text("− ৫") }
+                    OutlinedButton(onClick = { onChange((goal + 5).coerceAtMost(500)) }) { Text("+ ৫") }
+                }
+            }
             LinearProgressIndicator(
                 progress = { if (goal <= 0) 0f else (done / goal.toFloat()).coerceIn(0f, 1f) },
                 modifier = Modifier.fillMaxWidth()
             )
             Text(
-                "পাঠের পাতায় প্রতিটি আয়াতের পাশের ✓ চিহ্নে চাপলে সেটি আজকের পড়া হিসেবে গোনা হয়।",
-                style = MaterialTheme.typography.bodySmall
+                "পাঠে আয়াতের পাশের ✓ চাপলে সেটি আজকের পড়া হিসেবে গোনা হয়।",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedButton(onClick = { onChange((goal - 5).coerceAtLeast(5)) }) { Text("− ৫") }
-                Text("লক্ষ্য: ${DateFormatBn.digits(goal)}", style = MaterialTheme.typography.bodyMedium)
-                OutlinedButton(onClick = { onChange((goal + 5).coerceAtMost(500)) }) { Text("+ ৫") }
-            }
         }
     }
 }

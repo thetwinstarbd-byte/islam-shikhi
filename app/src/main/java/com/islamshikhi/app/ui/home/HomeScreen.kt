@@ -38,6 +38,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsTopHeight
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.luminance
+import com.islamshikhi.app.ui.theme.SystemBarIcons
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -122,10 +128,18 @@ fun HomeScreen(
     val sky = computeSky(yesterday, today, tomorrow, now)
     val next = nextPrayer(today, tomorrow, now)
 
+    val scroll = rememberScrollState()
+    val heroPx = with(LocalDensity.current) { 280.dp.toPx() }
+    val pastHero = scroll.value > heroPx
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    // হিরো দেখা গেলে স্ট্যাটাস বারে সাদা আইকন (আকাশের ওপর); স্ক্রল করে পেরিয়ে গেলে থিম অনুযায়ী গাঢ়
+    SystemBarIcons(darkIcons = pastHero && !isDark)
+
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(scroll)
     ) {
         SkyHero(
             sky = sky,
@@ -178,6 +192,16 @@ fun HomeScreen(
 
             SuggestionsSection(profile, onOpenAssistant = { onOpenTab(AppTab.ASSISTANT) })
         }
+    }
+
+    // স্ক্রল করে হিরো পেরিয়ে গেলে স্ট্যাটাস বারের পিছনে পটভূমির রং, যেন ঘড়ি-আইকন লেখার সঙ্গে জড়িয়ে না যায়
+    Box(
+        modifier = Modifier
+            .align(Alignment.TopStart)
+            .fillMaxWidth()
+            .windowInsetsTopHeight(WindowInsets.statusBars)
+            .background(MaterialTheme.colorScheme.background.copy(alpha = if (pastHero) 0.97f else 0f))
+    )
     }
 }
 

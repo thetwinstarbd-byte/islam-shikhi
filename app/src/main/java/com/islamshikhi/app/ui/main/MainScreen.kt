@@ -63,7 +63,8 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
     val isHome = currentRoute == null || currentRoute == AppTab.HOME.route
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     // হোমে ওপরে গাঢ় আকাশ, তাই সাদা আইকন; অন্য পাতায় থিম অনুযায়ী
-    SystemBarIcons(darkIcons = !isHome && !isDark)
+    // হোমে আইকনের রং স্ক্রল অনুযায়ী HomeScreen নিজে ঠিক করে
+    if (!isHome) SystemBarIcons(darkIcons = !isDark)
 
     val openTab: (AppTab) -> Unit = { tab ->
         navController.navigate(tab.route) {
