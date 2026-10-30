@@ -45,7 +45,8 @@ object PrayerEngine {
 
     /** [nowMillis]-এর পরের প্রথম ফরজ ওয়াক্ত (আজ শেষ হলে আগামীকালের ফজর)। */
     fun next(settings: PrayerSettings, nowMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Upcoming {
-        val today = LocalDate.ofInstant(java.time.Instant.ofEpochMilli(nowMillis), zone)
+        // LocalDate.ofInstant পুরোনো Android-এ (১৩-এর আগে) নেই, তাই atZone ব্যবহার
+        val today = java.time.Instant.ofEpochMilli(nowMillis).atZone(zone).toLocalDate()
         for (offset in 0..1) {
             val day = timesFor(settings, today.plusDays(offset.toLong()))
             for (p in Prayer.obligations) {

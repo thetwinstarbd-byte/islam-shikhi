@@ -55,7 +55,8 @@ class ReminderScheduler(
         if (!profile.profile.first().notificationsEnabled) return emptyList()
         val out = ArrayList<ScheduledItem>()
         val settings = prayerStore.settings.first()
-        val today = LocalDate.ofInstant(Instant.ofEpochMilli(nowMillis), zone)
+        // LocalDate.ofInstant পুরোনো Android-এ (১৩-এর আগে) নেই, তাই atZone ব্যবহার
+        val today = Instant.ofEpochMilli(nowMillis).atZone(zone).toLocalDate()
         for (d in 0..1) {
             val times = PrayerEngine.timesFor(settings, today.plusDays(d.toLong()))
             for (p in Prayer.obligations) {
