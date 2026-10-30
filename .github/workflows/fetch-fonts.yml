@@ -1,0 +1,46 @@
+name: Fetch Fonts
+
+# একবারের কাজ: ওপেন-লাইসেন্স (OFL) ফন্ট ডাউনলোড করে রিপোজিটরিতে রাখে।
+# এই ফাইলটি বদলে push করলে আবার চলে। ফন্ট থাকলে কিছু বদলায় না।
+on:
+  push:
+    paths:
+      - ".github/workflows/fetch-fonts.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fonts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ফন্ট ডাউনলোড
+        run: |
+          set -e
+          base=https://raw.githubusercontent.com/google/fonts/main/ofl
+          dir=app/src/main/res/font
+          mkdir -p "$dir" docs/font-licenses
+          get() { curl -fsSL --retry 3 "$1" -o "$2"; test -s "$2"; echo "ok $2 $(stat -c%s "$2") bytes"; }
+          # বাংলা (UI): Hind Siliguri
+          get $base/hindsiliguri/HindSiliguri-Regular.ttf  $dir/hind_siliguri_regular.ttf
+          get $base/hindsiliguri/HindSiliguri-Medium.ttf   $dir/hind_siliguri_medium.ttf
+          get $base/hindsiliguri/HindSiliguri-SemiBold.ttf $dir/hind_siliguri_semibold.ttf
+          get $base/hindsiliguri/HindSiliguri-Bold.ttf     $dir/hind_siliguri_bold.ttf
+          # আরবি (কুরআন ও দোয়া): Amiri Quran
+          get $base/amiriquran/AmiriQuran-Regular.ttf      $dir/amiri_quran_regular.ttf
+          # লাইসেন্স
+          get $base/hindsiliguri/OFL.txt docs/font-licenses/HindSiliguri-OFL.txt
+          get $base/amiriquran/OFL.txt   docs/font-licenses/AmiriQuran-OFL.txt
+
+      - name: রিপোজিটরিতে সংরক্ষণ
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/src/main/res/font docs/font-licenses
+          if git diff --cached --quiet; then echo "নতুন কিছু নেই"; else
+            git commit -m "ফন্ট যোগ: Hind Siliguri (বাংলা) ও Amiri Quran (আরবি), দুটোই OFL"
+            git push
+          fi
