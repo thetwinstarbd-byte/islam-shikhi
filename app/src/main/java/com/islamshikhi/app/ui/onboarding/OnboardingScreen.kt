@@ -1,6 +1,26 @@
 package com.islamshikhi.app.ui.onboarding
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.border
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.unit.sp
+import com.islamshikhi.app.ui.home.Crescent
+import com.islamshikhi.app.ui.home.SkyBackdrop
+import com.islamshikhi.app.ui.home.SkyState
+import com.islamshikhi.app.ui.theme.Palette
+import com.islamshikhi.app.ui.theme.SkyPhase
+import com.islamshikhi.app.ui.theme.SystemBarIcons
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,16 +62,28 @@ fun OnboardingScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        Column(modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 16.dp)) {
+    if (state.step == 0) {
+        SystemBarIcons(darkIcons = false)
+        WelcomeHero(onStart = viewModel::next)
+        return
+    }
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    SystemBarIcons(darkIcons = !isDark)
 
-            if (state.step > 0) {
-                LinearProgressIndicator(
-                    progress = { state.step / OnboardingViewModel.LAST_STEP.toFloat() },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(Modifier.height(16.dp))
-            }
+    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+                .navigationBarsPadding()
+                .padding(horizontal = 20.dp, vertical = 16.dp)
+        ) {
+            LinearProgressIndicator(
+                progress = { state.step / OnboardingViewModel.LAST_STEP.toFloat() },
+                modifier = Modifier.fillMaxWidth().height(6.dp).clip(CircleShape),
+                trackColor = MaterialTheme.colorScheme.surfaceVariant
+            )
+            Spacer(Modifier.height(20.dp))
 
             Column(
                 modifier = Modifier
@@ -60,7 +92,6 @@ fun OnboardingScreen(
                     .verticalScroll(rememberScrollState())
             ) {
                 when (state.step) {
-                    0 -> WelcomeStep()
                     1 -> GenderStep(state.gender, viewModel::selectGender)
                     2 -> AgeStep(state.ageGroup, viewModel::selectAgeGroup)
                     3 -> LanguageStep(state.language, viewModel::selectLanguage)
@@ -80,24 +111,62 @@ fun OnboardingScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                if (state.step > 0) {
-                    OutlinedButton(onClick = viewModel::back, modifier = Modifier.weight(1f)) {
-                        Text("পিছনে")
-                    }
+                OutlinedButton(onClick = viewModel::back, modifier = Modifier.weight(1f).height(52.dp)) {
+                    Text("পিছনে")
                 }
                 Button(
                     onClick = viewModel::next,
                     enabled = state.canGoNext && !state.saving,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f).height(52.dp)
                 ) {
-                    Text(
-                        when (state.step) {
-                            0 -> "শুরু করি"
-                            OnboardingViewModel.LAST_STEP -> "সম্পন্ন"
-                            else -> "পরবর্তী"
-                        }
-                    )
+                    Text(if (state.step == OnboardingViewModel.LAST_STEP) "সম্পন্ন" else "পরবর্তী")
                 }
+            }
+        }
+    }
+}
+
+/** প্রথম পাতা: রাতের আকাশ ও চাঁদ। অ্যাপের নাম, এক লাইনের পরিচয় ও গোপনীয়তার কথা। */
+@Composable
+private fun WelcomeHero(onStart: () -> Unit) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        SkyBackdrop(SkyState(SkyPhase.NIGHT, 0.5f, false), Modifier.matchParentSize(), showArc = false)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+                .navigationBarsPadding()
+                .padding(horizontal = 28.dp, vertical = 24.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Spacer(Modifier.weight(0.9f))
+            Crescent(Modifier.size(84.dp))
+            Spacer(Modifier.height(32.dp))
+            Text(
+                "ইসলাম শিখি",
+                style = MaterialTheme.typography.displaySmall.copy(fontSize = 48.sp, lineHeight = 62.sp),
+                color = Color.White
+            )
+            Spacer(Modifier.height(10.dp))
+            Text(
+                "দৈনন্দিন ইবাদত, কুরআন, দোয়া ও মাসআলা শেখার একটি সহজ সঙ্গী।",
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White.copy(alpha = 0.92f)
+            )
+            Spacer(Modifier.height(16.dp))
+            Text(
+                "আপনার তথ্য শুধু আপনার ফোনে থাকবে। কোনো অ্যাকাউন্ট লাগবে না। " +
+                    "কয়েকটি প্রশ্নের উত্তর দিলে আপনার জন্য প্রাসঙ্গিক বিষয়গুলো সাজিয়ে দেওয়া হবে।",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.White.copy(alpha = 0.78f)
+            )
+            Spacer(Modifier.weight(1f))
+            Button(
+                onClick = onStart,
+                modifier = Modifier.fillMaxWidth().height(54.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Palette.IndigoLight)
+            ) {
+                Text("শুরু করি", style = MaterialTheme.typography.titleMedium)
             }
         }
     }
@@ -111,28 +180,6 @@ private fun StepTitle(title: String, subtitle: String? = null) {
         Text(subtitle, style = MaterialTheme.typography.bodyMedium)
     }
     Spacer(Modifier.height(20.dp))
-}
-
-@Composable
-private fun WelcomeStep() {
-    Spacer(Modifier.height(48.dp))
-    Text(
-        "ইসলাম শিখি",
-        style = MaterialTheme.typography.displaySmall,
-        fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.primary
-    )
-    Spacer(Modifier.height(12.dp))
-    Text(
-        "দৈনন্দিন ইবাদত, কুরআন, দোয়া ও মাসআলা শেখার একটি সহজ সঙ্গী।",
-        style = MaterialTheme.typography.titleMedium
-    )
-    Spacer(Modifier.height(16.dp))
-    Text(
-        "আপনার তথ্য শুধু আপনার ফোনে থাকবে। কোনো অ্যাকাউন্ট লাগবে না। " +
-            "কয়েকটি প্রশ্নের উত্তর দিলে আপনার জন্য প্রাসঙ্গিক বিষয়গুলো সাজিয়ে দেওয়া হবে।",
-        style = MaterialTheme.typography.bodyMedium
-    )
 }
 
 @Composable
@@ -215,19 +262,28 @@ private fun OptionCard(label: String, selected: Boolean, onClick: () -> Unit) {
     val colors = MaterialTheme.colorScheme
     Card(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
+        shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            containerColor = if (selected) colors.primaryContainer else colors.surface
+            containerColor = if (selected) colors.primaryContainer else colors.surfaceVariant
         ),
-        border = BorderStroke(
-            width = if (selected) 2.dp else 1.dp,
-            color = if (selected) colors.primary else colors.outline
-        )
+        border = BorderStroke(2.dp, if (selected) colors.primary else Color.Transparent)
     ) {
-        Text(
-            text = label,
-            modifier = Modifier.padding(16.dp),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
-        )
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 15.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = label,
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+                color = if (selected) colors.onPrimaryContainer else colors.onSurface
+            )
+            if (selected) {
+                Icon(Icons.Filled.CheckCircle, contentDescription = "নির্বাচিত", tint = colors.primary)
+            } else {
+                Box(modifier = Modifier.size(24.dp).border(2.dp, colors.outline.copy(alpha = 0.5f), CircleShape))
+            }
+        }
     }
 }

@@ -1,7 +1,11 @@
 package com.islamshikhi.app.ui.main
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -9,6 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.luminance
+import com.islamshikhi.app.ui.theme.SystemBarIcons
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -53,6 +60,10 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
     val content = rememberContainer().content
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
+    val isHome = currentRoute == null || currentRoute == AppTab.HOME.route
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    // হোমে ওপরে গাঢ় আকাশ, তাই সাদা আইকন; অন্য পাতায় থিম অনুযায়ী
+    SystemBarIcons(darkIcons = !isHome && !isDark)
 
     val openTab: (AppTab) -> Unit = { tab ->
         navController.navigate(tab.route) {
@@ -67,14 +78,26 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
     val back: () -> Unit = { navController.popBackStack() }
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                containerColor = MaterialTheme.colorScheme.surface,
+                tonalElevation = 0.dp
+            ) {
                 AppTab.entries.forEach { tab ->
                     NavigationBarItem(
                         selected = currentRoute?.startsWith(tab.route) == true,
                         onClick = { openTab(tab) },
                         icon = { Icon(tab.icon, contentDescription = tab.label) },
-                        label = { Text(tab.label) }
+                        label = { Text(tab.label, style = MaterialTheme.typography.labelMedium) },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            selectedTextColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
                 }
             }
@@ -83,7 +106,9 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
         NavHost(
             navController = navController,
             startDestination = AppTab.HOME.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
+                .then(if (isHome) Modifier else Modifier.statusBarsPadding())
         ) {
             composable(AppTab.HOME.route) {
                 HomeScreen(profile = profile, onOpenTab = openTab, onNavigate = go)

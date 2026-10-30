@@ -1,25 +1,33 @@
 package com.islamshikhi.app.ui.common
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -32,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -40,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.islamshikhi.app.AppContainer
 import com.islamshikhi.app.IslamShikhiApp
+import com.islamshikhi.app.ui.theme.AmiriQuran
 
 @Composable
 fun rememberContainer(): AppContainer {
@@ -47,21 +57,27 @@ fun rememberContainer(): AppContainer {
     return remember { (ctx.applicationContext as IslamShikhiApp).container }
 }
 
-/** উপরের শিরোনাম বার; [onBack] থাকলে পিছনে যাওয়ার তীর দেখায়। */
+/** উপরের শিরোনাম; [onBack] থাকলে পিছনে যাওয়ার গোল বাটন দেখায়। */
 @Composable
 fun ScreenHeader(title: String, onBack: (() -> Unit)? = null) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (onBack != null) {
-            IconButton(onClick = onBack) {
+            IconButton(
+                onClick = onBack,
+                colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            ) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "পিছনে")
             }
-        } else {
-            Row(modifier = Modifier.padding(start = 12.dp)) {}
+            Spacer(Modifier.width(12.dp))
         }
-        Text(title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+        Text(
+            title,
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onBackground
+        )
     }
 }
 
@@ -86,21 +102,42 @@ fun ScreenColumn(
     }
 }
 
+/** গোল আইকন-চিপ: তালিকা ও কার্ডে বিষয় চেনানোর জন্য। */
 @Composable
-fun MenuCard(title: String, subtitle: String, onClick: () -> Unit) {
+fun IconChip(icon: ImageVector, size: Int = 44, tint: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.primary,
+             container: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.primaryContainer) {
+    Box(
+        modifier = Modifier.size(size.dp).background(container, CircleShape),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size((size * 0.5f).dp))
+    }
+}
+
+@Composable
+fun MenuCard(title: String, subtitle: String, icon: ImageVector? = null, onClick: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
+        shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-                Text(subtitle, style = MaterialTheme.typography.bodySmall)
+            if (icon != null) {
+                IconChip(icon)
+                Spacer(Modifier.width(14.dp))
             }
-            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text(title, style = MaterialTheme.typography.titleMedium)
+                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Icon(
+                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.outline
+            )
         }
     }
 }
@@ -111,7 +148,7 @@ fun SectionTitle(text: String) {
         text,
         modifier = Modifier.padding(top = 8.dp),
         style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.SemiBold,
         color = MaterialTheme.colorScheme.primary
     )
 }
@@ -127,27 +164,30 @@ fun StatusBadge(status: String) {
     Surface(
         shape = RoundedCornerShape(50),
         color = if (strong) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+        contentColor = if (strong) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSecondaryContainer
     ) {
         Text(
             text,
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 3.dp),
             style = MaterialTheme.typography.labelSmall
         )
     }
 }
 
-/** আরবি লেখা: ডান থেকে বামে, বড় অক্ষরে। */
+/** আরবি লেখা: ডান থেকে বামে, Amiri Quran ফন্টে, বড় অক্ষরে। */
 @Composable
 fun ArabicText(text: String, sizeSp: Int = 26) {
     Text(
         text,
         modifier = Modifier.fillMaxWidth(),
         style = MaterialTheme.typography.headlineSmall.copy(
+            fontFamily = AmiriQuran,
+            fontWeight = FontWeight.Normal,
             fontSize = sizeSp.sp,
-            lineHeight = (sizeSp * 1.9f).sp,
+            lineHeight = (sizeSp * 1.95f).sp,
             textDirection = TextDirection.Rtl
         ),
+        color = MaterialTheme.colorScheme.onSurface,
         textAlign = TextAlign.Start
     )
 }
@@ -156,27 +196,38 @@ fun ArabicText(text: String, sizeSp: Int = 26) {
 fun InfoCard(title: String, body: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-            Text(body, style = MaterialTheme.typography.bodyMedium)
+            Text(title, style = MaterialTheme.typography.titleMedium)
+            Text(body, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
 
+/** সতর্কতা/দ্রষ্টব্য: সোনালি রঙের হালকা পটভূমিতে তথ্যের আইকনসহ (লাল নয়, কারণ এটা বিপদ নয়, মনে করিয়ে দেওয়া)। */
 @Composable
 fun WarningCard(text: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
     ) {
-        Text(
-            text,
-            modifier = Modifier.padding(14.dp),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onErrorContainer
-        )
+        Row(modifier = Modifier.padding(14.dp), verticalAlignment = Alignment.Top) {
+            Icon(
+                Icons.Filled.Info,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.padding(top = 3.dp).size(20.dp)
+            )
+            Spacer(Modifier.width(10.dp))
+            Text(
+                text,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+        }
     }
 }
 
