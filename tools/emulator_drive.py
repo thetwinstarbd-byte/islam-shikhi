@@ -135,10 +135,29 @@ def ensure_foreground():
     check("অ্যাপ সামনে আনার সময়")
 
 
-def screen_height():
+def screen_size():
     out = adb("shell", "wm", "size").stdout
     m = re.search(r"(\d+)x(\d+)", out)
-    return int(m.group(2)) if m else 1920
+    return (int(m.group(1)), int(m.group(2))) if m else (1080, 1920)
+
+
+def screen_height():
+    return screen_size()[1]
+
+
+def swipe_up(times=1):
+    """পাতা নিচের দিকে স্ক্রল করে (আঙুল ওপরে টানা)।"""
+    w, h = screen_size()
+    for _ in range(times):
+        adb("shell", "input", "swipe", str(w // 2), str(int(h * 0.78)), str(w // 2), str(int(h * 0.22)), "350")
+        time.sleep(0.8)
+
+
+def swipe_down(times=1):
+    w, h = screen_size()
+    for _ in range(times):
+        adb("shell", "input", "swipe", str(w // 2), str(int(h * 0.22)), str(w // 2), str(int(h * 0.78)), "350")
+        time.sleep(0.8)
 
 
 def restart_app():
@@ -207,10 +226,13 @@ def main():
     tap_text("হোম", timeout=30)
     time.sleep(2)
     shot("06-home")
-    adb("shell", "input", "swipe", "540", "1700", "540", "500", "400")
-    time.sleep(1)
-    shot("07-home-scrolled")
-    adb("shell", "input", "swipe", "540", "500", "540", "1700", "400")
+    swipe_up()
+    shot("07-home-scrolled-1")
+    swipe_up()
+    shot("08-home-scrolled-2")
+    swipe_up(2)
+    shot("09-home-scrolled-3")
+    swipe_down(6)
 
     height = screen_height()
     visited = 0
@@ -220,6 +242,10 @@ def main():
         time.sleep(2)
         check(f"'{tab}' ট্যাব খোলার পর")
         shot(f"10-tab-{TAB_IDS[tab]}")
+        if tab != "হোম":
+            swipe_up()
+            shot(f"11-tab-{TAB_IDS[tab]}-scrolled")
+            swipe_down(3)
         seen = set()
         candidates = []
         for n in dump():

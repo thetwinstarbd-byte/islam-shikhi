@@ -17,7 +17,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        api-level: [29, 34]
+        # API 29: ছোট স্ক্রিন (পুরোনো, কম দামি ফোনের মতো); API 34: আধুনিক বড় ফোন (Pixel 5)
+        include:
+          - api-level: 29
+            profile: ""
+          - api-level: 34
+            profile: pixel_5
     steps:
       - uses: actions/checkout@v4
 
@@ -44,6 +49,7 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           arch: x86_64
+          profile: ${{ matrix.profile }}
           target: default
           disable-animations: true
           script: bash tools/emulator_run.sh

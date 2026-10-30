@@ -19,6 +19,12 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.unit.sp
+import com.islamshikhi.app.ui.theme.AmiriQuran
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -65,28 +71,25 @@ fun QuranScreen(onNavigate: (String) -> Unit) {
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        ScreenHeader("কুরআন")
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("কুরআন", style = MaterialTheme.typography.headlineSmall)
+            // শুধু নাম (আয়াত নয়); আরবি ফন্টের সৌন্দর্য দেখানোর জন্য
+            Text(
+                "القرآن",
+                fontFamily = AmiriQuran,
+                fontSize = 30.sp,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
         LazyColumn(
             modifier = Modifier.weight(1f).fillMaxWidth(),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-                ) {
-                    Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(
-                            "আরবি: Tanzil Project (উসমানী)। বাংলা অনুবাদ ও টীকা: আবু বকর যাকারিয়া, QuranEnc.com, সংস্করণ ১.১.১। " +
-                                "লেখা অপরিবর্তিত।",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        TextButton(onClick = { onNavigate(Routes.QURAN_NOTICE) }) { Text("উৎস ও লাইসেন্স দেখুন") }
-                    }
-                }
-            }
-
             val parts = last?.split(":")
             val lastChapter = parts?.getOrNull(0)?.toIntOrNull()
             val lastAyah = parts?.getOrNull(1)?.toIntOrNull() ?: 1
@@ -149,6 +152,18 @@ fun QuranScreen(onNavigate: (String) -> Unit) {
             items(filtered, key = { it.id }) { c ->
                 ChapterRow(c) { onNavigate(Routes.quranRead(c.id)) }
             }
+
+            // উৎস ও লাইসেন্সের নোটিশ: দরকারি, কিন্তু প্রথম দৃষ্টিতে জরুরি নয়, তাই তালিকার শেষে ছোট করে
+            item {
+                Column(modifier = Modifier.fillMaxWidth().padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Text(
+                        "আরবি: Tanzil Project (উসমানী)। বাংলা অনুবাদ ও টীকা: আবু বকর যাকারিয়া, QuranEnc.com, সংস্করণ ১.১.১। লেখা অপরিবর্তিত।",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    TextButton(onClick = { onNavigate(Routes.QURAN_NOTICE) }) { Text("উৎস ও লাইসেন্স দেখুন") }
+                }
+            }
         }
     }
 }
@@ -194,12 +209,17 @@ private fun ChapterRow(c: Chapter, onClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            Text(
-                DateFormatBn.digits(c.id),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold
-            )
+            Box(
+                modifier = Modifier.size(40.dp).background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    DateFormatBn.digits(c.id),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    fontWeight = FontWeight.Bold
+                )
+            }
             Column(modifier = Modifier.weight(1f)) {
                 Text(c.bn, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
                 Text(
@@ -207,7 +227,7 @@ private fun ChapterRow(c: Chapter, onClick: () -> Unit) {
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            Text(c.ar, style = MaterialTheme.typography.titleMedium)
+            Text(c.ar, fontFamily = AmiriQuran, fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
         }
     }
 }
