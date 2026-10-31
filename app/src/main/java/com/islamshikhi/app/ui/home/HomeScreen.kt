@@ -273,7 +273,7 @@ private fun SkyHero(
         Column(
             modifier = Modifier
                 .statusBarsPadding()
-                .padding(start = 22.dp, end = 22.dp, top = 14.dp)
+                .padding(start = 22.dp, end = 22.dp, top = 8.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -298,17 +298,12 @@ private fun SkyHero(
                 }
             }
             Text(
-                DateFormatBn.gregorian(date),
-                style = MaterialTheme.typography.bodySmall,
-                color = white.copy(alpha = 0.85f)
-            )
-            Text(
-                DateFormatBn.hijri(date),
+                DateFormatBn.gregorian(date) + " • " + DateFormatBn.hijri(date),
                 style = MaterialTheme.typography.bodySmall,
                 color = white.copy(alpha = 0.85f)
             )
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(8.dp))
             Text(
                 "${next.first.labelBn}-এর আর",
                 style = MaterialTheme.typography.bodyLarge,
@@ -321,7 +316,7 @@ private fun SkyHero(
                 color = Palette.GoldHigh
             )
 
-            Spacer(Modifier.height(100.dp)) // সূর্য/চাঁদের চাপের জায়গা
+            Spacer(Modifier.height(54.dp)) // সূর্য/চাঁদের চাপের জায়গা
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
                     "সূর্যোদয় ${clock(today[Prayer.SUNRISE], zone)}",
@@ -334,7 +329,7 @@ private fun SkyHero(
                     color = white.copy(alpha = 0.9f)
                 )
             }
-            Spacer(Modifier.height(34.dp)) // নিচের ওয়াক্ত-সারি যে অংশ ঢেকে দেবে
+            Spacer(Modifier.height(32.dp)) // নিচের ওয়াক্ত-সারি যে অংশ ঢেকে দেবে
         }
     }
 }
@@ -352,13 +347,13 @@ private fun Countdown(millis: Long) {
             if (i > 0) Spacer(Modifier.width(16.dp))
             Text(
                 DateFormatBn.digits(n),
-                style = MaterialTheme.typography.displaySmall.copy(fontSize = 52.sp, lineHeight = 62.sp),
+                style = MaterialTheme.typography.displaySmall.copy(fontSize = 40.sp, lineHeight = 48.sp),
                 color = Color.White
             )
             Spacer(Modifier.width(5.dp))
             Text(
                 unit,
-                modifier = Modifier.padding(bottom = 12.dp),
+                modifier = Modifier.padding(bottom = 8.dp),
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.White.copy(alpha = 0.88f)
             )

@@ -37,20 +37,18 @@ import com.islamshikhi.app.ui.theme.Palette
 @Composable
 fun LuxNavBar(currentRoute: String?, onSelect: (AppTab) -> Unit) {
     val scheme = MaterialTheme.colorScheme
-    val dark = scheme.background.luminance() < 0.5f
     val shape = RoundedCornerShape(30.dp)
-    val barFill = Brush.verticalGradient(
-        if (dark) listOf(scheme.surfaceContainerHigh, scheme.surface) else listOf(Color.White, scheme.surfaceContainerLow)
-    )
-
+    // বারটি পেজের রঙ থেকে আলাদা: গভীর পান্না-সবুজ গ্রেডিয়েন্ট (হালকা/গাঢ় দুই থিমেই একই), তাই সবসময় চোখে পড়ে
+    val barFill = Brush.horizontalGradient(listOf(Color(0xFF0E4A3A), Color(0xFF082B22), Color(0xFF0E4A3A)))
+    val idle = Color(0xFFD9D0B2)
     Box(modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(start = 16.dp, end = 16.dp, bottom = 10.dp, top = 4.dp)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .shadow(14.dp, shape, ambientColor = Color.Black, spotColor = Color.Black)
+                .shadow(18.dp, shape, ambientColor = Palette.GoldMid, spotColor = Palette.GoldMid)
                 .clip(shape)
                 .background(barFill)
-                .goldBorder(shape, alpha = 0.7f)
+                .goldBorder(shape, width = 1.5.dp, alpha = 1f)
                 .padding(horizontal = 6.dp, vertical = 6.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -58,7 +56,7 @@ fun LuxNavBar(currentRoute: String?, onSelect: (AppTab) -> Unit) {
             AppTab.entries.forEach { tab ->
                 val selected = currentRoute?.startsWith(tab.route) == true
                 val tint by animateColorAsState(
-                    if (selected) Color(0xFF2A1E00) else scheme.onSurfaceVariant,
+                    if (selected) Color(0xFF2A1E00) else idle,
                     label = "navTint"
                 )
                 Column(

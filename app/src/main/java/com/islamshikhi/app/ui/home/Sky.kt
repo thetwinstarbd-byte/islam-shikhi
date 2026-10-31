@@ -90,7 +90,7 @@ fun SkyBackdrop(sky: SkyState, modifier: Modifier = Modifier, showArc: Boolean =
             val padX = 28.dp.toPx()
             // দিগন্তরেখা নিচ থেকে ৫৮dp ওপরে: তার নিচে সূর্যোদয়/সূর্যাস্তের সময়, আর সবার নিচে ওয়াক্ত-সারি ঢুকে পড়ে
             val baseY = h - 58.dp.toPx()
-            val arcH = 78.dp.toPx()
+            val arcH = 50.dp.toPx()
             val x0 = padX
             val x1 = w - padX
 
