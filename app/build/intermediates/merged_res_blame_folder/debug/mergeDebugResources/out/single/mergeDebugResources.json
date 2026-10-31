@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "com.islamshikhi.app-debug-55:/font_hind_siliguri_regular.ttf.flat",
+        "source": "com.islamshikhi.app-main-57:/font/hind_siliguri_regular.ttf"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-55:/font_hind_siliguri_semibold.ttf.flat",
+        "source": "com.islamshikhi.app-main-57:/font/hind_siliguri_semibold.ttf"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-55:/font_hind_siliguri_bold.ttf.flat",
+        "source": "com.islamshikhi.app-main-57:/font/hind_siliguri_bold.ttf"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-55:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.islamshikhi.app-main-57:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-55:/font_amiri_quran_regular.ttf.flat",
+        "source": "com.islamshikhi.app-main-57:/font/amiri_quran_regular.ttf"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-55:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.islamshikhi.app-main-57:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-55:/font_hind_siliguri_medium.ttf.flat",
+        "source": "com.islamshikhi.app-main-57:/font/hind_siliguri_medium.ttf"
+    }
+]

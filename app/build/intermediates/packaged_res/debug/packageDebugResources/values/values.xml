@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#0F5132</color>
+    <string name="app_name">ইসলাম শিখি</string>
+    <style name="Theme.IslamShikhi" parent="android:Theme.Material.Light.NoActionBar"/>
+</resources>
