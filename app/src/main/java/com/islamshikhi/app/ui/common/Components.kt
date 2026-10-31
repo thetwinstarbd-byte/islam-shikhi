@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -49,6 +50,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.islamshikhi.app.AppContainer
 import com.islamshikhi.app.IslamShikhiApp
+import com.islamshikhi.app.ui.effects.GoldOrnament
+import com.islamshikhi.app.ui.effects.LuxCard
+import com.islamshikhi.app.ui.effects.goldBorder
 import com.islamshikhi.app.ui.theme.AmiriQuran
 
 @Composable
@@ -57,27 +61,29 @@ fun rememberContainer(): AppContainer {
     return remember { (ctx.applicationContext as IslamShikhiApp).container }
 }
 
-/** উপরের শিরোনাম; [onBack] থাকলে পিছনে যাওয়ার গোল বাটন দেখায়। */
+/** উপরের শিরোনাম; [onBack] থাকলে সোনালি-রিংয়ের গোল পিছনে-বাটন দেখায়। নিচে ছোট সোনালি অলংকার। */
 @Composable
 fun ScreenHeader(title: String, onBack: (() -> Unit)? = null) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        if (onBack != null) {
-            IconButton(
-                onClick = onBack,
-                colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-            ) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "পিছনে")
+    Column(modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 4.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (onBack != null) {
+                IconButton(
+                    onClick = onBack,
+                    modifier = Modifier.goldBorder(CircleShape, alpha = 0.7f),
+                    colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "পিছনে")
+                }
+                Spacer(Modifier.width(12.dp))
             }
-            Spacer(Modifier.width(12.dp))
+            Text(
+                title,
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
         }
-        Text(
-            title,
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onBackground
-        )
+        Spacer(Modifier.height(6.dp))
+        GoldOrnament(Modifier.padding(horizontal = 4.dp))
     }
 }
 
@@ -102,31 +108,27 @@ fun ScreenColumn(
     }
 }
 
-/** গোল আইকন-চিপ: তালিকা ও কার্ডে বিষয় চেনানোর জন্য। */
+/** গোল আইকন-চিপ: সোনালি রিং ও গাঢ় পান্না ভরাটের ওপর সোনালি আইকন। তালিকা ও কার্ডে বিষয় চেনানোর জন্য। */
 @Composable
-fun IconChip(icon: ImageVector, size: Int = 44, tint: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.primary,
+fun IconChip(icon: ImageVector, size: Int = 44, tint: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.secondary,
              container: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.primaryContainer) {
     Box(
-        modifier = Modifier.size(size.dp).background(container, CircleShape),
+        modifier = Modifier.size(size.dp).background(container, CircleShape).goldBorder(CircleShape, alpha = 0.75f),
         contentAlignment = Alignment.Center
     ) {
-        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size((size * 0.5f).dp))
+        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size((size * 0.48f).dp))
     }
 }
 
 @Composable
 fun MenuCard(title: String, subtitle: String, icon: ImageVector? = null, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-    ) {
+    LuxCard(modifier = Modifier.fillMaxWidth(), onClick = onClick, shape = MaterialTheme.shapes.medium) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (icon != null) {
-                IconChip(icon)
+                IconChip(icon, size = 48)
                 Spacer(Modifier.width(14.dp))
             }
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -136,7 +138,7 @@ fun MenuCard(title: String, subtitle: String, icon: ImageVector? = null, onClick
             Icon(
                 Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.outline
+                tint = MaterialTheme.colorScheme.secondary
             )
         }
     }
@@ -149,7 +151,7 @@ fun SectionTitle(text: String) {
         modifier = Modifier.padding(top = 8.dp),
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.SemiBold,
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.secondary
     )
 }
 
@@ -194,11 +196,7 @@ fun ArabicText(text: String, sizeSp: Int = 26) {
 
 @Composable
 fun InfoCard(title: String, body: String) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-    ) {
+    LuxCard(modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(title, style = MaterialTheme.typography.titleMedium)
             Text(body, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)

@@ -18,6 +18,10 @@ import androidx.compose.ui.unit.sp
 import com.islamshikhi.app.ui.home.Crescent
 import com.islamshikhi.app.ui.home.SkyBackdrop
 import com.islamshikhi.app.ui.home.SkyState
+import com.islamshikhi.app.ui.effects.GoldButton
+import com.islamshikhi.app.ui.effects.GoldOrnament
+import com.islamshikhi.app.ui.effects.ShimmerText
+import com.islamshikhi.app.ui.effects.glowPulse
 import com.islamshikhi.app.ui.theme.Palette
 import com.islamshikhi.app.ui.theme.SkyPhase
 import com.islamshikhi.app.ui.theme.SystemBarIcons
@@ -81,6 +85,7 @@ fun OnboardingScreen(
             LinearProgressIndicator(
                 progress = { state.step / OnboardingViewModel.LAST_STEP.toFloat() },
                 modifier = Modifier.fillMaxWidth().height(6.dp).clip(CircleShape),
+                color = MaterialTheme.colorScheme.secondary,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant
             )
             Spacer(Modifier.height(20.dp))
@@ -140,14 +145,15 @@ private fun WelcomeHero(onStart: () -> Unit) {
             horizontalAlignment = Alignment.Start
         ) {
             Spacer(Modifier.weight(0.9f))
-            Crescent(Modifier.size(84.dp))
+            Crescent(Modifier.size(84.dp).glowPulse(Palette.Moon, 110.dp))
             Spacer(Modifier.height(32.dp))
-            Text(
+            ShimmerText(
                 "ইসলাম শিখি",
-                style = MaterialTheme.typography.displaySmall.copy(fontSize = 48.sp, lineHeight = 62.sp),
-                color = Color.White
+                style = MaterialTheme.typography.displaySmall.copy(fontSize = 50.sp, lineHeight = 64.sp)
             )
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(8.dp))
+            GoldOrnament(Modifier.fillMaxWidth(0.55f))
+            Spacer(Modifier.height(12.dp))
             Text(
                 "দৈনন্দিন ইবাদত, কুরআন, দোয়া ও মাসআলা শেখার একটি সহজ সঙ্গী।",
                 style = MaterialTheme.typography.titleMedium,
@@ -161,13 +167,7 @@ private fun WelcomeHero(onStart: () -> Unit) {
                 color = Color.White.copy(alpha = 0.78f)
             )
             Spacer(Modifier.weight(1f))
-            Button(
-                onClick = onStart,
-                modifier = Modifier.fillMaxWidth().height(54.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Palette.IndigoLight)
-            ) {
-                Text("শুরু করি", style = MaterialTheme.typography.titleMedium)
-            }
+            GoldButton("শুরু করি", onClick = onStart)
         }
     }
 }
@@ -266,7 +266,7 @@ private fun OptionCard(label: String, selected: Boolean, onClick: () -> Unit) {
         colors = CardDefaults.cardColors(
             containerColor = if (selected) colors.primaryContainer else colors.surfaceVariant
         ),
-        border = BorderStroke(2.dp, if (selected) colors.primary else Color.Transparent)
+        border = BorderStroke(2.dp, if (selected) colors.secondary else Color.Transparent)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 15.dp),

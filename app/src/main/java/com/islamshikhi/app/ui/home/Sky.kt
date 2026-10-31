@@ -1,8 +1,10 @@
 package com.islamshikhi.app.ui.home
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -14,6 +16,8 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import com.islamshikhi.app.feature.prayer.DayTimes
 import com.islamshikhi.app.feature.prayer.Prayer
+import com.islamshikhi.app.ui.effects.islamicPattern
+import com.islamshikhi.app.ui.effects.rememberTwinkle
 import com.islamshikhi.app.ui.theme.Palette
 import com.islamshikhi.app.ui.theme.SkyPhase
 import kotlin.math.PI
@@ -50,10 +54,15 @@ fun computeSky(yesterday: DayTimes, today: DayTimes, tomorrow: DayTimes, now: Lo
     return SkyState(phase, progress, sunUp)
 }
 
-/** আকাশের গ্রেডিয়েন্ট পটভূমি, তারা ও সূর্য/চাঁদের চাপ। লেখা এর ওপরে বসে। */
+/**
+ * আকাশের গ্রেডিয়েন্ট পটভূমি, মিটমিট তারা, জ্যামিতিক নকশা ও সূর্য/চাঁদের চাপ। লেখা এর ওপরে বসে।
+ * [pattern] false করলে ইসলামি নকশা বাদ যায়।
+ */
 @Composable
-fun SkyBackdrop(sky: SkyState, modifier: Modifier = Modifier, showArc: Boolean = true) {
-    Canvas(modifier = modifier.fillMaxSize()) {
+fun SkyBackdrop(sky: SkyState, modifier: Modifier = Modifier, showArc: Boolean = true, pattern: Boolean = true) {
+    val twinkle by rememberTwinkle()
+    Box(modifier = modifier.fillMaxSize()) {
+    Canvas(modifier = Modifier.fillMaxSize()) {
         val w = size.width
         val h = size.height
         drawRect(Brush.verticalGradient(sky.phase.colors))
@@ -65,11 +74,15 @@ fun SkyBackdrop(sky: SkyState, modifier: Modifier = Modifier, showArc: Boolean =
                 seed = (seed * 1103515245L + 12345L) and 0x7fffffffL
                 return (seed % 10000L) / 10000f
             }
-            repeat(34) {
+            repeat(42) { i ->
                 val x = next() * w
                 val y = next() * h * 0.62f
-                val r = (0.7f + next() * 1.4f).dp.toPx()
-                drawCircle(Color.White.copy(alpha = sky.phase.starAlpha * (0.35f + next() * 0.55f)), r, Offset(x, y))
+                val r = (0.7f + next() * 1.5f).dp.toPx()
+                val base = 0.35f + next() * 0.55f
+                // প্রতিটি তারার মিটমিট আলাদা তালে (i * 1.7 ফেজ); প্রতি তৃতীয় তারা সোনালি আভার
+                val flicker = 0.7f + 0.3f * sin(twinkle + i * 1.7f)
+                val tint = if (i % 3 == 0) Palette.GoldHigh else Color.White
+                drawCircle(tint.copy(alpha = (sky.phase.starAlpha * base * flicker).coerceIn(0f, 1f)), r, Offset(x, y))
             }
         }
 
@@ -134,6 +147,8 @@ fun SkyBackdrop(sky: SkyState, modifier: Modifier = Modifier, showArc: Boolean =
                 1f to Color.Black.copy(alpha = 0.22f)
             )
         )
+    }
+    if (pattern) Box(modifier = Modifier.fillMaxSize().islamicPattern())
     }
 }
 

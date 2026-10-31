@@ -25,6 +25,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.AutoStories
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.ChildCare
+import androidx.compose.material.icons.filled.LocalLibrary
+import androidx.compose.material.icons.filled.MedicalServices
+import androidx.compose.material.icons.filled.Quiz
+import androidx.compose.material.icons.filled.Repeat
+import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.TaskAlt
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Explore
@@ -82,6 +90,12 @@ import com.islamshikhi.app.feature.tracker.AmalKeys
 import com.islamshikhi.app.ui.common.ArabicText
 import com.islamshikhi.app.ui.common.IconChip
 import com.islamshikhi.app.ui.common.StatusBadge
+import com.islamshikhi.app.ui.effects.LuxCard
+import com.islamshikhi.app.ui.effects.LuxSectionTitle
+import com.islamshikhi.app.ui.effects.glowPulse
+import com.islamshikhi.app.ui.effects.luxClickable
+import com.islamshikhi.app.ui.effects.reveal
+import com.islamshikhi.app.ui.theme.Palette
 import com.islamshikhi.app.ui.common.labelBn
 import com.islamshikhi.app.ui.common.rememberContainer
 import com.islamshikhi.app.ui.navigation.AppTab
@@ -161,34 +175,43 @@ fun HomeScreen(
         )
 
         Column(
-            modifier = Modifier.padding(horizontal = 20.dp).padding(top = 14.dp, bottom = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(22.dp)
+            modifier = Modifier.padding(horizontal = 20.dp).padding(top = 12.dp, bottom = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
+            // ছোট করে রাখা হয়েছে; সম্পূর্ণ ব্যাখ্যা নামাজের পাতা ও "অ্যাপ সম্পর্কে" পাতায় আছে
             Text(
-                "${settings.placeLabelBn} • ${settings.method.labelBn}। মসজিদের জামাতের সময়ের সঙ্গে কয়েক মিনিট পার্থক্য হতে পারে। " +
-                    "হিজরি তারিখ গণনা করা; চাঁদ দেখার কারণে এক দিনের পার্থক্য হতে পারে।",
+                "${settings.method.labelBn}। জামাতের সময়ের সঙ্গে কয়েক মিনিট পার্থক্য হতে পারে। হিজরি তারিখ গণনা করা, চাঁদ দেখার সঙ্গে ১ দিন ফারাক হতে পারে।",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            QuickGrid(
+            // অ্যাপের সব প্রধান ফিচার এক জায়গায়: ৪ কলামের গ্রিড
+            ServiceGrid(
                 listOf(
                     Quick("নামাজ", Icons.Filled.AccessTime) { onNavigate(Routes.PRAYER) },
                     Quick("কুরআন", Icons.AutoMirrored.Filled.MenuBook) { onOpenTab(AppTab.QURAN) },
                     Quick("দোয়া", Icons.Filled.AutoStories) { onNavigate(Routes.DUA) },
                     Quick("তাসবিহ", Icons.Filled.TouchApp) { onNavigate(Routes.TASBIH) },
                     Quick("কিবলা", Icons.Filled.Explore) { onNavigate(Routes.QIBLA) },
-                    Quick("মাসআলা", Icons.Filled.QuestionAnswer) { onOpenTab(AppTab.ASSISTANT) },
+                    Quick("ক্যালেন্ডার", Icons.Filled.CalendarMonth) { onNavigate(Routes.CALENDAR) },
+                    Quick("আমল", Icons.Filled.TaskAlt) { onNavigate(Routes.TRACKER) },
+                    Quick("অভ্যাস", Icons.Filled.Repeat) { onNavigate(Routes.HABITS) },
+                    Quick("মাসআলা", Icons.Filled.QuestionAnswer) { onNavigate(Routes.MASAIL) },
                     Quick("যাকাত", Icons.Filled.Calculate) { onNavigate(Routes.ZAKAT) },
+                    Quick("কুইজ", Icons.Filled.Quiz) { onNavigate(Routes.QUIZ) },
+                    Quick("শিশুশিক্ষা", Icons.Filled.ChildCare) { onNavigate(Routes.KIDS) },
+                    Quick("মুখস্থ", Icons.Filled.School) { onNavigate(Routes.QURAN_MEMORIZE) },
+                    Quick("লাইব্রেরি", Icons.Filled.LocalLibrary) { onNavigate(Routes.LIBRARY) },
+                    Quick("জরুরি", Icons.Filled.MedicalServices) { onNavigate(Routes.EMERGENCY) },
                     Quick("বুকমার্ক", Icons.Filled.Bookmark) { onNavigate(Routes.BOOKMARKS) }
                 )
             )
 
+            LastReadCard(onOpen = { chapter, ayah -> onNavigate(Routes.quranRead(chapter, ayah)) })
+
             DailyDuaCard(onOpen = { onNavigate(Routes.DUA) })
 
             TodayAmalCard(today = date, onClick = { onNavigate(Routes.TRACKER) })
-
-            LastReadCard(onOpen = { chapter, ayah -> onNavigate(Routes.quranRead(chapter, ayah)) })
 
             SuggestionsSection(profile, onOpenAssistant = { onOpenTab(AppTab.ASSISTANT) })
         }
@@ -259,7 +282,11 @@ private fun SkyHero(
                     style = MaterialTheme.typography.titleMedium,
                     color = white.copy(alpha = 0.95f)
                 )
-                Surface(shape = CircleShape, color = white.copy(alpha = 0.18f)) {
+                Surface(
+                    shape = CircleShape,
+                    color = white.copy(alpha = 0.12f),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Palette.goldHairline(0.9f))
+                ) {
                     Row(
                         modifier = Modifier.padding(start = 8.dp, end = 12.dp, top = 4.dp, bottom = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -291,7 +318,7 @@ private fun SkyHero(
             Text(
                 "${next.first.labelBn} • ${TimeFormatBn.format(next.second, zone)}",
                 style = MaterialTheme.typography.titleMedium,
-                color = white
+                color = Palette.GoldHigh
             )
 
             Spacer(Modifier.height(100.dp)) // সূর্য/চাঁদের চাপের জায়গা
@@ -339,41 +366,38 @@ private fun Countdown(millis: Long) {
     }
 }
 
-/** পাঁচ ওয়াক্তের সময়ের সারি; পরবর্তী ওয়াক্ত হাইলাইট করা। */
+/** পাঁচ ওয়াক্তের সময়ের সারি: সোনালি-সীমার কার্ড; পরবর্তী ওয়াক্ত সোনালি গ্রেডিয়েন্টে, ধীরে জ্বলা আভাসহ। */
 @Composable
 private fun PrayerStrip(today: DayTimes, next: Prayer, now: Long, zone: ZoneId, modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.surface,
-        shadowElevation = 6.dp
-    ) {
+    LuxCard(modifier = modifier.fillMaxWidth()) {
         Row(modifier = Modifier.padding(6.dp)) {
             Prayer.obligations.forEach { p ->
                 val t = today[p]
                 val isNext = p == next
                 val passed = t < now && !isNext
                 val textColor = when {
-                    isNext -> MaterialTheme.colorScheme.onPrimaryContainer
+                    isNext -> Color(0xFF2A1E00)
                     passed -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                     else -> MaterialTheme.colorScheme.onSurface
                 }
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(18.dp))
-                        .background(if (isNext) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
-                        .padding(vertical = 10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(p.labelBn, style = MaterialTheme.typography.labelMedium, color = textColor)
-                    Text(
-                        clock(t, zone),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = if (isNext) FontWeight.Bold else FontWeight.Medium,
-                        color = textColor
-                    )
-                    Text(periodOf(t, zone), style = MaterialTheme.typography.labelSmall, color = textColor.copy(alpha = 0.75f))
+                Box(modifier = Modifier.weight(1f).then(if (isNext) Modifier.glowPulse(Palette.GoldMid, 54.dp) else Modifier)) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(20.dp))
+                            .then(if (isNext) Modifier.background(Palette.GoldBrush) else Modifier)
+                            .padding(vertical = 10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(p.labelBn, style = MaterialTheme.typography.labelMedium, color = textColor)
+                        Text(
+                            clock(t, zone),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = if (isNext) FontWeight.Bold else FontWeight.Medium,
+                            color = textColor
+                        )
+                        Text(periodOf(t, zone), style = MaterialTheme.typography.labelSmall, color = textColor.copy(alpha = 0.75f))
+                    }
                 }
             }
         }
@@ -382,24 +406,37 @@ private fun PrayerStrip(today: DayTimes, next: Prayer, now: Long, zone: ZoneId, 
 
 private data class Quick(val label: String, val icon: ImageVector, val onClick: () -> Unit)
 
-/** আইকন-গ্রিড: প্রতি সারিতে চারটি। কার্ড নয়, শুধু আইকন ও নাম, যেন শান্ত থাকে। */
+/**
+ * "সব সেবা": অ্যাপের সব প্রধান ফিচারের আইকন-গ্রিড, প্রতি সারিতে চারটি। একটি সোনালি-সীমার প্যানেলের ভেতরে।
+ * প্রতিটি আইকন একের পর এক ভেসে ওঠে (reveal) এবং চাপলে ছোট হয় (luxClickable)।
+ */
 @Composable
-private fun QuickGrid(items: List<Quick>) {
-    Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        items.chunked(4).forEach { row ->
-            Row(modifier = Modifier.fillMaxWidth()) {
-                row.forEach { q ->
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .clip(RoundedCornerShape(16.dp))
-                            .clickable(onClick = q.onClick)
-                            .padding(vertical = 4.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        IconChip(q.icon, size = 56)
-                        Spacer(Modifier.height(6.dp))
-                        Text(q.label, style = MaterialTheme.typography.labelLarge, textAlign = TextAlign.Center)
+private fun ServiceGrid(items: List<Quick>) {
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        LuxSectionTitle("সব সেবা")
+        LuxCard(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                items.chunked(4).forEachIndexed { rowIndex, row ->
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        row.forEachIndexed { colIndex, q ->
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .reveal(rowIndex + colIndex)
+                                    .luxClickable(q.onClick)
+                                    .padding(vertical = 2.dp, horizontal = 2.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                IconChip(q.icon, size = 54)
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    q.label,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    textAlign = TextAlign.Center,
+                                    maxLines = 2
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -418,11 +455,7 @@ private fun DailyDuaCard(onOpen: () -> Unit) {
     }
     val e = entry ?: return
 
-    Card(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onOpen),
-        shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-    ) {
+    LuxCard(modifier = Modifier.fillMaxWidth(), onClick = onOpen) {
         Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 // সোনালি দাগ: "আজকের" বোঝাতে
@@ -452,13 +485,9 @@ private fun TodayAmalCard(today: LocalDate, onClick: () -> Unit) {
     val total = AmalItem.entries.size
     val fraction = if (total == 0) 0f else count / total.toFloat()
     val track = MaterialTheme.colorScheme.outlineVariant
-    val arc = MaterialTheme.colorScheme.primary
+    val arc = MaterialTheme.colorScheme.secondary
 
-    Card(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
-        shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-    ) {
+    LuxCard(modifier = Modifier.fillMaxWidth(), onClick = onClick) {
         Row(modifier = Modifier.padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(modifier = Modifier.size(68.dp), contentAlignment = Alignment.Center) {
                 Canvas(modifier = Modifier.fillMaxSize()) {
@@ -502,11 +531,7 @@ private fun LastReadCard(onOpen: (Int, Int) -> Unit) {
     val ayah = parts.getOrNull(1)?.toIntOrNull() ?: 1
     val chapter = chapters.firstOrNull { it.id == chapterId } ?: return
 
-    Card(
-        modifier = Modifier.fillMaxWidth().clickable { onOpen(chapterId, ayah) },
-        shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-    ) {
+    LuxCard(modifier = Modifier.fillMaxWidth(), onClick = { onOpen(chapterId, ayah) }) {
         Row(modifier = Modifier.padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
             IconChip(
                 Icons.AutoMirrored.Filled.MenuBook,

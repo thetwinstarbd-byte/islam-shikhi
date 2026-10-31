@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import com.islamshikhi.app.data.content.Chapter
 import com.islamshikhi.app.data.user.UserKeys
 import com.islamshikhi.app.ui.common.ScreenHeader
+import com.islamshikhi.app.ui.effects.LuxCard
+import com.islamshikhi.app.ui.effects.goldBorder
 import com.islamshikhi.app.ui.common.rememberContainer
 import com.islamshikhi.app.ui.navigation.Routes
 import com.islamshikhi.app.util.DateFormatBn
@@ -82,7 +84,7 @@ fun QuranScreen(onNavigate: (String) -> Unit) {
                 "القرآن",
                 fontFamily = AmiriQuran,
                 fontSize = 30.sp,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.secondary
             )
         }
         LazyColumn(
@@ -96,9 +98,9 @@ fun QuranScreen(onNavigate: (String) -> Unit) {
             val lastName = chapters.firstOrNull { it.id == lastChapter }?.bn
             if (lastChapter != null && lastName != null) {
                 item {
-                    Card(
-                        modifier = Modifier.fillMaxWidth().clickable { onNavigate(Routes.quranRead(lastChapter, lastAyah)) },
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                    LuxCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { onNavigate(Routes.quranRead(lastChapter, lastAyah)) }
                     ) {
                         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text("শেষ পড়া", style = MaterialTheme.typography.labelLarge)
@@ -170,10 +172,7 @@ fun QuranScreen(onNavigate: (String) -> Unit) {
 
 @Composable
 private fun GoalCard(done: Int, goal: Int, onChange: (Int) -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-    ) {
+    LuxCard(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -208,17 +207,14 @@ private fun GoalCard(done: Int, goal: Int, onChange: (Int) -> Unit) {
 
 @Composable
 private fun ChapterRow(c: Chapter, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-    ) {
+    LuxCard(modifier = Modifier.fillMaxWidth(), onClick = onClick, shape = MaterialTheme.shapes.medium) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             Box(
-                modifier = Modifier.size(40.dp).background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
+                modifier = Modifier.size(40.dp).background(MaterialTheme.colorScheme.primaryContainer, CircleShape).goldBorder(CircleShape, alpha = 0.7f),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -235,7 +231,7 @@ private fun ChapterRow(c: Chapter, onClick: () -> Unit) {
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            Text(c.ar, fontFamily = AmiriQuran, fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
+            Text(c.ar, fontFamily = AmiriQuran, fontSize = 24.sp, color = MaterialTheme.colorScheme.secondary)
         }
     }
 }

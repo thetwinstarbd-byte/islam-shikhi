@@ -257,7 +257,7 @@ def main():
             seen.add(n["b"])
             candidates.append(n["b"])
         print(f"{tab}: {len(candidates)}টি ট্যাপযোগ্য জিনিস", flush=True)
-        for b in candidates[:MAX_PER_TAB]:
+        for b in candidates[: (12 if tab == "হোম" else MAX_PER_TAB)]:
             ensure_foreground()
             tap_text(tab, required=False, timeout=5)
             tap_xy(*center(b))

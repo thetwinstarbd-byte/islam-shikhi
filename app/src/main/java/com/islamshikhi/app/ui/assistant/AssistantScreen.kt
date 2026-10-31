@@ -21,11 +21,11 @@ fun AssistantScreen(onNavigate: (String) -> Unit) {
             "এই অ্যাপের উত্তর ফতোয়া নয়। সব উত্তর অ্যাপের ভেতরের সূত্রসহ ডেটা থেকে দেখানো হয় এবং কোনোটিই " +
                 "এখনও আলেম দ্বারা পর্যালোচিত নয়। জটিল বা ব্যক্তিগত বিষয়ে যোগ্য আলেমের পরামর্শ নিন।"
         )
-        MenuCard("মাসআলা", "ওজু, নামাজ, রোজা, যাকাত, হজসহ বিভাগভিত্তিক প্রশ্নোত্তর", Icons.Filled.QuestionAnswer) { onNavigate(Routes.MASAIL) }
-        MenuCard("যাকাত ক্যালকুলেটর", "আনুমানিক হিসাব; চূড়ান্ত ফতোয়া নয়", Icons.Filled.Calculate) { onNavigate(Routes.ZAKAT) }
-        MenuCard("শিশুদের শিক্ষা", "বয়সোপযোগী ইসলামিক শিক্ষা ও গল্প", Icons.Filled.ChildCare) { onNavigate(Routes.KIDS) }
+        MenuCard("মাসআলা", "বিভাগ অনুযায়ী প্রশ্নোত্তর", Icons.Filled.QuestionAnswer) { onNavigate(Routes.MASAIL) }
+        MenuCard("যাকাত ক্যালকুলেটর", "আনুমানিক হিসাব", Icons.Filled.Calculate) { onNavigate(Routes.ZAKAT) }
+        MenuCard("শিশুদের শিক্ষা", "বয়সোপযোগী শিক্ষা", Icons.Filled.ChildCare) { onNavigate(Routes.KIDS) }
         MenuCard("ইসলামিক কুইজ", "নিজেকে যাচাই করুন", Icons.Filled.Quiz) { onNavigate(Routes.QUIZ) }
-        MenuCard("জরুরি গাইড", "অসুস্থতা, সফর ও জানাজার প্রাথমিক নির্দেশনা", Icons.Filled.MedicalServices) { onNavigate(Routes.EMERGENCY) }
-        MenuCard("ইসলামিক লাইব্রেরি", "সংক্ষিপ্ত নিবন্ধ ও শেখার গাইড", Icons.Filled.LocalLibrary) { onNavigate(Routes.LIBRARY) }
+        MenuCard("জরুরি গাইড", "অসুস্থতা, সফর ও জানাজা", Icons.Filled.MedicalServices) { onNavigate(Routes.EMERGENCY) }
+        MenuCard("ইসলামিক লাইব্রেরি", "নিবন্ধ ও শেখার গাইড", Icons.Filled.LocalLibrary) { onNavigate(Routes.LIBRARY) }
     }
 }

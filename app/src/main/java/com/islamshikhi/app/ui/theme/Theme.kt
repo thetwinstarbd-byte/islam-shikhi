@@ -21,14 +21,14 @@ import androidx.core.view.WindowCompat
 import com.islamshikhi.app.domain.model.ThemeMode
 
 private val LightColors = lightColorScheme(
-    primary = Palette.IndigoLight,
+    primary = Palette.EmeraldLight,
     onPrimary = Color.White,
-    primaryContainer = Palette.IndigoContainerLight,
-    onPrimaryContainer = Color(0xFF0E1A47),
+    primaryContainer = Palette.EmeraldContainerLight,
+    onPrimaryContainer = Color(0xFF04281E),
     secondary = Palette.GoldLight,
     onSecondary = Color.White,
     secondaryContainer = Palette.GoldContainerLight,
-    onSecondaryContainer = Color(0xFF3B2600),
+    onSecondaryContainer = Color(0xFF3B2A00),
     tertiary = Palette.RoseLight,
     onTertiary = Color.White,
     tertiaryContainer = Palette.RoseContainerLight,
@@ -37,30 +37,30 @@ private val LightColors = lightColorScheme(
     onBackground = Palette.InkLight,
     surface = Color.White,
     onSurface = Palette.InkLight,
-    surfaceVariant = Color(0xFFE8ECF5),
-    onSurfaceVariant = Color(0xFF475069),
-    outline = Color(0xFF7A849C),
-    outlineVariant = Color(0xFFDCE1EE),
+    surfaceVariant = Palette.SurfaceVariantLight,
+    onSurfaceVariant = Color(0xFF4A5650),
+    outline = Color(0xFF86908A),
+    outlineVariant = Color(0xFFE3DCC8),
     error = Color(0xFFB3261E),
     onError = Color.White,
     errorContainer = Color(0xFFFBE4E1),
     onErrorContainer = Color(0xFF5B1410),
     surfaceContainerLowest = Color.White,
-    surfaceContainerLow = Color(0xFFF8F9FD),
-    surfaceContainer = Color(0xFFEFF2F9),
-    surfaceContainerHigh = Color(0xFFE8ECF5),
-    surfaceContainerHighest = Color(0xFFE1E6F1)
+    surfaceContainerLow = Color(0xFFFDFBF6),
+    surfaceContainer = Color(0xFFF7F3E8),
+    surfaceContainerHigh = Palette.SurfaceVariantLight,
+    surfaceContainerHighest = Color(0xFFECE6D5)
 )
 
 private val DarkColors = darkColorScheme(
-    primary = Palette.IndigoDark,
-    onPrimary = Color(0xFF0E1A47),
-    primaryContainer = Color(0xFF2A3F85),
-    onPrimaryContainer = Palette.IndigoContainerLight,
+    primary = Palette.EmeraldDark,
+    onPrimary = Color(0xFF04281E),
+    primaryContainer = Palette.EmeraldContainerDark,
+    onPrimaryContainer = Color(0xFFCFF3E2),
     secondary = Palette.GoldDark,
-    onSecondary = Color(0xFF3B2600),
-    secondaryContainer = Color(0xFF5A3C00),
-    onSecondaryContainer = Palette.GoldContainerLight,
+    onSecondary = Color(0xFF3B2A00),
+    secondaryContainer = Color(0xFF3F3010),
+    onSecondaryContainer = Color(0xFFF6E7BF),
     tertiary = Color(0xFFF2B8B0),
     onTertiary = Color(0xFF410E0A),
     tertiaryContainer = Color(0xFF7A2E27),
@@ -69,27 +69,28 @@ private val DarkColors = darkColorScheme(
     onBackground = Palette.InkDark,
     surface = Palette.SurfaceDark,
     onSurface = Palette.InkDark,
-    surfaceVariant = Color(0xFF1D2540),
-    onSurfaceVariant = Color(0xFFB3BCD4),
-    outline = Color(0xFF7C86A3),
-    outlineVariant = Color(0xFF2B3557),
+    surfaceVariant = Palette.SurfaceVariantDark,
+    onSurfaceVariant = Color(0xFFB4C2BA),
+    outline = Color(0xFF7F8D85),
+    outlineVariant = Color(0xFF28403A),
     error = Color(0xFFFFB4AB),
     onError = Color(0xFF690005),
     errorContainer = Color(0xFF5C1713),
     onErrorContainer = Color(0xFFFFDAD6),
-    surfaceContainerLowest = Color(0xFF0A0E1C),
-    surfaceContainerLow = Color(0xFF111730),
-    surfaceContainer = Color(0xFF161D38),
-    surfaceContainerHigh = Color(0xFF1D2540),
-    surfaceContainerHighest = Color(0xFF252E4D)
+    surfaceContainerLowest = Color(0xFF050D0B),
+    surfaceContainerLow = Color(0xFF0B1814),
+    surfaceContainer = Color(0xFF10201A),
+    surfaceContainerHigh = Palette.SurfaceVariantDark,
+    surfaceContainerHighest = Color(0xFF1B332A)
 )
 
+/** আরও গোলাকার কোণ: নরম, দামি অনুভূতির জন্য। */
 private val AppShapes = Shapes(
-    extraSmall = RoundedCornerShape(8.dp),
-    small = RoundedCornerShape(12.dp),
-    medium = RoundedCornerShape(18.dp),
-    large = RoundedCornerShape(24.dp),
-    extraLarge = RoundedCornerShape(32.dp)
+    extraSmall = RoundedCornerShape(10.dp),
+    small = RoundedCornerShape(14.dp),
+    medium = RoundedCornerShape(20.dp),
+    large = RoundedCornerShape(28.dp),
+    extraLarge = RoundedCornerShape(36.dp)
 )
 
 @Composable
