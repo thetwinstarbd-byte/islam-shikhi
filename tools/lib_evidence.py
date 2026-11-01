@@ -82,6 +82,8 @@ CHAPTER_BN.update({
 })
 
 
+CHAPTER_BN.update({"كتاب النكاح": "কিতাবুন নিকাহ (বিয়ে অধ্যায়)"})
+
 class Evidence:
     def __init__(self, quran_clone, hadith_clone):
         q = quran_clone
