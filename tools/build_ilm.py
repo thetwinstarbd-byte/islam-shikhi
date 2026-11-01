@@ -23,6 +23,7 @@ import ilm_core as C  # noqa: E402
 import ilm_a  # noqa: E402,F401  (প্রবন্ধ-গুচ্ছ ১)
 import ilm_b  # noqa: E402,F401  (প্রবন্ধ-গুচ্ছ ২)
 import ilm_c  # noqa: E402,F401  (প্রবন্ধ-গুচ্ছ ৩)
+import ilm_d  # noqa: E402,F401  (ইবাদত/সালাত)
 
 # এই প্রবন্ধগুলোর জন্য প্রয়োজনীয় অতিরিক্ত অধ্যায়ের বাংলা নাম (কী = ডেটাসেটের হরকতহীন আরবি নাম)
 CHAPTER_BN.update({
