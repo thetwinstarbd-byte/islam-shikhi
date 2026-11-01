@@ -118,10 +118,12 @@ def tap_text(label, timeout=25, required=True):
     return False
 
 
-def tap_prefix(prefix, timeout=15, required=False):
-    """যে বাটনের লেখা prefix দিয়ে শুরু (কার্ডে শিরোনামের সঙ্গে আরও লেখা থাকে), তাতে ট্যাপ করে।"""
+def tap_prefix(prefix, timeout=15, required=False, scrolls=0):
+    """যে বাটনের লেখা prefix দিয়ে শুরু (কার্ডে শিরোনামের সঙ্গে আরও লেখা থাকে), তাতে ট্যাপ করে।
+    scrolls > 0 হলে না পেলে পাতা স্ক্রল করে আবার খোঁজে (লম্বা তালিকার জন্য)।"""
     end = time.time() + timeout
-    while time.time() < end:
+    left = scrolls
+    while True:
         check(f"'{prefix}' খোঁজার সময়")
         for n in dump():
             if n["text"].startswith(prefix) or n["desc"].startswith(prefix):
@@ -129,6 +131,12 @@ def tap_prefix(prefix, timeout=15, required=False):
                 time.sleep(2)
                 check(f"'{prefix}' চাপার পর")
                 return True
+        if left > 0:
+            swipe_up()
+            left -= 1
+            continue
+        if time.time() >= end:
+            break
         time.sleep(1.5)
     if required:
         screen = "\n".join(f"{n['text'] or n['desc']}" for n in dump() if n["text"] or n["desc"])
@@ -156,11 +164,12 @@ def content_tour():
     tap_text("সহকারী")
     if tap_prefix("ইসলামি জ্ঞান", required=True):
         shot("52-ilm-list")
-        swipe_up()
+        swipe_up(2)
         shot("52-ilm-list-scrolled")
-        swipe_down()
+        swipe_down(2)
         for name, key in (("শিরক কাকে বলে", "shirk"), ("বিদআত কাকে বলে", "bidah")):
-            if tap_prefix(name, required=True):
+            swipe_down(8)
+            if tap_prefix(name, required=True, scrolls=6):
                 shot(f"53-ilm-{key}-top")
                 for i in range(1, 4):
                     swipe_up(2)
