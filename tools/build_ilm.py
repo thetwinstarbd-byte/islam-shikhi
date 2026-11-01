@@ -26,6 +26,9 @@ import ilm_c  # noqa: E402,F401  (প্রবন্ধ-গুচ্ছ ৩)
 import ilm_d  # noqa: E402,F401  (ইবাদত/সালাত)
 import ilm_e  # noqa: E402,F401  (সিয়াম/যাকাত/হজ্জ/আখলাক)
 import ilm_f  # noqa: E402,F401  (সীরাত)
+import ilm_x1  # noqa: E402,F401  (বিস্তারিত সংযোজন: আকীদা)
+import ilm_x2  # noqa: E402,F401  (বিস্তারিত সংযোজন: ইবাদত ও আখলাক)
+import ilm_x3  # noqa: E402,F401  (বিস্তারিত সংযোজন: সীরাত)
 
 # এই প্রবন্ধগুলোর জন্য প্রয়োজনীয় অতিরিক্ত অধ্যায়ের বাংলা নাম (কী = ডেটাসেটের হরকতহীন আরবি নাম)
 CHAPTER_BN.update({
@@ -85,6 +88,7 @@ def section(s):
 
 articles = []
 for a in C.ARTICLES:
+    a["sections"] = a["sections"] + C.EXTRA.get(a["id"], [])
     articles.append({
         "id": a["id"], "category": a["cat"], "titleBn": a["title"], "summaryBn": a["summary"], "levelBn": a["level"],
         "sections": [section(s) for s in a["sections"]],
