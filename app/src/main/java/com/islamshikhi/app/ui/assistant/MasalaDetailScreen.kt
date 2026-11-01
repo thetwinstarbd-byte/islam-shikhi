@@ -158,12 +158,8 @@ private fun MasalaBody(m: Masala, data: MasalaData, onOpen: (String) -> Unit) {
             Text(note, style = MaterialTheme.typography.bodyMedium)
         }
 
-        m.checkNoteBn?.let {
-            SectionTitle("যাচাইয়ের তথ্য")
-            Text(it, style = MaterialTheme.typography.bodySmall)
-        }
         Text(
-            "এটি ফতোয়া নয়। আপনার অনুসৃত মাযহাব বা যোগ্য আলেমের কাছ থেকে নিশ্চিত হয়ে নিন।",
+            "খুঁটিনাটিতে মাযহাবভেদে পার্থক্য থাকতে পারে; আপনার অনুসৃত মাযহাব বা যোগ্য আলেমের কাছে জেনে নিন।",
             style = MaterialTheme.typography.bodySmall
         )
     }

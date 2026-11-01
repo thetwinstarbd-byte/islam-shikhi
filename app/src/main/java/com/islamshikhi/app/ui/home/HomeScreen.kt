@@ -90,7 +90,6 @@ import com.islamshikhi.app.feature.tracker.AmalItem
 import com.islamshikhi.app.feature.tracker.AmalKeys
 import com.islamshikhi.app.ui.common.ArabicText
 import com.islamshikhi.app.ui.common.IconChip
-import com.islamshikhi.app.ui.common.MunajatIcon
 import com.islamshikhi.app.ui.common.StatusBadge
 import com.islamshikhi.app.ui.effects.LuxCard
 import com.islamshikhi.app.ui.effects.LuxSectionTitle
@@ -192,7 +191,7 @@ fun HomeScreen(
                 listOf(
                     Quick("নামাজ", Icons.Filled.AccessTime) { onNavigate(Routes.PRAYER) },
                     Quick("কুরআন", Icons.AutoMirrored.Filled.MenuBook) { onOpenTab(AppTab.QURAN) },
-                    Quick("দোয়া", MunajatIcon) { onNavigate(Routes.DUA) },
+                    Quick("দোয়া", null, com.islamshikhi.app.R.drawable.dua_hands) { onNavigate(Routes.DUA) },
                     Quick("তাসবিহ", Icons.Filled.TouchApp) { onNavigate(Routes.TASBIH) },
                     Quick("কিবলা", Icons.Filled.Explore) { onNavigate(Routes.QIBLA) },
                     Quick("ক্যালেন্ডার", Icons.Filled.CalendarMonth) { onNavigate(Routes.CALENDAR) },
@@ -203,7 +202,7 @@ fun HomeScreen(
                     Quick("কুইজ", Icons.Filled.Quiz) { onNavigate(Routes.QUIZ) },
                     Quick("শিশুশিক্ষা", Icons.Filled.ChildCare) { onNavigate(Routes.KIDS) },
                     Quick("মুখস্থ", Icons.Filled.School) { onNavigate(Routes.QURAN_MEMORIZE) },
-                    Quick("লাইব্রেরি", Icons.Filled.LocalLibrary) { onNavigate(Routes.LIBRARY) },
+                    Quick("মাসআলা", Icons.Filled.LocalLibrary) { onNavigate(Routes.MASAIL) },
                     Quick("জরুরি", Icons.Filled.MedicalServices) { onNavigate(Routes.EMERGENCY) },
                     Quick("বুকমার্ক", Icons.Filled.Bookmark) { onNavigate(Routes.BOOKMARKS) }
                 )
@@ -401,7 +400,7 @@ private fun PrayerStrip(today: DayTimes, next: Prayer, now: Long, zone: ZoneId, 
     }
 }
 
-private data class Quick(val label: String, val icon: ImageVector, val onClick: () -> Unit)
+private data class Quick(val label: String, val icon: ImageVector?, val imageRes: Int? = null, val onClick: () -> Unit)
 
 /**
  * "সব সেবা": অ্যাপের সব প্রধান ফিচারের আইকন-গ্রিড, প্রতি সারিতে চারটি। একটি সোনালি-সীমার প্যানেলের ভেতরে।
@@ -424,7 +423,7 @@ private fun ServiceGrid(items: List<Quick>) {
                                     .padding(vertical = 2.dp, horizontal = 2.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                IconChip(q.icon, size = 54)
+                                IconChip(q.icon, size = 54, imageRes = q.imageRes)
                                 Spacer(Modifier.height(6.dp))
                                 Text(
                                     q.label,

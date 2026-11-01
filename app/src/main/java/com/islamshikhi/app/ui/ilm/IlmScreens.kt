@@ -74,12 +74,6 @@ fun IlmListScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onOpenMasail: ()
             contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            item {
-                WarningCard(
-                    "এই প্রবন্ধগুলো কুরআন ও সহীহ হাদীসের উদ্ধৃতিসহ লেখা, তবে এখনও কোনো আলেম দ্বারা পর্যালোচিত নয় এবং ফতোয়া নয়। " +
-                        "মতভেদের বিষয়ে সব পক্ষের মত আলাদা করে দেওয়া আছে। গুরুত্বপূর্ণ সিদ্ধান্তের আগে মূল গ্রন্থ ও যোগ্য আলেমের কাছে যাচাই করুন।"
-                )
-            }
             d.categories.forEach { cat ->
                 item(key = "cat_${cat.id}") {
                     Column(modifier = Modifier.padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -266,10 +260,8 @@ private fun ArticleTail(a: IlmArticle) {
             LuxSectionTitle("আরও পড়ুন")
             a.readingBn.forEach { Text("• $it", style = MaterialTheme.typography.bodyMedium) }
         }
-        a.checkNoteBn?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
         Text(
-            "কুরআনের আরবি: Tanzil Project (উসমানী)। বাংলা অনুবাদ: আবু বকর যাকারিয়া, QuranEnc.com, অপরিবর্তিত। " +
-                "হাদীসের আরবি সহীহ বুখারী ও মুসলিম প্রভৃতির ডেটাসেট থেকে নেওয়া; বাংলা অর্থ এই প্রকল্পে লেখা, আলেম দ্বারা পর্যালোচিত নয়।",
+            "কুরআনের আরবি: Tanzil Project (উসমানী)। বাংলা অনুবাদ: আবু বকর যাকারিয়া, QuranEnc.com। হাদীসের আরবি: সহীহ বুখারী ও সহীহ মুসলিম।",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

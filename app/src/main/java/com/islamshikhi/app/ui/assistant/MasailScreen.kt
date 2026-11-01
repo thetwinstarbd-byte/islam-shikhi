@@ -100,12 +100,6 @@ private fun ColumnScope.MasailList(data: MasalaData, profile: UserProfile, onOpe
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        item {
-            Text(
-                "সব উত্তরের সূত্র দেওয়া আছে। কোনোটিই আলেম দ্বারা পর্যালোচিত নয়, তাই এগুলো ফতোয়া নয়।",
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
         if (shown.isEmpty()) {
             item { Text("কোনো মাসআলা পাওয়া যায়নি।", style = MaterialTheme.typography.bodyMedium) }
         }

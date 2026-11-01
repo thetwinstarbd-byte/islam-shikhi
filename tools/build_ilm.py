@@ -13,7 +13,7 @@ tools/content/ilm_*.py থেকে app/src/main/assets/content/ilm.json বা�
 ব্যবহার:
   python3 tools/build_ilm.py <risan-quran-json clone> <AhmedBaset/hadith-json clone>
 """
-import json, os, sys
+import json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -76,13 +76,23 @@ def hadith(h):
     return {"ref": r["ref"], "narratorBn": who_bn, "arabic": r["arabic"], "meaningBn": meaning, "gradeBn": grade}
 
 
+_BAD = re.compile(r"আমি|যাচাই|মেশিনে|এই প্রকল্প|পর্যালোচিত|নেওয়া হয়নি|উদ্ধৃত করিনি|বিতরণের শর্ত|অনুমতি")
+
+
+def clean_clauses(text):
+    """পাঠকের জন্য অপ্রয়োজনীয় "যাচাই হয়নি/আমি" ধরনের খণ্ডবাক্য বাদ দেয়।"""
+    parts = [c.strip() for c in re.split(r"[;।]\s*", text) if c.strip()]
+    keep = [c for c in parts if not _BAD.search(c)]
+    return "। ".join(keep).strip() + ("।" if keep else "")
+
+
 def section(s):
     return {
         "headingBn": s["h"],
         "paragraphs": s["p"],
         "ayahs": [ayah_ref(a) for a in s.get("q", [])],
         "hadiths": [hadith(h) for h in s.get("h_", [])],
-        "viewpoints": [{"titleBn": t, "textBn": x, "sourceRef": src} for (t, x, src) in s.get("v", [])],
+        "viewpoints": [{"titleBn": t, "textBn": x, "sourceRef": (clean_clauses(src) or None)} for (t, x, src) in s.get("v", [])],
     }
 
 
@@ -92,9 +102,8 @@ for a in C.ARTICLES:
     articles.append({
         "id": a["id"], "category": a["cat"], "titleBn": a["title"], "summaryBn": a["summary"], "levelBn": a["level"],
         "sections": [section(s) for s in a["sections"]],
-        "readingBn": a.get("reading", []),
+        "readingBn": [c for c in (clean_clauses(r) for r in a.get("reading", [])) if c],
         "verificationStatus": "SOURCE_CHECKED",
-        "checkNoteBn": C.NOTE,
     })
 
 if errors:

@@ -110,25 +110,34 @@ fun ScreenColumn(
 
 /** গোল আইকন-চিপ: সোনালি রিং ও গাঢ় পান্না ভরাটের ওপর সোনালি আইকন। তালিকা ও কার্ডে বিষয় চেনানোর জন্য। */
 @Composable
-fun IconChip(icon: ImageVector, size: Int = 44, tint: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.secondary,
-             container: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.primaryContainer) {
+fun IconChip(icon: ImageVector?, size: Int = 44, tint: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.secondary,
+             container: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.primaryContainer,
+             imageRes: Int? = null) {
     Box(
         modifier = Modifier.size(size.dp).background(container, CircleShape).goldBorder(CircleShape, alpha = 0.75f),
         contentAlignment = Alignment.Center
     ) {
-        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size((size * 0.48f).dp))
+        if (imageRes != null) {
+            androidx.compose.foundation.Image(
+                painter = androidx.compose.ui.res.painterResource(imageRes),
+                contentDescription = null,
+                modifier = Modifier.size((size * 0.66f).dp)
+            )
+        } else if (icon != null) {
+            Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size((size * 0.48f).dp))
+        }
     }
 }
 
 @Composable
-fun MenuCard(title: String, subtitle: String, icon: ImageVector? = null, onClick: () -> Unit) {
+fun MenuCard(title: String, subtitle: String, icon: ImageVector? = null, imageRes: Int? = null, onClick: () -> Unit) {
     LuxCard(modifier = Modifier.fillMaxWidth(), onClick = onClick, shape = MaterialTheme.shapes.medium) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (icon != null) {
-                IconChip(icon, size = 48)
+            if (icon != null || imageRes != null) {
+                IconChip(icon, size = 48, imageRes = imageRes)
                 Spacer(Modifier.width(14.dp))
             }
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -158,6 +167,7 @@ fun SectionTitle(text: String) {
 /** যাচাই-অবস্থার ব্যাজ। docs/CONTENT_VERIFICATION.md-এর তিন অবস্থার বাংলা রূপ। */
 @Composable
 fun StatusBadge(status: String) {
+    if (status != "SCHOLAR_REVIEWED") return
     val (text, strong) = when (status) {
         "SCHOLAR_REVIEWED" -> "আলেম দ্বারা পর্যালোচিত" to true
         "SOURCE_CHECKED" -> "সূত্র মেলানো হয়েছে • আলেম দ্বারা পর্যালোচিত নয়" to false

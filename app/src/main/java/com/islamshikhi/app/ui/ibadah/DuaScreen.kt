@@ -150,11 +150,6 @@ fun DuaDetailScreen(id: String, onBack: () -> Unit) {
                 onToggleBookmark = { scope.launch { container.userData.toggleBookmark("dua:${e.id}") } },
                 onEditNote = { noteFor = e }
             )
-            Text(
-                "বাংলা উচ্চারণ ও ব্যাখ্যা আলেম দ্বারা পর্যালোচিত নয়; আমলের আগে নির্ভরযোগ্য আলেম বা মূল গ্রন্থ থেকে মিলিয়ে নিন।",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
         }
     }
 

@@ -162,9 +162,8 @@ private fun InfoBody(item: InfoItem, key: String?) {
             SectionTitle("আপনার নোট")
             Text(note, style = MaterialTheme.typography.bodyMedium)
         }
-        item.checkNoteBn?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
         Text(
-            "এটি ফতোয়া নয়। নিশ্চিত হতে যোগ্য আলেম বা নির্ভরযোগ্য মূল গ্রন্থ দেখুন।",
+            "গুরুত্বপূর্ণ সিদ্ধান্তের আগে যোগ্য আলেমের পরামর্শ নিন।",
             style = MaterialTheme.typography.bodySmall
         )
     }

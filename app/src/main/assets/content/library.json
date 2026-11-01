@@ -41,8 +41,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "lib_anger",
@@ -70,8 +69,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "lib_gheebah",
@@ -99,8 +97,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "lib_truth",
@@ -128,8 +125,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "lib_sabr_shukr",
@@ -157,8 +153,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "lib_quran_learn",
@@ -186,8 +181,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "lib_five_daily",
@@ -215,8 +209,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   }
  ]
 }

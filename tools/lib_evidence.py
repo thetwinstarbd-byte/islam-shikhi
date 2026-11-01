@@ -124,5 +124,5 @@ class Evidence:
             "ref": f"{BOOK_BN[book]}, {CHAPTER_BN[chap]}, {who_bn} বর্ণিত",
             "arabic": arabic,
             "meaningBn": meaning_bn,
-            "creditBn": "আরবি: সহীহ বুখারী/মুসলিমের ডেটাসেট (অপরিবর্তিত)। বাংলা অর্থ এই প্রকল্পে লেখা; আলেম-পর্যালোচিত নয়।",
+            "creditBn": "আরবি: সহীহ বুখারী/মুসলিমের ডেটাসেট (অপরিবর্তিত)।",
         }

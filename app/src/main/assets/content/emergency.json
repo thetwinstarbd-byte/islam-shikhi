@@ -45,8 +45,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "em_sick_prayer",
@@ -69,8 +68,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "em_sick_fast",
@@ -93,8 +91,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "em_visit_sick",
@@ -122,8 +119,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "em_travel_salah",
@@ -151,8 +147,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "em_death",
@@ -185,8 +180,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "em_calamity",
@@ -209,8 +203,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   },
   {
    "id": "em_mind",
@@ -233,8 +226,7 @@
     "ALL"
    ],
    "minAgeGroup": null,
-   "verificationStatus": "SOURCE_CHECKED",
-   "checkNoteBn": "আয়াত ও হাদীসের সূত্র মেশিনে মেলানো; ব্যাখ্যা ও বাংলা লেখা আলেম-পর্যালোচিত নয়।"
+   "verificationStatus": "SOURCE_CHECKED"
   }
  ]
 }
