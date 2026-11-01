@@ -7,6 +7,8 @@ package com.islamshikhi.app.ui.navigation
 object Routes {
     // ইবাদত
     const val DUA = "ibadah/dua"
+    const val DUA_DETAIL = "ibadah/dua/{id}"
+    fun dua(id: String) = "ibadah/dua/$id"
     const val PRAYER = "ibadah/prayer"
     const val QIBLA = "ibadah/qibla"
     const val CALENDAR = "ibadah/calendar"
@@ -22,6 +24,11 @@ object Routes {
 
     // হোম
     const val BOOKMARKS = "home/bookmarks"
+
+    // সহকারী ট্যাব: ইসলামি জ্ঞান (বিস্তারিত প্রবন্ধ)
+    const val ILM = "assistant/ilm"
+    const val ILM_ARTICLE = "assistant/ilm/{id}"
+    fun ilm(id: String) = "assistant/ilm/$id"
 
     // সহকারী
     const val MASAIL = "assistant/masail"

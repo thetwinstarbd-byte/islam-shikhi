@@ -81,6 +81,28 @@ for name in ("kids.json", "emergency.json", "library.json"):
             errors.append(f"{name} {it['id']}: কোনো সেকশনে সূত্র নেই")
         status_ok(name, it)
 
+# ---- ইসলামি জ্ঞান (বিস্তারিত প্রবন্ধ) ----
+il = load("ilm.json")
+icats = {c["id"] for c in il["categories"]}
+unique("ilm", il["articles"])
+for a in il["articles"]:
+    if a["category"] not in icats:
+        errors.append(f"ilm {a['id']}: অজানা বিভাগ")
+    if len(a["sections"]) < 4:
+        errors.append(f"ilm {a['id']}: প্রবন্ধ খুব ছোট (কমপক্ষে ৪টি অংশ লাগবে)")
+    if not a["readingBn"]:
+        errors.append(f"ilm {a['id']}: 'আরও পড়ুন' তালিকা নেই")
+    for sec in a["sections"]:
+        if not sec["paragraphs"]:
+            errors.append(f"ilm {a['id']}: '{sec['headingBn']}' অংশে লেখা নেই")
+        for h in sec["hadiths"]:
+            if not h["ref"].strip() or not (h.get("arabic") or "").strip():
+                errors.append(f"ilm {a['id']}: হাদীসের সূত্র/আরবি ফাঁকা")
+        for v in sec["viewpoints"]:
+            if not (v.get("sourceRef") or "").strip():
+                errors.append(f"ilm {a['id']}: মতের সূত্র-লাইন নেই ({v['titleBn']})")
+    status_ok("ilm", a)
+
 # ---- কুইজ ----
 q = load("quiz.json")["questions"]
 unique("quiz", q)
@@ -97,4 +119,4 @@ if errors:
     for e in errors:
         print(" -", e)
     sys.exit(1)
-print(f"কনটেন্ট ঠিক আছে: দোয়া {len(d['entries'])}, মাসআলা {len(m['entries'])}, কুইজ {len(q)}")
+print(f"কনটেন্ট ঠিক আছে: দোয়া {len(d['entries'])}, মাসআলা {len(m['entries'])}, কুইজ {len(q)}, জ্ঞান-প্রবন্ধ {len(il['articles'])}")

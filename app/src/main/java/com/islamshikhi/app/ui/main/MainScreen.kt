@@ -38,7 +38,10 @@ import com.islamshikhi.app.ui.assistant.MasalaDetailScreen
 import com.islamshikhi.app.ui.home.HomeScreen
 import com.islamshikhi.app.ui.ibadah.IbadahScreen
 import com.islamshikhi.app.ui.ibadah.CalendarScreen
+import com.islamshikhi.app.ui.ibadah.DuaDetailScreen
 import com.islamshikhi.app.ui.ibadah.DuaScreen
+import com.islamshikhi.app.ui.ilm.IlmArticleScreen
+import com.islamshikhi.app.ui.ilm.IlmListScreen
 import com.islamshikhi.app.ui.ibadah.PrayerScreen
 import com.islamshikhi.app.ui.ibadah.QiblaScreen
 import com.islamshikhi.app.ui.ibadah.TasbihScreen
@@ -96,7 +99,18 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
             composable(AppTab.IBADAH.route) { IbadahScreen(onNavigate = go) }
             composable(AppTab.QURAN.route) { QuranScreen(onNavigate = go) }
             composable(AppTab.ASSISTANT.route) { AssistantScreen(onNavigate = go) }
-            composable(Routes.DUA) { DuaScreen(onBack = back) }
+            composable(Routes.DUA) { DuaScreen(onBack = back, onOpen = { go(Routes.dua(it)) }) }
+            composable(Routes.DUA_DETAIL, arguments = listOf(navArgument("id") { type = NavType.StringType })) { entry ->
+                DuaDetailScreen(id = entry.arguments?.getString("id").orEmpty(), onBack = back)
+            }
+            composable(Routes.ILM) { IlmListScreen(onBack = back, onOpen = { go(Routes.ilm(it)) }, onOpenMasail = { go(Routes.MASAIL) }) }
+            composable(Routes.ILM_ARTICLE, arguments = listOf(navArgument("id") { type = NavType.StringType })) { entry ->
+                IlmArticleScreen(
+                    id = entry.arguments?.getString("id").orEmpty(),
+                    onBack = back,
+                    onOpenAyah = { chapter, ayah -> go(Routes.quranRead(chapter, ayah)) }
+                )
+            }
             composable(Routes.PRAYER) { PrayerScreen(onBack = back) }
             composable(Routes.QIBLA) { QiblaScreen(onBack = back) }
             composable(Routes.CALENDAR) { CalendarScreen(onBack = back) }

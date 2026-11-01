@@ -99,3 +99,40 @@ data class QuizQuestion(
     val explanationBn: String,
     val sourceRef: String?
 )
+
+
+// ---------------- ইসলামি জ্ঞান (ঈমান ও আকীদা ইত্যাদি বিস্তারিত প্রবন্ধ) ----------------
+
+data class IlmCategory(val id: String, val titleBn: String, val introBn: String)
+
+/** হাদীসের উদ্ধৃতি: আরবি অংশ (ডেটাসেট থেকে অপরিবর্তিত, না থাকলে null), বাংলা অর্থ, সূত্র ও মান। */
+data class IlmHadith(
+    val ref: String,
+    val narratorBn: String,
+    val arabic: String?,
+    val meaningBn: String,
+    val gradeBn: String
+)
+
+/** প্রবন্ধের একটি অংশ: শিরোনাম, অনুচ্ছেদ, কুরআনের আয়াত (অ্যাপের কুরআন-ডেটা থেকে), হাদীস ও আলেমদের মতভেদ। */
+data class IlmSection(
+    val headingBn: String,
+    val paragraphs: List<String>,
+    val ayahs: List<QuranRef>,
+    val hadiths: List<IlmHadith>,
+    val viewpoints: List<Viewpoint>
+)
+
+data class IlmArticle(
+    val id: String,
+    val category: String,
+    val titleBn: String,
+    val summaryBn: String,
+    val levelBn: String,
+    val sections: List<IlmSection>,
+    val readingBn: List<String>,
+    val verificationStatus: String,
+    val checkNoteBn: String?
+)
+
+data class IlmData(val categories: List<IlmCategory>, val articles: List<IlmArticle>)

@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.ChildCare
 import androidx.compose.material.icons.filled.LocalLibrary
+import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.MedicalServices
 import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.Repeat
@@ -89,6 +90,7 @@ import com.islamshikhi.app.feature.tracker.AmalItem
 import com.islamshikhi.app.feature.tracker.AmalKeys
 import com.islamshikhi.app.ui.common.ArabicText
 import com.islamshikhi.app.ui.common.IconChip
+import com.islamshikhi.app.ui.common.MunajatIcon
 import com.islamshikhi.app.ui.common.StatusBadge
 import com.islamshikhi.app.ui.effects.LuxCard
 import com.islamshikhi.app.ui.effects.LuxSectionTitle
@@ -190,13 +192,13 @@ fun HomeScreen(
                 listOf(
                     Quick("নামাজ", Icons.Filled.AccessTime) { onNavigate(Routes.PRAYER) },
                     Quick("কুরআন", Icons.AutoMirrored.Filled.MenuBook) { onOpenTab(AppTab.QURAN) },
-                    Quick("দোয়া", Icons.Filled.AutoStories) { onNavigate(Routes.DUA) },
+                    Quick("দোয়া", MunajatIcon) { onNavigate(Routes.DUA) },
                     Quick("তাসবিহ", Icons.Filled.TouchApp) { onNavigate(Routes.TASBIH) },
                     Quick("কিবলা", Icons.Filled.Explore) { onNavigate(Routes.QIBLA) },
                     Quick("ক্যালেন্ডার", Icons.Filled.CalendarMonth) { onNavigate(Routes.CALENDAR) },
                     Quick("আমল", Icons.Filled.TaskAlt) { onNavigate(Routes.TRACKER) },
                     Quick("অভ্যাস", Icons.Filled.Repeat) { onNavigate(Routes.HABITS) },
-                    Quick("মাসআলা", Icons.Filled.QuestionAnswer) { onNavigate(Routes.MASAIL) },
+                    Quick("জ্ঞান", Icons.Filled.Lightbulb) { onNavigate(Routes.ILM) },
                     Quick("যাকাত", Icons.Filled.Calculate) { onNavigate(Routes.ZAKAT) },
                     Quick("কুইজ", Icons.Filled.Quiz) { onNavigate(Routes.QUIZ) },
                     Quick("শিশুশিক্ষা", Icons.Filled.ChildCare) { onNavigate(Routes.KIDS) },

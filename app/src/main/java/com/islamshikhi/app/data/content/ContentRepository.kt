@@ -22,6 +22,7 @@ class ContentRepository(private val context: Context) {
     private var libraryCache: InfoData? = null
     private var kidsCache: InfoData? = null
     private var quizCache: List<QuizQuestion>? = null
+    private var ilmCache: IlmData? = null
     private var searchIndex: List<Pair<Int, List<String>>>? = null   // (সূরা, আয়াতের হরকতহীন আরবি)
     private var bnIndex: List<Pair<Int, List<String>>>? = null
 
@@ -254,6 +255,69 @@ class ContentRepository(private val context: Context) {
             }
         }
         return InfoData(cats, items)
+    }
+
+    // ---------------- ইসলামি জ্ঞান (বিস্তারিত প্রবন্ধ) ----------------
+
+    suspend fun ilm(): IlmData = lock.withLock {
+        ilmCache ?: withContext(Dispatchers.IO) {
+            val root = JSONObject(readAsset("content/ilm.json"))
+            val cats = root.getJSONArray("categories").let { a ->
+                List(a.length()) {
+                    val o = a.getJSONObject(it)
+                    IlmCategory(o.getString("id"), o.getString("titleBn"), o.getString("introBn"))
+                }
+            }
+            val articles = root.getJSONArray("articles").let { a ->
+                List(a.length()) { i ->
+                    val o = a.getJSONObject(i)
+                    IlmArticle(
+                        id = o.getString("id"),
+                        category = o.getString("category"),
+                        titleBn = o.getString("titleBn"),
+                        summaryBn = o.getString("summaryBn"),
+                        levelBn = o.getString("levelBn"),
+                        sections = o.getJSONArray("sections").let { sa ->
+                            List(sa.length()) { j ->
+                                val x = sa.getJSONObject(j)
+                                IlmSection(
+                                    headingBn = x.getString("headingBn"),
+                                    paragraphs = x.getJSONArray("paragraphs").strings(),
+                                    ayahs = x.getJSONArray("ayahs").let { aa ->
+                                        List(aa.length()) { k ->
+                                            val r = aa.getJSONObject(k)
+                                            QuranRef(r.getInt("chapter"), r.getInt("from"), r.getInt("to"))
+                                        }
+                                    },
+                                    hadiths = x.getJSONArray("hadiths").let { ha ->
+                                        List(ha.length()) { k ->
+                                            val h = ha.getJSONObject(k)
+                                            IlmHadith(
+                                                ref = h.getString("ref"),
+                                                narratorBn = h.getString("narratorBn"),
+                                                arabic = h.str("arabic"),
+                                                meaningBn = h.getString("meaningBn"),
+                                                gradeBn = h.getString("gradeBn")
+                                            )
+                                        }
+                                    },
+                                    viewpoints = x.getJSONArray("viewpoints").let { va ->
+                                        List(va.length()) { k ->
+                                            val v = va.getJSONObject(k)
+                                            Viewpoint(v.getString("titleBn"), v.getString("textBn"), v.str("sourceRef"))
+                                        }
+                                    }
+                                )
+                            }
+                        },
+                        readingBn = o.getJSONArray("readingBn").strings(),
+                        verificationStatus = o.getString("verificationStatus"),
+                        checkNoteBn = o.str("checkNoteBn")
+                    )
+                }
+            }
+            IlmData(cats, articles)
+        }.also { ilmCache = it }
     }
 
     companion object {

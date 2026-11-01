@@ -118,6 +118,60 @@ def tap_text(label, timeout=25, required=True):
     return False
 
 
+def tap_prefix(prefix, timeout=15, required=False):
+    """যে বাটনের লেখা prefix দিয়ে শুরু (কার্ডে শিরোনামের সঙ্গে আরও লেখা থাকে), তাতে ট্যাপ করে।"""
+    end = time.time() + timeout
+    while time.time() < end:
+        check(f"'{prefix}' খোঁজার সময়")
+        for n in dump():
+            if n["text"].startswith(prefix) or n["desc"].startswith(prefix):
+                tap_xy(*center(n["b"]))
+                time.sleep(2)
+                check(f"'{prefix}' চাপার পর")
+                return True
+        time.sleep(1.5)
+    if required:
+        screen = "\n".join(f"{n['text'] or n['desc']}" for n in dump() if n["text"] or n["desc"])
+        annotate("error", f"'{prefix}...' পাওয়া যায়নি", "স্ক্রিনে যা ছিল:\n" + screen)
+        sys.exit(1)
+    return False
+
+
+def content_tour():
+    """দোয়ার তালিকা → একটি দোয়ার পাতা, এবং ইসলামি জ্ঞানের তালিকা → দুটি প্রবন্ধ; প্রতিটির ছবি তোলে।"""
+    ensure_foreground()
+    tap_text("ইবাদত")
+    if tap_prefix("দোয়া ও যিকির", required=True):
+        shot("50-dua-list")
+        swipe_up()
+        shot("50-dua-list-scrolled")
+        swipe_down()
+        if tap_prefix("ঘুমানোর দোয়া", required=True):
+            shot("51-dua-detail")
+        adb("shell", "input", "keyevent", "4")
+        time.sleep(1)
+        adb("shell", "input", "keyevent", "4")
+        time.sleep(1)
+    ensure_foreground()
+    tap_text("সহকারী")
+    if tap_prefix("ইসলামি জ্ঞান", required=True):
+        shot("52-ilm-list")
+        swipe_up()
+        shot("52-ilm-list-scrolled")
+        swipe_down()
+        for name, key in (("শিরক কাকে বলে", "shirk"), ("বিদআত কাকে বলে", "bidah")):
+            if tap_prefix(name, required=True):
+                shot(f"53-ilm-{key}-top")
+                for i in range(1, 4):
+                    swipe_up(2)
+                    shot(f"53-ilm-{key}-{i}")
+                adb("shell", "input", "keyevent", "4")
+                time.sleep(1.5)
+        adb("shell", "input", "keyevent", "4")
+        time.sleep(1)
+    ensure_foreground()
+
+
 def foreground_ok():
     out = adb("shell", "dumpsys", "window").stdout
     focus = [l for l in out.splitlines() if "mCurrentFocus" in l]
@@ -268,6 +322,8 @@ def main():
             adb("shell", "input", "keyevent", "4")
             time.sleep(1)
         ensure_foreground()
+
+    content_tour()
 
     extra_screenshots()
 

@@ -81,7 +81,7 @@ fun BookmarksScreen(onBack: () -> Unit, onNavigate: (String) -> Unit) {
         bookmarks.sorted().mapNotNull { key ->
             val p = key.split(":")
             when (p.firstOrNull()) {
-                "dua" -> BookmarkRow(key, duaTitles[p.getOrNull(1)] ?: return@mapNotNull null, "দোয়া ও যিকির", Routes.DUA)
+                "dua" -> BookmarkRow(key, duaTitles[p.getOrNull(1)] ?: return@mapNotNull null, "দোয়া ও যিকির", Routes.dua(p.getOrNull(1) ?: return@mapNotNull null))
                 "ayah" -> {
                     val ch = p.getOrNull(1)?.toIntOrNull() ?: return@mapNotNull null
                     val n = p.getOrNull(2)?.toIntOrNull() ?: return@mapNotNull null
