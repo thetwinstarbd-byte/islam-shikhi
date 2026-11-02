@@ -181,6 +181,29 @@ def content_tour():
     ensure_foreground()
 
 
+def net_tour():
+    """কাছের মসজিদ, কনটেন্ট আপডেট ও কুরআনের তিলাওয়াত বাটনের পাতা; ছবি তোলে (ইন্টারনেট না থাকলেও ত্রুটির বার্তা দেখায়)।"""
+    ensure_foreground()
+    tap_text("ইবাদত")
+    if tap_prefix("কাছের মসজিদ", required=False, scrolls=3):
+        shot("60-mosque")
+        if tap_prefix("নামাজের সময়ের স্থান থেকে খুঁজুন", required=False):
+            time.sleep(12)
+            shot("61-mosque-result")
+        adb("shell", "input", "keyevent", "4")
+        time.sleep(1)
+    ensure_foreground()
+    tap_text("প্রোফাইল", required=False, timeout=8)
+    if tap_prefix("কনটেন্ট আপডেট", required=False, scrolls=4):
+        shot("62-update")
+        if tap_prefix("আপডেট আছে কি না দেখুন", required=False):
+            time.sleep(8)
+            shot("63-update-result")
+        adb("shell", "input", "keyevent", "4")
+        time.sleep(1)
+    ensure_foreground()
+
+
 def foreground_ok():
     out = adb("shell", "dumpsys", "window").stdout
     focus = [l for l in out.splitlines() if "mCurrentFocus" in l]
@@ -333,6 +356,7 @@ def main():
         ensure_foreground()
 
     content_tour()
+    net_tour()
 
     extra_screenshots()
 
