@@ -3,6 +3,7 @@ package com.islamshikhi.app.ui.ibadah
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.AutoStories
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -20,6 +21,7 @@ fun IbadahScreen(onNavigate: (String) -> Unit) {
         MenuCard("দোয়া ও যিকির", "অর্থ ও সূত্রসহ", imageRes = com.islamshikhi.app.R.drawable.dua_hands) { onNavigate(Routes.DUA) }
         MenuCard("ডিজিটাল তাসবিহ", "গণনা ও দৈনিক লক্ষ্য", Icons.Filled.TouchApp) { onNavigate(Routes.TASBIH) }
         MenuCard("কিবলা", "কাবার দিক", Icons.Filled.Explore) { onNavigate(Routes.QIBLA) }
+        MenuCard("কাছের মসজিদ", "মানচিত্রে নিকটবর্তী মসজিদ (ইন্টারনেট লাগে)", Icons.Filled.Place) { onNavigate(Routes.MOSQUES) }
         MenuCard("হিজরি ক্যালেন্ডার", "হিজরি মাস ও তারিখ", Icons.Filled.CalendarMonth) { onNavigate(Routes.CALENDAR) }
         MenuCard("আমল ট্র্যাকার", "দৈনিক আমলের হিসাব", Icons.Filled.TaskAlt) { onNavigate(Routes.TRACKER) }
     }

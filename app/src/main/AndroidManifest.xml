@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- অবস্থান: শুধু নামাজের সময় ও কিবলা হিসাবের জন্য, ফোনেই থাকে। ঐচ্ছিক; ম্যানুয়াল শহর নির্বাচনও আছে। -->
+    <!-- ইন্টারনেট: শুধু ব্যবহারকারী চাইলে — কাছের মসজিদ খোঁজা, তিলাওয়াত শোনা ও কনটেন্ট আপডেট। অন্য সব ফিচার অফলাইনে চলে। -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- অবস্থান: নামাজের সময়, কিবলা ও কাছের মসজিদ খোঁজার জন্য। ঐচ্ছিক; ম্যানুয়াল শহর নির্বাচনও আছে। -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- নামাজ ও রিমাইন্ডারের নোটিফিকেশন (Android 13+ এ ব্যবহারকারীর অনুমতি লাগে) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />

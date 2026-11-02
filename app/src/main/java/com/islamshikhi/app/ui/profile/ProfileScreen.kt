@@ -66,6 +66,7 @@ fun ProfileScreen(
         MenuCard("বুকমার্ক", "সংরক্ষিত দোয়া, আয়াত, মাসআলা ও পাঠ") { onNavigate(Routes.BOOKMARKS) }
         MenuCard("আমল ট্র্যাকার", "প্রতিদিনের আমল ও সাপ্তাহিক অগ্রগতি") { onNavigate(Routes.TRACKER) }
         MenuCard("অভ্যাস ও মনোযোগ", "ব্যক্তিগত লক্ষ্য, স্ক্রিন টাইমের নোট ও সাপ্তাহিক সারাংশ") { onNavigate(Routes.HABITS) }
+        MenuCard("কনটেন্ট আপডেট", "নতুন প্রবন্ধ ও লেখা আনুন (ইন্টারনেট লাগে)") { onNavigate(Routes.UPDATE) }
         MenuCard("অ্যাপ সম্পর্কে", "গোপনীয়তা, কনটেন্টের যাচাই-অবস্থা, উৎস ও লাইসেন্স") { onNavigate(Routes.ABOUT) }
 
         SectionTitle("লিঙ্গ")
@@ -119,7 +120,7 @@ fun ProfileScreen(
 
         SectionTitle("গোপনীয়তা")
         Text(
-            "কোনো অ্যাকাউন্ট নেই, কোনো তথ্য সার্ভারে যায় না। নিচের বাটনে চাপলে এই ফোন থেকে সব সংরক্ষিত তথ্য মুছে যাবে।",
+            "কোনো অ্যাকাউন্ট নেই। আপনার প্রোফাইল, নোট ও হিসাব শুধু এই ফোনে থাকে। ইন্টারনেট ব্যবহার হয় কেবল আপনি চাইলে (মসজিদ খোঁজা, তিলাওয়াত শোনা, কনটেন্ট আপডেট)। নিচের বাটনে চাপলে এই ফোন থেকে সব সংরক্ষিত তথ্য মুছে যাবে।",
             style = MaterialTheme.typography.bodySmall
         )
         Button(onClick = { showResetDialog = true }) { Text("সব ডেটা মুছুন") }

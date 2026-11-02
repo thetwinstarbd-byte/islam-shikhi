@@ -9,7 +9,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /**
- * assets/ ফোল্ডারের JSON কনটেন্ট পড়ে। সব ডেটা অ্যাপের ভেতরেই থাকে, ইন্টারনেট লাগে না।
+ * assets/ ফোল্ডারের JSON কনটেন্ট পড়ে। সব ডেটা অ্যাপের ভেতরেই থাকে, ইন্টারনেট লাগে না (ঐচ্ছিক কনটেন্ট আপডেট বাদে)।
  * একবার পড়া ডেটা মেমোরিতে রাখা হয় (cache)।
  */
 class ContentRepository(private val context: Context) {
@@ -26,8 +26,14 @@ class ContentRepository(private val context: Context) {
     private var searchIndex: List<Pair<Int, List<String>>>? = null   // (সূরা, আয়াতের হরকতহীন আরবি)
     private var bnIndex: List<Pair<Int, List<String>>>? = null
 
-    private fun readAsset(path: String): String =
-        context.assets.open(path).bufferedReader(Charsets.UTF_8).use { it.readText() }
+    private fun readAsset(path: String): String {
+        // অ্যাপের ভেতরের content/*.json-এর জায়গায় যাচাই-করা আপডেট থাকলে সেটি পড়া হয় (কুরআনের ফাইল কখনো নয়)
+        if (path.startsWith("content/") && path != "content/version.json") {
+            val f = com.islamshikhi.app.data.update.ContentUpdater.activeDir(context)?.let { java.io.File(it, path.removePrefix("content/")) }
+            if (f != null && f.isFile) return f.readText(Charsets.UTF_8)
+        }
+        return context.assets.open(path).bufferedReader(Charsets.UTF_8).use { it.readText() }
+    }
 
     private fun JSONObject.str(name: String): String? =
         if (isNull(name)) null else optString(name).takeIf { it.isNotBlank() }

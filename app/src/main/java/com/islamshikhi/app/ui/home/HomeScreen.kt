@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.ChildCare
 import androidx.compose.material.icons.filled.LocalLibrary
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.MedicalServices
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.School
@@ -194,6 +195,7 @@ fun HomeScreen(
                     Quick("দোয়া", null, com.islamshikhi.app.R.drawable.dua_hands) { onNavigate(Routes.DUA) },
                     Quick("তাসবিহ", Icons.Filled.TouchApp) { onNavigate(Routes.TASBIH) },
                     Quick("কিবলা", Icons.Filled.Explore) { onNavigate(Routes.QIBLA) },
+                    Quick("মসজিদ", Icons.Filled.Place) { onNavigate(Routes.MOSQUES) },
                     Quick("ক্যালেন্ডার", Icons.Filled.CalendarMonth) { onNavigate(Routes.CALENDAR) },
                     Quick("আমল", Icons.Filled.TaskAlt) { onNavigate(Routes.TRACKER) },
                     Quick("অভ্যাস", Icons.Filled.Repeat) { onNavigate(Routes.HABITS) },

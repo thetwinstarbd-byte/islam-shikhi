@@ -11,6 +11,8 @@ object Routes {
     fun dua(id: String) = "ibadah/dua/$id"
     const val PRAYER = "ibadah/prayer"
     const val QIBLA = "ibadah/qibla"
+    const val MOSQUES = "ibadah/mosques"
+    const val UPDATE = "profile/update"
     const val CALENDAR = "ibadah/calendar"
     const val TASBIH = "ibadah/tasbih"
     const val TRACKER = "ibadah/tracker"

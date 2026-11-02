@@ -180,7 +180,7 @@ fun PrayerScreen(onBack: () -> Unit) {
             enabled = !gpsBusy
         ) { Text(if (gpsBusy) "অবস্থান খুঁজছি…" else "আমার বর্তমান অবস্থান ব্যবহার করুন") }
         Text(
-            "অবস্থান শুধু গণনার জন্য এই ফোনেই ব্যবহার হয়; কোথাও পাঠানো হয় না।",
+            "নামাজের সময়ের গণনা এই ফোনেই হয়; অবস্থান কোথাও পাঠানো হয় না। (শুধু 'কাছের মসজিদ' খুঁজলে আনুমানিক স্থানাঙ্ক সেই খোঁজার জন্য পাঠানো হয়।)",
             style = MaterialTheme.typography.bodySmall
         )
         gpsMessage?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }

@@ -44,6 +44,8 @@ import com.islamshikhi.app.ui.ilm.IlmArticleScreen
 import com.islamshikhi.app.ui.ilm.IlmListScreen
 import com.islamshikhi.app.ui.ibadah.PrayerScreen
 import com.islamshikhi.app.ui.ibadah.QiblaScreen
+import com.islamshikhi.app.ui.mosque.MosqueScreen
+import com.islamshikhi.app.ui.update.UpdateScreen
 import com.islamshikhi.app.ui.ibadah.TasbihScreen
 import com.islamshikhi.app.ui.ibadah.TrackerScreen
 import com.islamshikhi.app.ui.navigation.AppTab
@@ -113,6 +115,8 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
             }
             composable(Routes.PRAYER) { PrayerScreen(onBack = back) }
             composable(Routes.QIBLA) { QiblaScreen(onBack = back) }
+            composable(Routes.MOSQUES) { MosqueScreen(onBack = back) }
+            composable(Routes.UPDATE) { UpdateScreen(onBack = back) }
             composable(Routes.CALENDAR) { CalendarScreen(onBack = back) }
             composable(Routes.TASBIH) { TasbihScreen(onBack = back) }
             composable(Routes.TRACKER) { TrackerScreen(onBack = back) }

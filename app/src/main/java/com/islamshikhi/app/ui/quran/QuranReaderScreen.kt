@@ -15,7 +15,15 @@ import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Stop
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.runtime.DisposableEffect
+import com.islamshikhi.app.feature.audio.RecitationController
 import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -93,11 +101,23 @@ private fun ReaderContent(chapter: Chapter, text: ChapterText, startAyah: Int) {
     val readToday by container.userData.set(UserKeys.quranRead(today)).collectAsState(initial = emptySet())
     var noteFor by remember { mutableStateOf<Ayah?>(null) }
 
+    // তিলাওয়াত (ইন্টারনেট থেকে স্ট্রিম; শুধু প্লে চাপলে)
+    val player = remember { RecitationController() }
+    DisposableEffect(Unit) { onDispose { player.release() } }
+    val reciterId by container.userData.string("quran_reciter").collectAsState(initial = null)
+    val reciter = RecitationController.reciters.firstOrNull { it.id == reciterId } ?: RecitationController.reciters[0]
+    var reciterMenu by remember { mutableStateOf(false) }
+
     // তালিকার শুরুতে: ১টি শিরোনাম কার্ড, (থাকলে) ১টি বিসমিল্লাহ, তারপর আয়াতগুলো
     val headerCount = 1 + if (text.bismillah != null) 1 else 0
     val total = text.ayahs.size
     val startIndex = (headerCount + startAyah - 1).coerceIn(0, headerCount + total - 1)
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = startIndex)
+
+    // চলমান আয়াতে স্ক্রল
+    LaunchedEffect(player.current) {
+        player.current?.let { listState.animateScrollToItem((headerCount + it - 1).coerceIn(0, headerCount + total - 1)) }
+    }
 
     // স্ক্রল থামলে "শেষ পড়া" অবস্থান সংরক্ষণ
     LaunchedEffect(chapter.id) {
@@ -135,6 +155,29 @@ private fun ReaderContent(chapter: Chapter, text: ChapterText, startAyah: Int) {
                             "অনুবাদের [১] চিহ্ন টীকার নির্দেশক।",
                         style = MaterialTheme.typography.bodySmall
                     )
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Button(onClick = {
+                            if (player.current != null) player.stop()
+                            else player.play(chapter.id, 1, total, reciter.folder, true)
+                        }) {
+                            Icon(if (player.current != null) Icons.Filled.Stop else Icons.Filled.PlayArrow, contentDescription = null)
+                            Text(if (player.current != null) "থামান" else "পুরো সূরা শুনুন")
+                        }
+                        OutlinedButton(onClick = { reciterMenu = true }) { Text("ক্বারী", maxLines = 1) }
+                        DropdownMenu(expanded = reciterMenu, onDismissRequest = { reciterMenu = false }) {
+                            RecitationController.reciters.forEach { r ->
+                                DropdownMenuItem(
+                                    text = { Text(if (r.id == reciter.id) "✓ ${r.nameBn}" else r.nameBn) },
+                                    onClick = { reciterMenu = false; scope.launch { container.userData.putString("quran_reciter", r.id) } }
+                                )
+                            }
+                        }
+                    }
+                    Text(
+                        "ক্বারী: ${reciter.nameBn} • তিলাওয়াত ইন্টারনেট থেকে শোনানো হয় (EveryAyah.com)",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    player.error?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error) }
                 }
             }
         }
@@ -148,6 +191,12 @@ private fun ReaderContent(chapter: Chapter, text: ChapterText, startAyah: Int) {
                 bookmarked = key in bookmarks,
                 read = "${chapter.id}:${a.number}" in readToday,
                 note = notes[key].orEmpty(),
+                playing = player.current == a.number,
+                loadingAudio = player.current == a.number && player.loading,
+                onPlay = {
+                    if (player.current == a.number) player.stop()
+                    else player.play(chapter.id, a.number, total, reciter.folder, false)
+                },
                 onBookmark = { scope.launch { container.userData.toggleBookmark(key) } },
                 onRead = {
                     scope.launch {
@@ -176,6 +225,9 @@ private fun AyahCard(
     bookmarked: Boolean,
     read: Boolean,
     note: String,
+    playing: Boolean,
+    loadingAudio: Boolean,
+    onPlay: () -> Unit,
     onBookmark: () -> Unit,
     onRead: () -> Unit,
     onNote: () -> Unit
@@ -183,7 +235,9 @@ private fun AyahCard(
     var showFootnote by remember { mutableStateOf(false) }
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        colors = CardDefaults.cardColors(
+            containerColor = if (playing) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -193,6 +247,13 @@ private fun AyahCard(
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary
                 )
+                IconButton(onClick = onPlay) {
+                    Icon(
+                        if (playing) Icons.Filled.Stop else Icons.Filled.PlayArrow,
+                        contentDescription = if (playing) "তিলাওয়াত থামান" else if (loadingAudio) "লোড হচ্ছে" else "তিলাওয়াত শুনুন",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
                 IconButton(onClick = onRead) {
                     Icon(
                         if (read) Icons.Filled.CheckCircle else Icons.Outlined.CheckCircle,

@@ -1,0 +1,34 @@
+{
+ "schema": 1,
+ "version": 1,
+ "files": {
+  "ilm": {
+   "path": "ilm.json",
+   "sha256": "fc80a97a622731d7e7863a70b9316c9c521f6922e2a31146fea0d30f52191db9"
+  },
+  "masail": {
+   "path": "masail.json",
+   "sha256": "63cb4aa6d82d1bf09286bda5a4f38257de7f9963aa9dc114cb66020368a1dded"
+  },
+  "duas": {
+   "path": "duas.json",
+   "sha256": "30779b642a5c70ebc065a17179e4eb1d8c5d88b20e67109e074368a9e0ac4a2a"
+  },
+  "quiz": {
+   "path": "quiz.json",
+   "sha256": "1c7905194c264604dd1cc6db32eb6c078ba9ab528a52f442d9d83606031340c4"
+  },
+  "kids": {
+   "path": "kids.json",
+   "sha256": "1a19501132e473cb19613191614b08cf00fb71fc1b55f39b20e3d6e2d2937a80"
+  },
+  "emergency": {
+   "path": "emergency.json",
+   "sha256": "f9ee57538751747bab058f24f16abbc58c41a54c59da4bedc4a9b028259e955b"
+  },
+  "library": {
+   "path": "library.json",
+   "sha256": "fcd275cd9c73f98dd2c11423f0dd918b0677cc68ac6505b58b4e5d4aed0b2816"
+  }
+ }
+}
