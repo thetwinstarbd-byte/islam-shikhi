@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.kotlinx.datetime)
 
     testImplementation(libs.junit)
+    testImplementation("org.json:json:20231013")
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
