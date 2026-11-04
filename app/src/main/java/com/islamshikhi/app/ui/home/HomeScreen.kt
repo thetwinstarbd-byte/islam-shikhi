@@ -190,23 +190,23 @@ fun HomeScreen(
             // অ্যাপের সব প্রধান ফিচার এক জায়গায়: ৪ কলামের গ্রিড
             ServiceGrid(
                 listOf(
-                    Quick("নামাজ", Icons.Filled.AccessTime) { onNavigate(Routes.PRAYER) },
-                    Quick("কুরআন", Icons.AutoMirrored.Filled.MenuBook) { onOpenTab(AppTab.QURAN) },
+                    Quick("নামাজ", null, com.islamshikhi.app.R.drawable.ic_prayer) { onNavigate(Routes.PRAYER) },
+                    Quick("কুরআন", null, com.islamshikhi.app.R.drawable.ic_quran) { onOpenTab(AppTab.QURAN) },
                     Quick("দোয়া", null, com.islamshikhi.app.R.drawable.dua_hands) { onNavigate(Routes.DUA) },
-                    Quick("তাসবিহ", Icons.Filled.TouchApp) { onNavigate(Routes.TASBIH) },
-                    Quick("কিবলা", Icons.Filled.Explore) { onNavigate(Routes.QIBLA) },
-                    Quick("মসজিদ", Icons.Filled.Place) { onNavigate(Routes.MOSQUES) },
-                    Quick("ক্যালেন্ডার", Icons.Filled.CalendarMonth) { onNavigate(Routes.CALENDAR) },
-                    Quick("আমল", Icons.Filled.TaskAlt) { onNavigate(Routes.TRACKER) },
-                    Quick("অভ্যাস", Icons.Filled.Repeat) { onNavigate(Routes.HABITS) },
-                    Quick("জ্ঞান", Icons.Filled.Lightbulb) { onNavigate(Routes.ILM) },
-                    Quick("যাকাত", Icons.Filled.Calculate) { onNavigate(Routes.ZAKAT) },
-                    Quick("কুইজ", Icons.Filled.Quiz) { onNavigate(Routes.QUIZ) },
-                    Quick("শিশুশিক্ষা", Icons.Filled.ChildCare) { onNavigate(Routes.KIDS) },
-                    Quick("মুখস্থ", Icons.Filled.School) { onNavigate(Routes.QURAN_MEMORIZE) },
-                    Quick("মাসআলা", Icons.Filled.LocalLibrary) { onNavigate(Routes.MASAIL) },
-                    Quick("জরুরি", Icons.Filled.MedicalServices) { onNavigate(Routes.EMERGENCY) },
-                    Quick("বুকমার্ক", Icons.Filled.Bookmark) { onNavigate(Routes.BOOKMARKS) }
+                    Quick("তাসবিহ", null, com.islamshikhi.app.R.drawable.ic_tasbih) { onNavigate(Routes.TASBIH) },
+                    Quick("কিবলা", null, com.islamshikhi.app.R.drawable.ic_qibla) { onNavigate(Routes.QIBLA) },
+                    Quick("মসজিদ", null, com.islamshikhi.app.R.drawable.ic_mosque) { onNavigate(Routes.MOSQUES) },
+                    Quick("ক্যালেন্ডার", null, com.islamshikhi.app.R.drawable.ic_calendar) { onNavigate(Routes.CALENDAR) },
+                    Quick("আমল", null, com.islamshikhi.app.R.drawable.ic_amal) { onNavigate(Routes.TRACKER) },
+                    Quick("অভ্যাস", null, com.islamshikhi.app.R.drawable.ic_habits) { onNavigate(Routes.HABITS) },
+                    Quick("জ্ঞান", null, com.islamshikhi.app.R.drawable.ic_ilm) { onNavigate(Routes.ILM) },
+                    Quick("যাকাত", null, com.islamshikhi.app.R.drawable.ic_zakat) { onNavigate(Routes.ZAKAT) },
+                    Quick("কুইজ", null, com.islamshikhi.app.R.drawable.ic_quiz) { onNavigate(Routes.QUIZ) },
+                    Quick("শিশুশিক্ষা", null, com.islamshikhi.app.R.drawable.ic_kids) { onNavigate(Routes.KIDS) },
+                    Quick("মুখস্থ", null, com.islamshikhi.app.R.drawable.ic_memorize) { onNavigate(Routes.QURAN_MEMORIZE) },
+                    Quick("মাসআলা", null, com.islamshikhi.app.R.drawable.ic_masail) { onNavigate(Routes.MASAIL) },
+                    Quick("জরুরি", null, com.islamshikhi.app.R.drawable.ic_emergency) { onNavigate(Routes.EMERGENCY) },
+                    Quick("বুকমার্ক", null, com.islamshikhi.app.R.drawable.ic_bookmark) { onNavigate(Routes.BOOKMARKS) }
                 )
             )
 
