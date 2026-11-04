@@ -121,7 +121,7 @@ fun IconChip(icon: ImageVector?, size: Int = 44, tint: androidx.compose.ui.graph
             androidx.compose.foundation.Image(
                 painter = androidx.compose.ui.res.painterResource(imageRes),
                 contentDescription = null,
-                modifier = Modifier.size((size * 0.66f).dp)
+                modifier = Modifier.size((size * 0.8f).dp)
             )
         } else if (icon != null) {
             Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size((size * 0.48f).dp))
