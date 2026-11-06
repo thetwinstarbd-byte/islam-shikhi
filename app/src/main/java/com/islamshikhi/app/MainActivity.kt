@@ -40,6 +40,9 @@ class MainActivity : ComponentActivity() {
                 themeMode = profile?.themeMode ?: ThemeMode.SYSTEM,
                 fontScale = profile?.fontScale ?: 1.0f
             ) {
+                androidx.compose.runtime.CompositionLocalProvider(
+                    com.islamshikhi.app.ui.i18n.LocalLang provides (profile?.language ?: com.islamshikhi.app.domain.model.AppLanguage.BANGLA)
+                ) {
                 val current = profile
                 val crash = crashReport
                 when {
@@ -56,6 +59,7 @@ class MainActivity : ComponentActivity() {
                         profile = current,
                         onResetData = { scope.launch { container.resetEverything() } }
                     )
+                }
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.islamshikhi.app.ui.home
 
+import com.islamshikhi.app.ui.i18n.tr
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -206,7 +207,14 @@ fun HomeScreen(
                     Quick("মুখস্থ", null, com.islamshikhi.app.R.drawable.ic_memorize) { onNavigate(Routes.QURAN_MEMORIZE) },
                     Quick("মাসআলা", null, com.islamshikhi.app.R.drawable.ic_masail) { onNavigate(Routes.MASAIL) },
                     Quick("জরুরি", null, com.islamshikhi.app.R.drawable.ic_emergency) { onNavigate(Routes.EMERGENCY) },
-                    Quick("বুকমার্ক", null, com.islamshikhi.app.R.drawable.ic_bookmark) { onNavigate(Routes.BOOKMARKS) }
+                    Quick("বুকমার্ক", null, com.islamshikhi.app.R.drawable.ic_bookmark) { onNavigate(Routes.BOOKMARKS) },
+                    Quick("খুঁজুন", null, com.islamshikhi.app.R.drawable.ic_search) { onNavigate(Routes.SEARCH) },
+                    Quick("রমযান", null, com.islamshikhi.app.R.drawable.ic_ramadan) { onNavigate(Routes.RAMADAN) },
+                    Quick("কাযা", null, com.islamshikhi.app.R.drawable.ic_qada) { onNavigate(Routes.QADA) },
+                    Quick("খতম", null, com.islamshikhi.app.R.drawable.ic_khatm) { onNavigate(Routes.KHATM) },
+                    Quick("হজ্জ-উমরা", null, com.islamshikhi.app.R.drawable.ic_hajj) { onNavigate(Routes.HAJJ) },
+                    Quick("ব্যাকআপ", null, com.islamshikhi.app.R.drawable.ic_backup) { onNavigate(Routes.BACKUP) },
+                    Quick("আপডেট", null, com.islamshikhi.app.R.drawable.ic_update) { onNavigate(Routes.UPDATE) }
                 )
             )
 
@@ -411,7 +419,7 @@ private data class Quick(val label: String, val icon: ImageVector?, val imageRes
 @Composable
 private fun ServiceGrid(items: List<Quick>) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        LuxSectionTitle("সব সেবা")
+        LuxSectionTitle(tr("সব সেবা"))
         LuxCard(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
                 items.chunked(4).forEachIndexed { rowIndex, row ->
@@ -428,7 +436,7 @@ private fun ServiceGrid(items: List<Quick>) {
                                 IconChip(q.icon, size = 54, imageRes = q.imageRes)
                                 Spacer(Modifier.height(6.dp))
                                 Text(
-                                    q.label,
+                                    tr(q.label),
                                     style = MaterialTheme.typography.labelMedium,
                                     textAlign = TextAlign.Center,
                                     maxLines = 2

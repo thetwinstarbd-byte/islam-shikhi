@@ -134,6 +134,11 @@ fun QuranScreen(onNavigate: (String) -> Unit) {
                     Text("সূরা মুখস্থ করার পরিকল্পনা")
                 }
             }
+            item {
+                OutlinedButton(onClick = { onNavigate(Routes.KHATM) }, modifier = Modifier.fillMaxWidth()) {
+                    Text("কুরআন খতম ট্র্যাকার")
+                }
+            }
 
             item {
                 OutlinedTextField(

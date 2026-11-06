@@ -67,6 +67,7 @@ fun ProfileScreen(
         MenuCard("আমল ট্র্যাকার", "প্রতিদিনের আমল ও সাপ্তাহিক অগ্রগতি") { onNavigate(Routes.TRACKER) }
         MenuCard("অভ্যাস ও মনোযোগ", "ব্যক্তিগত লক্ষ্য, স্ক্রিন টাইমের নোট ও সাপ্তাহিক সারাংশ") { onNavigate(Routes.HABITS) }
         MenuCard("কনটেন্ট আপডেট", "নতুন প্রবন্ধ ও লেখা আনুন (ইন্টারনেট লাগে)") { onNavigate(Routes.UPDATE) }
+        MenuCard("ব্যাকআপ ও রিস্টোর", "বুকমার্ক, নোট ও হিসাব ফাইলে রাখুন বা ফেরত আনুন", imageRes = com.islamshikhi.app.R.drawable.ic_backup) { onNavigate(Routes.BACKUP) }
         MenuCard("অ্যাপ সম্পর্কে", "গোপনীয়তা, কনটেন্টের যাচাই-অবস্থা, উৎস ও লাইসেন্স") { onNavigate(Routes.ABOUT) }
 
         SectionTitle("লিঙ্গ")

@@ -7,13 +7,16 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import org.json.JSONArray
 import java.io.IOException
@@ -90,6 +93,29 @@ class UserDataRepository(private val context: Context) {
         prefs.asMap().mapNotNull { (k, v) ->
             if (k.name.startsWith("note:") && v is String) k.name.removePrefix("note:") to v else null
         }.toMap()
+    }
+
+    // ---------- ব্যাকআপ ও রিস্টোর ----------
+    /** সব সংরক্ষিত তথ্য: কী -> মান। */
+    suspend fun snapshot(): Map<String, Any> =
+        store.data.first().asMap().entries.associate { it.key.name to (it.value as Any) }
+
+    /** ব্যাকআপ থেকে তথ্য বসায়; একই নামের তথ্য বদলে যায়, অন্যগুলো থাকে। */
+    suspend fun restore(values: Map<String, Any>) {
+        store.edit { p ->
+            for ((name, v) in values) {
+                when (v) {
+                    is String -> p[stringPreferencesKey(name)] = v
+                    is Int -> p[intPreferencesKey(name)] = v
+                    is Long -> p[longPreferencesKey(name)] = v
+                    is Boolean -> p[booleanPreferencesKey(name)] = v
+                    is Double -> p[doublePreferencesKey(name)] = v
+                    is Float -> p[floatPreferencesKey(name)] = v
+                    is Set<*> -> p[stringSetPreferencesKey(name)] = v.filterIsInstance<String>().toSet()
+                    else -> Unit
+                }
+            }
+        }
     }
 
     // ---------- সব মুছে ফেলা ----------

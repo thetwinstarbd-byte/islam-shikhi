@@ -16,16 +16,21 @@ object Routes {
     const val CALENDAR = "ibadah/calendar"
     const val TASBIH = "ibadah/tasbih"
     const val TRACKER = "ibadah/tracker"
+    const val RAMADAN = "ibadah/ramadan"
+    const val QADA = "ibadah/qada"
+    const val HAJJ = "ibadah/hajj"
 
     // কুরআন
     const val QURAN_SEARCH = "quran/search"
     const val QURAN_NOTICE = "quran/notice"
+    const val KHATM = "quran/khatm"
     const val QURAN_MEMORIZE = "quran/memorize"
     const val QURAN_READ = "quran/read/{chapter}?ayah={ayah}"
     fun quranRead(chapter: Int, ayah: Int = 1) = "quran/read/$chapter?ayah=$ayah"
 
     // হোম
     const val BOOKMARKS = "home/bookmarks"
+    const val SEARCH = "home/search"
 
     // সহকারী ট্যাব: ইসলামি জ্ঞান (বিস্তারিত প্রবন্ধ)
     const val ILM = "assistant/ilm"
@@ -51,4 +56,5 @@ object Routes {
     // প্রোফাইল
     const val HABITS = "profile/habits"
     const val ABOUT = "profile/about"
+    const val BACKUP = "profile/backup"
 }

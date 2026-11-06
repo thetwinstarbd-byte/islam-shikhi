@@ -18,6 +18,15 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.ui.graphics.luminance
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
+import com.islamshikhi.app.domain.model.ThemeMode
+import com.islamshikhi.app.ui.i18n.tr
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -61,6 +70,7 @@ fun IlmListScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onOpenMasail: ()
     val container = rememberContainer()
     var data by remember { mutableStateOf<IlmData?>(null) }
     LaunchedEffect(Unit) { data = container.content.ilm() }
+    val prefs by container.userData.data.collectAsState(initial = emptyPreferences())
 
     Column(modifier = Modifier.fillMaxSize()) {
         ScreenHeader("ইসলামি জ্ঞান", onBack)
@@ -87,7 +97,12 @@ fun IlmListScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onOpenMasail: ()
                             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                 Text(a.titleBn, style = MaterialTheme.typography.titleMedium)
                                 Text(a.summaryBn, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                Text(a.levelBn, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.secondary)
+                                val readPct = prefs[intPreferencesKey("ilm_read:${a.id}")] ?: 0
+                                Text(
+                                    a.levelBn + if (readPct > 0) " • পড়া হয়েছে ${DateFormatBn.digits(readPct)}%" else "",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.secondary
+                                )
                             }
                             Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
                         }
@@ -124,9 +139,30 @@ fun IlmArticleScreen(id: String, onBack: () -> Unit, onOpenAyah: (chapter: Int, 
         chapters = container.content.chapters()
     }
     val listState = rememberLazyListState()
+    val profile by container.profileRepository.profile.collectAsState(initial = null)
+    val stored by container.userData.int("ilm_read:$id").collectAsState(initial = 0)
+    val percent by remember {
+        derivedStateOf {
+            val info = listState.layoutInfo
+            val count = info.totalItemsCount
+            if (count <= 1) 0 else {
+                val last = info.visibleItemsInfo.lastOrNull()?.index ?: 0
+                if (last >= count - 1) 100 else listState.firstVisibleItemIndex * 100 / (count - 1)
+            }
+        }
+    }
+    LaunchedEffect(percent) {
+        if (percent > stored) container.userData.putInt("ilm_read:$id", percent)
+    }
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
     Column(modifier = Modifier.fillMaxSize()) {
         ScreenHeader("ইসলামি জ্ঞান", onBack)
+        LinearProgressIndicator(
+            progress = { percent / 100f },
+            modifier = Modifier.fillMaxWidth().height(3.dp),
+            color = MaterialTheme.colorScheme.secondary
+        )
         val article = data?.articles?.firstOrNull { it.id == id }
         if (article == null) {
             Text(if (data == null) "লোড হচ্ছে…" else "প্রবন্ধটি পাওয়া যায়নি।", modifier = Modifier.padding(20.dp))
@@ -143,6 +179,22 @@ fun IlmArticleScreen(id: String, onBack: () -> Unit, onOpenAyah: (chapter: Int, 
                     Text(article.titleBn, style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onBackground)
                     Text(article.levelBn, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.secondary)
                     StatusBadge(article.verificationStatus)
+                    Text(
+                        "${tr("পড়ার অগ্রগতি")}: ${DateFormatBn.digits(percent)}%",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                        OutlinedButton(onClick = {
+                            scope.launch { container.profileRepository.setFontScale(((profile?.fontScale ?: 1f) - 0.1f).coerceAtLeast(0.8f)) }
+                        }) { Text("A−") }
+                        OutlinedButton(onClick = {
+                            scope.launch { container.profileRepository.setFontScale(((profile?.fontScale ?: 1f) + 0.1f).coerceAtMost(1.6f)) }
+                        }) { Text("A+") }
+                        OutlinedButton(onClick = {
+                            scope.launch { container.profileRepository.setThemeMode(if (isDark) ThemeMode.LIGHT else ThemeMode.DARK) }
+                        }) { Text(if (isDark) "দিনের মোড" else tr("রাতের মোড")) }
+                    }
                 }
             }
             item(key = "toc") {

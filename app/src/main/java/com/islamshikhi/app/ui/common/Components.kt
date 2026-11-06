@@ -1,5 +1,6 @@
 package com.islamshikhi.app.ui.common
 
+import com.islamshikhi.app.ui.i18n.tr
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -77,7 +78,7 @@ fun ScreenHeader(title: String, onBack: (() -> Unit)? = null) {
                 Spacer(Modifier.width(12.dp))
             }
             Text(
-                title,
+                tr(title),
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onBackground
             )
@@ -141,8 +142,8 @@ fun MenuCard(title: String, subtitle: String, icon: ImageVector? = null, imageRe
                 Spacer(Modifier.width(14.dp))
             }
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text(title, style = MaterialTheme.typography.titleMedium)
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(tr(title), style = MaterialTheme.typography.titleMedium)
+                Text(tr(subtitle), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Icon(
                 Icons.AutoMirrored.Filled.KeyboardArrowRight,
@@ -156,7 +157,7 @@ fun MenuCard(title: String, subtitle: String, icon: ImageVector? = null, imageRe
 @Composable
 fun SectionTitle(text: String) {
     Text(
-        text,
+        tr(text),
         modifier = Modifier.padding(top = 8.dp),
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.SemiBold,
@@ -208,8 +209,8 @@ fun ArabicText(text: String, sizeSp: Int = 26) {
 fun InfoCard(title: String, body: String) {
     LuxCard(modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(title, style = MaterialTheme.typography.titleMedium)
-            Text(body, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(tr(title), style = MaterialTheme.typography.titleMedium)
+            Text(tr(body), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

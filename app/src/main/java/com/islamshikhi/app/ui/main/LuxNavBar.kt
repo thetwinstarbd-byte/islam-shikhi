@@ -1,5 +1,6 @@
 package com.islamshikhi.app.ui.main
 
+import com.islamshikhi.app.ui.i18n.tr
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -69,7 +70,7 @@ fun LuxNavBar(currentRoute: String?, onSelect: (AppTab) -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(tab.icon, contentDescription = null, tint = tint, modifier = Modifier.size(24.dp))
-                    Text(tab.label, style = MaterialTheme.typography.labelSmall, color = tint, maxLines = 1)
+                    Text(tr(tab.label), style = MaterialTheme.typography.labelSmall, color = tint, maxLines = 1)
                 }
             }
         }
