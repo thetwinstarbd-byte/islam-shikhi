@@ -204,6 +204,66 @@ def net_tour():
     ensure_foreground()
 
 
+def feature_tour():
+    """সার্চ, রমযান মোড, কাযা, খতম, হজ্জ গাইড ও ব্যাকআপ পাতার ছবি। কোনোটি না মিললে টেস্ট ফেল হয় না, শুধু ছবি বাদ যায়।"""
+    ensure_foreground()
+    tap_text("ইবাদত")
+    for name, key in (("রমযান মোড", "ramadan"), ("কাযা নামাজ ও রোযা", "qada"), ("হজ্জ-উমরা গাইড", "hajj")):
+        swipe_down(4)
+        if tap_prefix(name, required=False, scrolls=6):
+            shot(f"70-{key}")
+            if key == "ramadan":
+                swipe_up(2)
+                shot("70-ramadan-scrolled")
+            if key == "hajj":
+                swipe_up(2)
+                shot("70-hajj-scrolled")
+            adb("shell", "input", "keyevent", "4")
+            time.sleep(1)
+    ensure_foreground()
+    tap_text("কুরআন", required=False, timeout=8)
+    if tap_prefix("কুরআন খতম ট্র্যাকার", required=False, scrolls=3):
+        shot("71-khatm")
+        if tap_prefix("খতম শুরু করুন", required=False):
+            time.sleep(1)
+            shot("71-khatm-started")
+        adb("shell", "input", "keyevent", "4")
+        time.sleep(1)
+    ensure_foreground()
+    tap_text("হোম", required=False, timeout=8)
+    swipe_up(2)
+    if tap_prefix("খুঁজুন", required=False, scrolls=3):
+        shot("72-search-empty")
+        if tap_prefix("দোয়া, মাসআলা", required=False):
+            adb("shell", "input", "text", "Fati")
+            time.sleep(3)
+            shot("72-search-result")
+        adb("shell", "input", "keyevent", "4")
+        time.sleep(1)
+        adb("shell", "input", "keyevent", "4")
+        time.sleep(1)
+    ensure_foreground()
+    tap_text("সহকারী", required=False, timeout=8)
+    if tap_prefix("ইসলামি জ্ঞান", required=False):
+        swipe_down(4)
+        if tap_prefix("হজ্জ ও উমরা: ধাপে ধাপে", required=False, scrolls=12):
+            shot("73-hajj-article-top")
+            for i in range(1, 4):
+                swipe_up(2)
+                shot(f"73-hajj-article-{i}")
+            adb("shell", "input", "keyevent", "4")
+            time.sleep(1)
+        adb("shell", "input", "keyevent", "4")
+        time.sleep(1)
+    ensure_foreground()
+    tap_text("প্রোফাইল", required=False, timeout=8)
+    if tap_prefix("ব্যাকআপ ও রিস্টোর", required=False, scrolls=4):
+        shot("74-backup")
+        adb("shell", "input", "keyevent", "4")
+        time.sleep(1)
+    ensure_foreground()
+
+
 def foreground_ok():
     out = adb("shell", "dumpsys", "window").stdout
     focus = [l for l in out.splitlines() if "mCurrentFocus" in l]
@@ -357,6 +417,7 @@ def main():
 
     content_tour()
     net_tour()
+    feature_tour()
 
     extra_screenshots()
 

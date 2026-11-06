@@ -25,6 +25,7 @@ fun IbadahScreen(onNavigate: (String) -> Unit) {
         MenuCard("হিজরি ক্যালেন্ডার", "হিজরি মাস ও তারিখ", Icons.Filled.CalendarMonth) { onNavigate(Routes.CALENDAR) }
         MenuCard("আমল ট্র্যাকার", "দৈনিক আমলের হিসাব", Icons.Filled.TaskAlt) { onNavigate(Routes.TRACKER) }
         MenuCard("রমযান মোড", "সেহরি-ইফতার, চেকলিস্ট ও তারাবীহ", imageRes = com.islamshikhi.app.R.drawable.ic_ramadan) { onNavigate(Routes.RAMADAN) }
+        MenuCard("হজ্জ-উমরা গাইড", "ধাপে ধাপে নির্দেশনা ও চেকলিস্ট", imageRes = com.islamshikhi.app.R.drawable.ic_hajj) { onNavigate(Routes.HAJJ) }
         MenuCard("কাযা নামাজ ও রোযা", "ছুটে যাওয়া নামাজ-রোযার হিসাব", imageRes = com.islamshikhi.app.R.drawable.ic_qada) { onNavigate(Routes.QADA) }
     }
 }

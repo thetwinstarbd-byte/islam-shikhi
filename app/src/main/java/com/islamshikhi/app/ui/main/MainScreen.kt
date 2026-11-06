@@ -120,6 +120,7 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
             composable(Routes.CALENDAR) { CalendarScreen(onBack = back) }
             composable(Routes.TASBIH) { TasbihScreen(onBack = back) }
             composable(Routes.TRACKER) { TrackerScreen(onBack = back) }
+            composable(Routes.HAJJ) { com.islamshikhi.app.ui.ibadah.HajjScreen(onBack = back, onNavigate = go) }
             composable(Routes.RAMADAN) { com.islamshikhi.app.ui.ramadan.RamadanScreen(onBack = back) }
             composable(Routes.QADA) { com.islamshikhi.app.ui.ibadah.QadaScreen(onBack = back) }
             composable(Routes.KHATM) { com.islamshikhi.app.ui.ibadah.KhatmScreen(onBack = back) }
