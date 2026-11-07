@@ -204,6 +204,34 @@ def net_tour():
     ensure_foreground()
 
 
+def custom_tour():
+    """নিজের আজান/জামাতের সময় বসানোর পাতা ও সহজ মোডের ছবি। না মিললে ফেল নয়, শুধু ছবি বাদ যায়।"""
+    ensure_foreground()
+    tap_text("ইবাদত", required=False, timeout=8)
+    swipe_down(4)
+    if tap_prefix("নামাজের সময়", required=False, scrolls=3):
+        shot("80-prayer")
+        if tap_prefix("আমার নিজের সময়", required=False, scrolls=3):
+            shot("80-prayer-custom")
+            swipe_up(1)
+            shot("80-prayer-custom-2")
+            if tap_prefix("আজান", required=False, scrolls=2):
+                shot("80-prayer-timepicker")
+                adb("shell", "input", "keyevent", "4")
+                time.sleep(1)
+        adb("shell", "input", "keyevent", "4")
+        time.sleep(1)
+    ensure_foreground()
+    tap_text("হোম", required=False, timeout=8)
+    swipe_down(4)
+    if tap_prefix("সহজ মোডে দেখুন", required=False, scrolls=4):
+        swipe_down(4)
+        shot("81-simple-home")
+        swipe_up(2)
+        shot("81-simple-home-2")
+        tap_prefix("সব সেবা দেখুন", required=False, scrolls=4)
+
+
 def feature_tour():
     """সার্চ, রমযান মোড, কাযা, খতম, হজ্জ গাইড ও ব্যাকআপ পাতার ছবি। কোনোটি না মিললে টেস্ট ফেল হয় না, শুধু ছবি বাদ যায়।"""
     ensure_foreground()
@@ -418,6 +446,7 @@ def main():
     content_tour()
     net_tour()
     feature_tour()
+    custom_tour()
 
     extra_screenshots()
 
