@@ -1,0 +1,205 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.islamshikhi.app"
+4    android:versionCode="2"
+5    android:versionName="0.9.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+9        android:targetSdkVersion="35" />
+10
+11    <!-- ইন্টারনেট: শুধু ব্যবহারকারী চাইলে — কাছের মসজিদ খোঁজা, তিলাওয়াত শোনা ও কনটেন্ট আপডেট। অন্য সব ফিচার অফলাইনে চলে। -->
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:5:5-67
+12-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:5:22-64
+13    <!-- অবস্থান: নামাজের সময়, কিবলা ও কাছের মসজিদ খোঁজার জন্য। ঐচ্ছিক; ম্যানুয়াল শহর নির্বাচনও আছে। -->
+14    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+14-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:7:5-81
+14-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:7:22-78
+15    <!-- নামাজ ও রিমাইন্ডারের নোটিফিকেশন (Android 13+ এ ব্যবহারকারীর অনুমতি লাগে) -->
+16    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+16-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:9:5-77
+16-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:9:22-74
+17    <!-- সঠিক সময়ে অ্যালার্ম; অনুমতি না পেলে কয়েক মিনিট দেরিতে বাজতে পারে -->
+18    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+18-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:11:5-79
+18-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:11:22-76
+19    <!-- ফোন রিস্টার্টের পর অ্যালার্ম আবার বসাতে -->
+20    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+20-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:13:5-81
+20-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:13:22-78
+21
+22    <uses-feature
+22-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:15:5-93
+23        android:name="android.hardware.sensor.compass"
+23-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:15:19-65
+24        android:required="false" />
+24-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:15:66-90
+25
+26    <permission
+26-->[androidx.core:core:1.13.1] /home/runner/.gradle/caches/8.9/transforms/d3eb0388afb886fcdf0c47ce6483a525/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+27        android:name="com.islamshikhi.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+27-->[androidx.core:core:1.13.1] /home/runner/.gradle/caches/8.9/transforms/d3eb0388afb886fcdf0c47ce6483a525/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+28        android:protectionLevel="signature" />
+28-->[androidx.core:core:1.13.1] /home/runner/.gradle/caches/8.9/transforms/d3eb0388afb886fcdf0c47ce6483a525/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+29
+30    <uses-permission android:name="com.islamshikhi.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+30-->[androidx.core:core:1.13.1] /home/runner/.gradle/caches/8.9/transforms/d3eb0388afb886fcdf0c47ce6483a525/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+30-->[androidx.core:core:1.13.1] /home/runner/.gradle/caches/8.9/transforms/d3eb0388afb886fcdf0c47ce6483a525/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+31
+32    <application
+32-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:17:5-58:19
+33        android:name="com.islamshikhi.app.IslamShikhiApp"
+33-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:18:9-39
+34        android:allowBackup="false"
+34-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:19:9-36
+35        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+35-->[androidx.core:core:1.13.1] /home/runner/.gradle/caches/8.9/transforms/d3eb0388afb886fcdf0c47ce6483a525/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+36        android:debuggable="true"
+37        android:extractNativeLibs="false"
+38        android:icon="@mipmap/ic_launcher"
+38-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:20:9-43
+39        android:label="@string/app_name"
+39-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:21:9-41
+40        android:supportsRtl="true"
+40-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:22:9-35
+41        android:theme="@style/Theme.IslamShikhi" >
+41-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:23:9-49
+42        <activity
+42-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:25:9-33:20
+43            android:name="com.islamshikhi.app.MainActivity"
+43-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:26:13-41
+44            android:exported="true"
+44-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:27:13-36
+45            android:theme="@style/Theme.IslamShikhi" >
+45-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:28:13-53
+46            <intent-filter>
+46-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:29:13-32:29
+47                <action android:name="android.intent.action.MAIN" />
+47-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:30:17-69
+47-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:30:25-66
+48
+49                <category android:name="android.intent.category.LAUNCHER" />
+49-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:31:17-77
+49-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:31:27-74
+50            </intent-filter>
+51        </activity>
+52
+53        <receiver
+53-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:35:9-44:20
+54            android:name="com.islamshikhi.app.feature.widget.NextPrayerWidget"
+54-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:36:13-60
+55            android:exported="false" >
+55-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:37:13-37
+56            <intent-filter>
+56-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:38:13-40:29
+57                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+57-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:39:17-84
+57-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:39:25-81
+58            </intent-filter>
+59
+60            <meta-data
+60-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:41:13-43:67
+61                android:name="android.appwidget.provider"
+61-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:42:17-58
+62                android:resource="@xml/widget_next_prayer_info" />
+62-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:43:17-64
+63        </receiver>
+64        <receiver
+64-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:46:9-48:40
+65            android:name="com.islamshikhi.app.feature.reminder.AlarmReceiver"
+65-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:47:13-59
+66            android:exported="false" />
+66-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:48:13-37
+67        <receiver
+67-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:50:9-57:20
+68            android:name="com.islamshikhi.app.feature.reminder.BootReceiver"
+68-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:51:13-58
+69            android:exported="true" >
+69-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:52:13-36
+70            <intent-filter>
+70-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:53:13-56:29
+71                <action android:name="android.intent.action.BOOT_COMPLETED" />
+71-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:54:17-79
+71-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:54:25-76
+72                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+72-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:55:17-84
+72-->/home/runner/work/islam-shikhi/islam-shikhi/app/src/main/AndroidManifest.xml:55:25-81
+73            </intent-filter>
+74        </receiver>
+75
+76        <provider
+76-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.9/transforms/8ba69447029e8a20458b99c579186808/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
+77            android:name="androidx.startup.InitializationProvider"
+77-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.9/transforms/8ba69447029e8a20458b99c579186808/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
+78            android:authorities="com.islamshikhi.app.androidx-startup"
+78-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.9/transforms/8ba69447029e8a20458b99c579186808/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
+79            android:exported="false" >
+79-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.9/transforms/8ba69447029e8a20458b99c579186808/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
+80            <meta-data
+80-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.9/transforms/8ba69447029e8a20458b99c579186808/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+81                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+81-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.9/transforms/8ba69447029e8a20458b99c579186808/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
+82                android:value="androidx.startup" />
+82-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.9/transforms/8ba69447029e8a20458b99c579186808/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
+83            <meta-data
+83-->[androidx.lifecycle:lifecycle-process:2.8.5] /home/runner/.gradle/caches/8.9/transforms/47e1133ab9e7d452e06830ce6a0732e7/transformed/lifecycle-process-2.8.5/AndroidManifest.xml:29:13-31:52
+84                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+84-->[androidx.lifecycle:lifecycle-process:2.8.5] /home/runner/.gradle/caches/8.9/transforms/47e1133ab9e7d452e06830ce6a0732e7/transformed/lifecycle-process-2.8.5/AndroidManifest.xml:30:17-78
+85                android:value="androidx.startup" />
+85-->[androidx.lifecycle:lifecycle-process:2.8.5] /home/runner/.gradle/caches/8.9/transforms/47e1133ab9e7d452e06830ce6a0732e7/transformed/lifecycle-process-2.8.5/AndroidManifest.xml:31:17-49
+86            <meta-data
+86-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+87                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+87-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+88                android:value="androidx.startup" />
+88-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+89        </provider>
+90
+91        <activity
+91-->[androidx.compose.ui:ui-tooling-android:1.7.0] /home/runner/.gradle/caches/8.9/transforms/c9a03ab181d7ed2d40b8cbffbc445d2f/transformed/ui-tooling-release/AndroidManifest.xml:23:9-25:39
+92            android:name="androidx.compose.ui.tooling.PreviewActivity"
+92-->[androidx.compose.ui:ui-tooling-android:1.7.0] /home/runner/.gradle/caches/8.9/transforms/c9a03ab181d7ed2d40b8cbffbc445d2f/transformed/ui-tooling-release/AndroidManifest.xml:24:13-71
+93            android:exported="true" />
+93-->[androidx.compose.ui:ui-tooling-android:1.7.0] /home/runner/.gradle/caches/8.9/transforms/c9a03ab181d7ed2d40b8cbffbc445d2f/transformed/ui-tooling-release/AndroidManifest.xml:25:13-36
+94
+95        <receiver
+95-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+96            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+96-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+97            android:directBootAware="false"
+97-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+98            android:enabled="true"
+98-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+99            android:exported="true"
+99-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+100            android:permission="android.permission.DUMP" >
+100-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+101            <intent-filter>
+101-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+102                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+102-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+102-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+103            </intent-filter>
+104            <intent-filter>
+104-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+105                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+105-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+105-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+106            </intent-filter>
+107            <intent-filter>
+107-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+108                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+108-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+108-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+109            </intent-filter>
+110            <intent-filter>
+110-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+111                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+111-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+111-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.9/transforms/2126475d64c2ecc56b0843863ab7852b/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+112            </intent-filter>
+113        </receiver>
+114    </application>
+115
+116</manifest>
