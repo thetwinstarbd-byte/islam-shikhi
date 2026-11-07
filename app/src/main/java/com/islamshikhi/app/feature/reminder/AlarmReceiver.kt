@@ -46,6 +46,7 @@ class AlarmReceiver : BroadcastReceiver() {
             nm.notify((System.currentTimeMillis() % Int.MAX_VALUE).toInt(), n)
         }
 
+        com.islamshikhi.app.feature.widget.NextPrayerWidget.refreshAll(context)
         val pending = goAsync()
         CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
             try { container.scheduler.rescheduleNext() } finally { pending.finish() }

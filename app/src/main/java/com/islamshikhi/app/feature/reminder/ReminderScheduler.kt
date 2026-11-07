@@ -9,6 +9,8 @@ import android.content.Intent
 import android.os.Build
 import com.islamshikhi.app.data.profile.ProfileRepository
 import com.islamshikhi.app.data.user.UserDataRepository
+import com.islamshikhi.app.data.user.UserKeys
+import com.islamshikhi.app.feature.daily.DailyVerse
 import com.islamshikhi.app.feature.prayer.Prayer
 import com.islamshikhi.app.feature.prayer.PrayerEngine
 import com.islamshikhi.app.feature.prayer.PrayerSettingsStore
@@ -31,7 +33,8 @@ data class ScheduledItem(val title: String, val body: String, val atMillis: Long
 class ReminderScheduler(
     private val context: Context,
     private val userData: UserDataRepository,
-    private val profile: ProfileRepository
+    private val profile: ProfileRepository,
+    private val content: com.islamshikhi.app.data.content.ContentRepository
 ) {
     private val prayerStore = PrayerSettingsStore(userData)
     private val alarmManager get() = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -73,6 +76,17 @@ class ReminderScheduler(
             var t = today.atTime(r.hour, r.minute).atZone(zone).toInstant().toEpochMilli()
             if (t <= nowMillis) t = today.plusDays(1).atTime(r.hour, r.minute).atZone(zone).toInstant().toEpochMilli()
             out += ScheduledItem(title = r.label, body = "আপনার রিমাইন্ডার", atMillis = t)
+        }
+        if (userData.bool(UserKeys.DAILY_VERSE_ON, false).first()) {
+            val minutes = userData.int(UserKeys.DAILY_VERSE_MIN, DailyVerse.DEFAULT_MINUTES).first()
+            var day = today
+            var t = day.atTime(minutes / 60, minutes % 60).atZone(zone).toInstant().toEpochMilli()
+            if (t <= nowMillis) {
+                day = today.plusDays(1)
+                t = day.atTime(minutes / 60, minutes % 60).atZone(zone).toInstant().toEpochMilli()
+            }
+            val msg = runCatching { DailyVerse.message(content, day.toEpochDay()) }.getOrNull()
+            if (msg != null) out += ScheduledItem(title = msg.first, body = msg.second, atMillis = t)
         }
         return out.sortedBy { it.atMillis }
     }

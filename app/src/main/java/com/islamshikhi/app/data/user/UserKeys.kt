@@ -18,6 +18,10 @@ object UserKeys {
     const val MEMORIZE_PLAN = "memorize_plan"
     const val MEMORIZED = "memorized"
 
+    /** দৈনিক আয়াত/হাদীসের নোটিফিকেশন: চালু আছে কি না ও সময় (দিনের শুরু থেকে মিনিট)। */
+    const val DAILY_VERSE_ON = "daily_verse_on"
+    const val DAILY_VERSE_MIN = "daily_verse_min"
+
     // বুকমার্ক ও নোটের কী। বিদ্যমান DuaScreen "dua:ID" আকারই ব্যবহার করে।
     fun duaKey(id: String) = "dua:$id"
     fun ayahKey(chapter: Int, ayah: Int) = "ayah:$chapter:$ayah"

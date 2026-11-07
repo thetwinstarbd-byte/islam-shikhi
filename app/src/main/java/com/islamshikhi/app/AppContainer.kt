@@ -13,7 +13,7 @@ class AppContainer(private val context: Context) {
     val userData = UserDataRepository(context.applicationContext)
     val content = ContentRepository(context.applicationContext)
     val prayerSettings = PrayerSettingsStore(userData)
-    val scheduler = ReminderScheduler(context.applicationContext, userData, profileRepository)
+    val scheduler = ReminderScheduler(context.applicationContext, userData, profileRepository, content)
 
     /** "সব ডেটা মুছুন": প্রোফাইল, ব্যক্তিগত ডেটা ও নির্ধারিত অ্যালার্ম — সবই। */
     suspend fun resetEverything() {

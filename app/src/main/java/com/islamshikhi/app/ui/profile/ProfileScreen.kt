@@ -1,5 +1,19 @@
 package com.islamshikhi.app.ui.profile
 
+import android.Manifest
+import android.app.TimePickerDialog
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
+import com.islamshikhi.app.data.user.UserKeys
+import com.islamshikhi.app.feature.daily.DailyVerse
+import com.islamshikhi.app.ui.common.rememberContainer
+import com.islamshikhi.app.util.TimeFormatBn
+import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -115,6 +129,43 @@ fun ProfileScreen(
                 style = MaterialTheme.typography.bodyMedium
             )
             Switch(checked = profile.notificationsEnabled, onCheckedChange = viewModel::setNotifications)
+        }
+
+        val context = LocalContext.current
+        val container = rememberContainer()
+        val scope = rememberCoroutineScope()
+        val verseOn by container.userData.bool(UserKeys.DAILY_VERSE_ON, false).collectAsState(initial = false)
+        val verseMinutes by container.userData.int(UserKeys.DAILY_VERSE_MIN, DailyVerse.DEFAULT_MINUTES)
+            .collectAsState(initial = DailyVerse.DEFAULT_MINUTES)
+        val notifPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(tr("দৈনিক আয়াত/হাদীস"), style = MaterialTheme.typography.bodyMedium)
+                Text(tr("প্রতিদিন সকালে একটি করে আয়াত বা হাদীস"), style = MaterialTheme.typography.bodySmall)
+            }
+            Switch(checked = verseOn, onCheckedChange = { on ->
+                scope.launch {
+                    container.userData.putBool(UserKeys.DAILY_VERSE_ON, on)
+                    container.scheduler.rescheduleNext()
+                }
+                if (on && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    notifPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            })
+        }
+        if (verseOn) {
+            OutlinedButton(onClick = {
+                TimePickerDialog(context, { _, h, m ->
+                    scope.launch {
+                        container.userData.putInt(UserKeys.DAILY_VERSE_MIN, h * 60 + m)
+                        container.scheduler.rescheduleNext()
+                    }
+                }, verseMinutes / 60, verseMinutes % 60, false).show()
+            }) { Text("সময়: ${TimeFormatBn.format(verseMinutes / 60, verseMinutes % 60)}") }
         }
 
         HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
