@@ -18,8 +18,31 @@ data class DayTimes(val date: LocalDate, val times: Map<Prayer, Long>) {
  */
 object PrayerEngine {
 
-    fun timesFor(settings: PrayerSettings, date: LocalDate): DayTimes =
+    /** দেখানোর ও অ্যালার্মের সময়: ব্যবহারকারী নিজের আজানের সময় বসালে সেটি, নইলে ডিফল্ট হিসাব। */
+    fun timesFor(settings: PrayerSettings, date: LocalDate, zone: ZoneId = ZoneId.systemDefault()): DayTimes {
+        val base = calculated(settings, date)
+        return if (settings.useCustom && settings.adhanMin.isNotEmpty()) applyCustom(base, settings.adhanMin, zone) else base
+    }
+
+    /** শুধু ফোনের হিসাব করা সময় (ব্যবহারকারীর বসানো সময় বাদে)। রমযানের সেহরি-ইফতারের মতো জায়গায় এটিই ধরা হয়। */
+    fun calculated(settings: PrayerSettings, date: LocalDate): DayTimes =
         timesFor(settings.lat, settings.lon, date, settings.method, settings.hanafiAsr)
+
+    /** [minutes]-এ থাকা ফরজ ওয়াক্তের সময় বদলে দেয়; বাকিগুলো যেমন ছিল তেমন। */
+    fun applyCustom(base: DayTimes, minutes: Map<String, Int>, zone: ZoneId = ZoneId.systemDefault()): DayTimes =
+        DayTimes(base.date, base.times.mapValues { (p, millis) ->
+            val m = if (p.isObligation) minutes[p.id] else null
+            if (m == null) millis else base.date.atStartOfDay(zone).plusMinutes(m.toLong()).toInstant().toEpochMilli()
+        })
+
+    /** ব্যবহারকারীর বসানো জামাতের সময় (শুধু "নিজের সময়" চালু থাকলে এবং যেগুলো বসানো আছে)। */
+    fun jamaatTimes(settings: PrayerSettings, date: LocalDate, zone: ZoneId = ZoneId.systemDefault()): Map<Prayer, Long> {
+        if (!settings.useCustom) return emptyMap()
+        val start = date.atStartOfDay(zone)
+        return settings.jamaatMin.mapNotNull { (id, m) ->
+            Prayer.byId(id)?.takeIf { it.isObligation }?.let { it to start.plusMinutes(m.toLong()).toInstant().toEpochMilli() }
+        }.toMap()
+    }
 
     fun timesFor(lat: Double, lon: Double, date: LocalDate, method: CalcMethodOption, hanafiAsr: Boolean): DayTimes {
         val params = method.adhan.parameters.copy(madhab = if (hanafiAsr) Madhab.HANAFI else Madhab.SHAFI)

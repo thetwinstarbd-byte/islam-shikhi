@@ -18,6 +18,9 @@ class PrayerSettingsStore(private val ud: UserDataRepository) {
     private val methodKey = stringPreferencesKey("prayer_method")
     private val asrKey = stringPreferencesKey("prayer_asr")
     private val notifyKey = stringPreferencesKey("prayer_notify")
+    private val customKey = booleanPreferencesKey("prayer_custom")
+    private val adhanKey = stringPreferencesKey("prayer_adhan_min")
+    private val jamaatKey = stringPreferencesKey("prayer_jamaat_min")
 
     val settings: Flow<PrayerSettings> = ud.data.map { p ->
         val notify = p[notifyKey]
@@ -28,6 +31,9 @@ class PrayerSettingsStore(private val ud: UserDataRepository) {
             gpsLon = p[lonKey],
             method = CalcMethodOption.byId(p[methodKey]),
             hanafiAsr = (p[asrKey] ?: "HANAFI") == "HANAFI",
+            useCustom = p[customKey] ?: false,
+            adhanMin = CustomTimes.decode(p[adhanKey]),
+            jamaatMin = CustomTimes.decode(p[jamaatKey]),
             notify = if (notify == null) PrayerSettings().notify
             else notify.split(",").filter { it.isNotBlank() }.toSet()
         )
@@ -51,5 +57,25 @@ class PrayerSettingsStore(private val ud: UserDataRepository) {
     suspend fun setNotify(prayer: Prayer, enabled: Boolean, current: Set<String>) {
         val next = if (enabled) current + prayer.id else current - prayer.id
         ud.putString("prayer_notify", next.joinToString(","))
+    }
+
+    suspend fun setCustomMode(on: Boolean) = ud.putBool("prayer_custom", on)
+
+    /** [minutes] null হলে ওই ওয়াক্তের আজানের সময় ডিফল্টে ফেরে। */
+    suspend fun setAdhan(prayer: Prayer, minutes: Int?, current: Map<String, Int>) {
+        val next = if (minutes == null) current - prayer.id else current + (prayer.id to minutes)
+        ud.putString("prayer_adhan_min", CustomTimes.encode(next).ifEmpty { null })
+    }
+
+    suspend fun setJamaat(prayer: Prayer, minutes: Int?, current: Map<String, Int>) {
+        val next = if (minutes == null) current - prayer.id else current + (prayer.id to minutes)
+        ud.putString("prayer_jamaat_min", CustomTimes.encode(next).ifEmpty { null })
+    }
+
+    /** সব নিজের সময় মুছে ডিফল্টে ফেরে। */
+    suspend fun resetToDefault() {
+        ud.putBool("prayer_custom", false)
+        ud.putString("prayer_adhan_min", null)
+        ud.putString("prayer_jamaat_min", null)
     }
 }

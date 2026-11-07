@@ -61,7 +61,17 @@ class ReminderScheduler(
         // LocalDate.ofInstant পুরোনো Android-এ (১৩-এর আগে) নেই, তাই atZone ব্যবহার
         val today = Instant.ofEpochMilli(nowMillis).atZone(zone).toLocalDate()
         for (d in 0..1) {
-            val times = PrayerEngine.timesFor(settings, today.plusDays(d.toLong()))
+            val day = today.plusDays(d.toLong())
+            val times = PrayerEngine.timesFor(settings, day)
+            for ((p, jt) in PrayerEngine.jamaatTimes(settings, day, zone)) {
+                if (p.id in settings.notify && jt > nowMillis) {
+                    out += ScheduledItem(
+                        title = "${p.labelBn}-এর জামাতের সময় হয়েছে",
+                        body = "${settings.placeLabelBn} — ${TimeFormatBn.format(jt, zone)}",
+                        atMillis = jt
+                    )
+                }
+            }
             for (p in Prayer.obligations) {
                 if (p.id in settings.notify && times[p] > nowMillis) {
                     out += ScheduledItem(

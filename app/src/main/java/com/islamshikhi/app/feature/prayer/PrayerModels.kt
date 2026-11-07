@@ -68,7 +68,12 @@ data class PrayerSettings(
     val gpsLon: Double? = null,
     val method: CalcMethodOption = CalcMethodOption.KARACHI,
     val hanafiAsr: Boolean = true,
-    val notify: Set<String> = Prayer.obligations.map { it.id }.toSet()
+    val notify: Set<String> = Prayer.obligations.map { it.id }.toSet(),
+    /** false: ফোনের হিসাব করা ডিফল্ট সময়। true: ব্যবহারকারীর বসানো আজান/জামাতের সময় (যেগুলো বসানো নেই সেগুলো ডিফল্ট)। */
+    val useCustom: Boolean = false,
+    /** ওয়াক্তের id -> দিনের শুরু থেকে মিনিট (০–১৪৩৯)। */
+    val adhanMin: Map<String, Int> = emptyMap(),
+    val jamaatMin: Map<String, Int> = emptyMap()
 ) {
     val city: City get() = Cities.byId(cityId)
 
@@ -76,4 +81,17 @@ data class PrayerSettings(
     val lat: Double get() = if (useGps && gpsLat != null) gpsLat else city.lat
     val lon: Double get() = if (useGps && gpsLon != null) gpsLon else city.lon
     val placeLabelBn: String get() = if (useGps && gpsLat != null && gpsLon != null) "আপনার বর্তমান অবস্থান" else city.nameBn
+}
+
+/** ব্যবহারকারীর বসানো সময় সংরক্ষণের সহায়ক: "fajr=330,dhuhr=750" আকারে। */
+object CustomTimes {
+    fun encode(m: Map<String, Int>): String = m.entries.sortedBy { it.key }.joinToString(",") { "${it.key}=${it.value}" }
+
+    fun decode(s: String?): Map<String, Int> = s.orEmpty().split(",").mapNotNull { part ->
+        val kv = part.split("=")
+        if (kv.size != 2) return@mapNotNull null
+        val v = kv[1].trim().toIntOrNull()?.takeIf { it in 0..1439 } ?: return@mapNotNull null
+        val id = kv[0].trim().takeIf { Prayer.byId(it)?.isObligation == true } ?: return@mapNotNull null
+        id to v
+    }.toMap()
 }

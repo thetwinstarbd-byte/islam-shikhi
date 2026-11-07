@@ -59,8 +59,8 @@ fun RamadanScreen(onBack: () -> Unit) {
     }
 
     val info = remember(today) { RamadanMath.info(today) }
-    val t0 = remember(settings, today) { PrayerEngine.timesFor(settings, today) }
-    val t1 = remember(settings, today) { PrayerEngine.timesFor(settings, today.plusDays(1)) }
+    val t0 = remember(settings, today) { PrayerEngine.calculated(settings, today) }
+    val t1 = remember(settings, today) { PrayerEngine.calculated(settings, today.plusDays(1)) }
     val next = RamadanMath.next(now, t0[Prayer.FAJR], t0[Prayer.MAGHRIB], t1[Prayer.FAJR])
     val label = when {
         next.event == RamadanMath.Event.IFTAR -> "ইফতারের সময়"
