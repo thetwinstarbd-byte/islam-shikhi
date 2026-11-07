@@ -9,6 +9,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import com.islamshikhi.app.ui.i18n.tr
 import com.islamshikhi.app.data.user.UserKeys
 import com.islamshikhi.app.feature.daily.DailyVerse
 import com.islamshikhi.app.ui.common.rememberContainer
