@@ -25,5 +25,7 @@ data class UserProfile(
     val interests: Set<LearningInterest> = emptySet(),
     val learningGoal: LearningGoal? = null,
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
-    val fontScale: Float = 1.0f
+    val fontScale: Float = 1.0f,
+    /** সহজ মোড: বড় লেখা, বড় ছবির বাটন, শুধু দরকারি কাজ। কম শিক্ষিত বা বয়স্কদের জন্য। */
+    val simpleMode: Boolean = false
 )

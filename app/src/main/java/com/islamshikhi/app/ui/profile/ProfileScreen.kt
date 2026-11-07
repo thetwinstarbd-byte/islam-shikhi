@@ -95,12 +95,26 @@ fun ProfileScreen(
             RadioRow(item.labelBn(), profile.ageGroup == item) { viewModel.setAgeGroup(item) }
         }
 
+        SectionTitle("সহজ মোড")
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                "বড় লেখা ও বড় ছবির বাটন, শুধু দরকারি কাজ। পড়তে কষ্ট হলে চালু করুন।",
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Switch(checked = profile.simpleMode, onCheckedChange = viewModel::setSimpleMode)
+        }
+
         SectionTitle("ভাষা")
         AppLanguage.entries.forEach { item ->
             RadioRow(item.labelBn(), profile.language == item) { viewModel.setLanguage(item) }
         }
         Text(
-            "ভাষা পছন্দ সংরক্ষিত হচ্ছে, তবে ইংরেজি অনুবাদ এখনও তৈরি হয়নি; এখন সব লেখা বাংলায় দেখাবে।",
+            "ইংরেজি বেছে নিলে মেনু ও বাটন ইংরেজিতে দেখাবে। কুরআন, দোয়া, প্রবন্ধ ও মাসআলা সবসময় বাংলায় থাকবে।",
             style = MaterialTheme.typography.bodySmall
         )
 

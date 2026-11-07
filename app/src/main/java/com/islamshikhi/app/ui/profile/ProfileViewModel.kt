@@ -21,6 +21,7 @@ class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() 
     fun setNotifications(value: Boolean) =
         viewModelScope.launch { repository.setNotificationsEnabled(value) }
     fun setThemeMode(value: ThemeMode) = viewModelScope.launch { repository.setThemeMode(value) }
+    fun setSimpleMode(value: Boolean) = viewModelScope.launch { repository.setSimpleMode(value) }
     fun setFontScale(value: Float) = viewModelScope.launch { repository.setFontScale(value) }
 
     companion object {

@@ -36,6 +36,7 @@ class ProfileRepository(private val context: Context) {
         val GOAL = stringPreferencesKey("learning_goal")
         val THEME = stringPreferencesKey("theme_mode")
         val FONT_SCALE = floatPreferencesKey("font_scale")
+        val SIMPLE_MODE = booleanPreferencesKey("simple_mode")
     }
 
     val profile: Flow<UserProfile> = context.profileDataStore.data
@@ -87,6 +88,10 @@ class ProfileRepository(private val context: Context) {
         context.profileDataStore.edit { it[Keys.FONT_SCALE] = scale.coerceIn(0.85f, 1.5f) }
     }
 
+    suspend fun setSimpleMode(value: Boolean) {
+        context.profileDataStore.edit { it[Keys.SIMPLE_MODE] = value }
+    }
+
     /** সব স্থানীয় প্রোফাইল ও সেটিংস মুছে ফেলে (গোপনীয়তা: "ডেটা মুছুন")। */
     suspend fun clearAll() {
         context.profileDataStore.edit { it.clear() }
@@ -103,7 +108,8 @@ class ProfileRepository(private val context: Context) {
             .toSet(),
         learningGoal = this[Keys.GOAL].toEnumOrNull<LearningGoal>(),
         themeMode = this[Keys.THEME].toEnumOrNull<ThemeMode>() ?: ThemeMode.SYSTEM,
-        fontScale = this[Keys.FONT_SCALE] ?: 1.0f
+        fontScale = this[Keys.FONT_SCALE] ?: 1.0f,
+        simpleMode = this[Keys.SIMPLE_MODE] ?: false
     )
 }
 
