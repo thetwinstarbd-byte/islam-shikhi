@@ -72,6 +72,24 @@ object EnglishDict {
         "সেহরির শেষ সময়" to "Suhoor ends", "ইফতারের সময়" to "Iftar time", "পরের সেহরি" to "Next suhoor",
         "আজকের চেকলিস্ট" to "Today's checklist", "তারাবীহ" to "Taraweeh", "গত ৩০ দিনের সারাংশ" to "Last 30 days",
         "ব্যাকআপ তৈরি করুন" to "Create backup", "ফাইল থেকে ফেরত আনুন" to "Restore from file",
-        "পড়ার অগ্রগতি" to "Reading progress", "রাতের মোড" to "Night mode"
+        "পড়ার অগ্রগতি" to "Reading progress", "রাতের মোড" to "Night mode",
+        // অতিরিক্ত শিরোনাম
+        "আপনার সম্পদ ও ঋণ" to "Your assets and debts", "আরও জানতে" to "Learn more", "হিসাব" to "Calculation",
+        "নিসাব কীসের হিসাবে ধরবেন" to "Nisab basis", "মূল লক্ষ্য" to "Main goal",
+        "কত দিনে খতম করতে চান?" to "In how many days do you want to finish?", "আজ যা পড়লেন যোগ করুন" to "Add what you read today",
+        "এই মাসের গুরুত্বপূর্ণ দিন" to "Important days this month", "গণনা-পদ্ধতি" to "Calculation method", "স্থান" to "Location",
+        "আসরের সময় (মাযহাব)" to "Asr time (school)", "দৈনিক লক্ষ্য" to "Daily goal", "প্রতি রাউন্ডের সংখ্যা" to "Count per round",
+        "চেকলিস্ট" to "Checklist", "ধাপে ধাপে নির্দেশনা" to "Step-by-step guide", "হজ্জ ও উমরা: গুরুত্ব ও শিক্ষা" to "Hajj & Umrah: importance and lessons",
+        "অন্যান্য আমল" to "Other deeds", "গত ৭ দিন" to "Last 7 days", "আপনার তথ্য ফাইলে রাখুন" to "Keep your data in a file", "নিরাপত্তা" to "Safety",
+        "একসঙ্গে খুঁজুন" to "Search everything", "কুরআনের আয়াত" to "Quran verses", "জ্ঞান-প্রবন্ধ" to "Knowledge articles", "সূরা" to "Surah",
+        "আপনার নোট" to "Your note", "দলিল" to "Evidence", "বিস্তারিত" to "Details", "মতভেদ" to "Differences of opinion", "সংশ্লিষ্ট প্রশ্ন" to "Related questions",
+        "দূরত্ব" to "Distance", "আরও পড়ুন" to "Further reading", "ফিকহের প্রশ্নোত্তর" to "Fiqh Q&A",
+        "উৎস ও লাইসেন্স" to "Sources and licences", "আরবি টেক্সট" to "Arabic text", "বাংলা অনুবাদ ও টীকা" to "Bangla translation and notes",
+        "আপনার পরিকল্পনা" to "Your plan", "সূরা যোগ করুন" to "Add a surah", "এই রমযানের সারাংশ" to "This Ramadan's summary", "তারাবীহ ট্র্যাকার" to "Taraweeh tracker",
+        "ইসলাম শিখি" to "Islam Shikhi", "কনটেন্ট" to "Content", "জেনে রাখুন" to "Good to know", "সীমাবদ্ধতা" to "Limitations", "মতভেদের বিষয়ে" to "On differences of opinion",
+        "সব কিছু আপনার ফোনে" to "Everything stays on your phone", "প্রোগ্রামিং লাইব্রেরি" to "Programming libraries",
+        "কুরআনের টেক্সট ও অনুবাদ" to "Quran text and translation", "হাদীসের আরবি টেক্সট" to "Hadith Arabic text",
+        "আজকের ব্যক্তিগত লক্ষ্য" to "Today's personal goals", "আপনার নিজের জন্য" to "For yourself", "রিমাইন্ডার" to "Reminders",
+        "সাপ্তাহিক সারাংশ (আজ সহ গত ৭ দিন)" to "Weekly summary (last 7 days)"
     )
 }
