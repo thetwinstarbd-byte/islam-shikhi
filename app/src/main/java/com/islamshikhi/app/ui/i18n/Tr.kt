@@ -86,7 +86,7 @@ object EnglishDict {
         "দূরত্ব" to "Distance", "আরও পড়ুন" to "Further reading", "ফিকহের প্রশ্নোত্তর" to "Fiqh Q&A",
         "উৎস ও লাইসেন্স" to "Sources and licences", "আরবি টেক্সট" to "Arabic text", "বাংলা অনুবাদ ও টীকা" to "Bangla translation and notes",
         "আপনার পরিকল্পনা" to "Your plan", "সূরা যোগ করুন" to "Add a surah", "এই রমযানের সারাংশ" to "This Ramadan's summary", "তারাবীহ ট্র্যাকার" to "Taraweeh tracker",
-        "ইসলাম শিখি" to "Islam Shikhi", "কনটেন্ট" to "Content", "জেনে রাখুন" to "Good to know", "সীমাবদ্ধতা" to "Limitations", "মতভেদের বিষয়ে" to "On differences of opinion",
+        "ইসলাম শিখি" to "Islam Shikhi", "অ্যাকাউন্ট ও ক্লাউড" to "Account & cloud", "Google দিয়ে সাইন-ইন (ঐচ্ছিক), ক্লাউডে ব্যাকআপ" to "Sign in with Google (optional), cloud backup", "কনটেন্ট" to "Content", "জেনে রাখুন" to "Good to know", "সীমাবদ্ধতা" to "Limitations", "মতভেদের বিষয়ে" to "On differences of opinion",
         "সব কিছু আপনার ফোনে" to "Everything stays on your phone", "প্রোগ্রামিং লাইব্রেরি" to "Programming libraries",
         "কুরআনের টেক্সট ও অনুবাদ" to "Quran text and translation", "হাদীসের আরবি টেক্সট" to "Hadith Arabic text",
         "আজকের ব্যক্তিগত লক্ষ্য" to "Today's personal goals", "আপনার নিজের জন্য" to "For yourself", "রিমাইন্ডার" to "Reminders",

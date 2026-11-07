@@ -125,6 +125,7 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
             composable(Routes.QADA) { com.islamshikhi.app.ui.ibadah.QadaScreen(onBack = back) }
             composable(Routes.KHATM) { com.islamshikhi.app.ui.ibadah.KhatmScreen(onBack = back) }
             composable(Routes.SEARCH) { com.islamshikhi.app.ui.search.SearchScreen(onBack = back, onNavigate = go) }
+            composable(Routes.ACCOUNT) { com.islamshikhi.app.ui.profile.AccountScreen(onBack = back) }
             composable(Routes.BACKUP) { com.islamshikhi.app.ui.profile.BackupScreen(onBack = back) }
             composable(Routes.QURAN_SEARCH) {
                 QuranSearchScreen(onBack = back, onOpen = { chapter, ayah -> go(Routes.quranRead(chapter, ayah)) })

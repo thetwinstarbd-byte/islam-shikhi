@@ -4,6 +4,11 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+// Firebase চালু হয় শুধু app/google-services.json থাকলে; না থাকলে অ্যাপ আগের মতোই বিল্ড হয় ও ক্লাউড-সুবিধা বন্ধ থাকে।
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
+}
+
 android {
     namespace = "com.islamshikhi.app"
     compileSdk = 35
@@ -69,6 +74,14 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.adhan2)
     implementation(libs.kotlinx.datetime)
+
+    // ঐচ্ছিক Google সাইন-ইন ও ক্লাউডে ব্যাকআপ (Firebase)
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
     testImplementation(libs.junit)
     testImplementation("org.json:json:20231013")

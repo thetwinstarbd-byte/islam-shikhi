@@ -57,4 +57,5 @@ object Routes {
     const val HABITS = "profile/habits"
     const val ABOUT = "profile/about"
     const val BACKUP = "profile/backup"
+    const val ACCOUNT = "profile/account"
 }
