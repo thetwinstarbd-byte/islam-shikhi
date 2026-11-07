@@ -28,6 +28,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.Card
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -180,8 +181,14 @@ fun PrayerScreen(onBack: () -> Unit) {
                 }
             }
         }
+        if (!settings.useCustom) {
+            Button(
+                onClick = { scope.launch { container.prayerSettings.setCustomMode(true) } },
+                modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)
+            ) { Text("নিজের আজান ও জামাতের সময় বসান") }
+        }
         if (settings.useCustom) {
-            Text("প্রতিটি ওয়াক্তে সময়ের বাটনে চাপুন, তারপর ঘড়ি থেকে সময় বেছে নিন। যেটা বসাবেন না, সেটা ডিফল্ট থাকবে।", style = MaterialTheme.typography.bodyMedium)
+            Text("সময়ের বাটনে চাপুন, ঘড়ি থেকে সময় বেছে নিন। বসাননি যেটা, সেটা ডিফল্ট থাকবে।", style = MaterialTheme.typography.bodyMedium)
             Prayer.obligations.forEach { p ->
                 val adhanSet = settings.adhanMin[p.id]
                 val jamaatSet = settings.jamaatMin[p.id]
@@ -190,10 +197,10 @@ fun PrayerScreen(onBack: () -> Unit) {
                         Text(p.labelBn, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             Button(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier.weight(1f).heightIn(min = 56.dp),
                                 onClick = {
                                     pickTime(adhanSet ?: minutesOf(defaultToday[p])) { m ->
-                                        scope.launch { container.prayerSettings.setAdhan(p, m, settings.adhanMin) }
+                                        scope.launch { container.prayerSettings.setCustomMode(true); container.prayerSettings.setAdhan(p, m, settings.adhanMin) }
                                     }
                                 }
                             ) {
@@ -206,10 +213,10 @@ fun PrayerScreen(onBack: () -> Unit) {
                         }
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             OutlinedButton(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier.weight(1f).heightIn(min = 56.dp),
                                 onClick = {
                                     pickTime(jamaatSet ?: minutesOf(defaultToday[p]) + 15) { m ->
-                                        scope.launch { container.prayerSettings.setJamaat(p, m, settings.jamaatMin) }
+                                        scope.launch { container.prayerSettings.setCustomMode(true); container.prayerSettings.setJamaat(p, m, settings.jamaatMin) }
                                     }
                                 }
                             ) {

@@ -205,7 +205,7 @@ def net_tour():
 
 
 def custom_tour():
-    """নিজের আজান/জামাতের সময় বসানোর পাতা ও সহজ মোডের ছবি। না মিললে ফেল নয়, শুধু ছবি বাদ যায়।"""
+    """নিজের আজান/জামাতের সময় বসানোর পাতার ছবি। না মিললে ফেল নয়, শুধু ছবি বাদ যায়।"""
     ensure_foreground()
     tap_text("ইবাদত", required=False, timeout=8)
     swipe_down(4)
@@ -221,15 +221,6 @@ def custom_tour():
                 time.sleep(1)
         adb("shell", "input", "keyevent", "4")
         time.sleep(1)
-    ensure_foreground()
-    tap_text("হোম", required=False, timeout=8)
-    swipe_down(4)
-    if tap_prefix("সহজ মোডে দেখুন", required=False, scrolls=4):
-        swipe_down(4)
-        shot("81-simple-home")
-        swipe_up(2)
-        shot("81-simple-home-2")
-        tap_prefix("সব সেবা দেখুন", required=False, scrolls=4)
 
 
 def feature_tour():
