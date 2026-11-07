@@ -74,9 +74,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.launch
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -124,7 +121,6 @@ fun HomeScreen(
     onNavigate: (String) -> Unit
 ) {
     val container = rememberContainer()
-    val scope = rememberCoroutineScope()
     val settings by container.prayerSettings.settings.collectAsState(initial = PrayerSettings())
     val zone = remember { ZoneId.systemDefault() }
 
@@ -192,64 +188,43 @@ fun HomeScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            if (profile.simpleMode) {
-                SimpleHome(
-                    items = listOf(
-                        Quick("নামাজের সময়", null, com.islamshikhi.app.R.drawable.ic_prayer) { onNavigate(Routes.PRAYER) },
-                        Quick("কুরআন পড়ুন", null, com.islamshikhi.app.R.drawable.ic_quran) { onOpenTab(AppTab.QURAN) },
-                        Quick("দোয়া", null, com.islamshikhi.app.R.drawable.dua_hands) { onNavigate(Routes.DUA) },
-                        Quick("তাসবিহ", null, com.islamshikhi.app.R.drawable.ic_tasbih) { onNavigate(Routes.TASBIH) },
-                        Quick("কিবলা", null, com.islamshikhi.app.R.drawable.ic_qibla) { onNavigate(Routes.QIBLA) },
-                        Quick("কাছের মসজিদ", null, com.islamshikhi.app.R.drawable.ic_mosque) { onNavigate(Routes.MOSQUES) },
-                        Quick("শিখি", null, com.islamshikhi.app.R.drawable.ic_ilm) { onNavigate(Routes.ILM) },
-                        Quick("প্রশ্ন-উত্তর", null, com.islamshikhi.app.R.drawable.ic_masail) { onNavigate(Routes.MASAIL) }
-                    ),
-                    onShowAll = { scope.launch { container.profileRepository.setSimpleMode(false) } }
+            // অ্যাপের সব প্রধান ফিচার এক জায়গায়: ৪ কলামের গ্রিড
+            ServiceGrid(
+                listOf(
+                    Quick("নামাজ", null, com.islamshikhi.app.R.drawable.ic_prayer) { onNavigate(Routes.PRAYER) },
+                    Quick("কুরআন", null, com.islamshikhi.app.R.drawable.ic_quran) { onOpenTab(AppTab.QURAN) },
+                    Quick("দোয়া", null, com.islamshikhi.app.R.drawable.dua_hands) { onNavigate(Routes.DUA) },
+                    Quick("তাসবিহ", null, com.islamshikhi.app.R.drawable.ic_tasbih) { onNavigate(Routes.TASBIH) },
+                    Quick("কিবলা", null, com.islamshikhi.app.R.drawable.ic_qibla) { onNavigate(Routes.QIBLA) },
+                    Quick("মসজিদ", null, com.islamshikhi.app.R.drawable.ic_mosque) { onNavigate(Routes.MOSQUES) },
+                    Quick("ক্যালেন্ডার", null, com.islamshikhi.app.R.drawable.ic_calendar) { onNavigate(Routes.CALENDAR) },
+                    Quick("আমল", null, com.islamshikhi.app.R.drawable.ic_amal) { onNavigate(Routes.TRACKER) },
+                    Quick("অভ্যাস", null, com.islamshikhi.app.R.drawable.ic_habits) { onNavigate(Routes.HABITS) },
+                    Quick("জ্ঞান", null, com.islamshikhi.app.R.drawable.ic_ilm) { onNavigate(Routes.ILM) },
+                    Quick("যাকাত", null, com.islamshikhi.app.R.drawable.ic_zakat) { onNavigate(Routes.ZAKAT) },
+                    Quick("কুইজ", null, com.islamshikhi.app.R.drawable.ic_quiz) { onNavigate(Routes.QUIZ) },
+                    Quick("শিশুশিক্ষা", null, com.islamshikhi.app.R.drawable.ic_kids) { onNavigate(Routes.KIDS) },
+                    Quick("মুখস্থ", null, com.islamshikhi.app.R.drawable.ic_memorize) { onNavigate(Routes.QURAN_MEMORIZE) },
+                    Quick("মাসআলা", null, com.islamshikhi.app.R.drawable.ic_masail) { onNavigate(Routes.MASAIL) },
+                    Quick("জরুরি", null, com.islamshikhi.app.R.drawable.ic_emergency) { onNavigate(Routes.EMERGENCY) },
+                    Quick("বুকমার্ক", null, com.islamshikhi.app.R.drawable.ic_bookmark) { onNavigate(Routes.BOOKMARKS) },
+                    Quick("খুঁজুন", null, com.islamshikhi.app.R.drawable.ic_search) { onNavigate(Routes.SEARCH) },
+                    Quick("রমযান", null, com.islamshikhi.app.R.drawable.ic_ramadan) { onNavigate(Routes.RAMADAN) },
+                    Quick("কাযা", null, com.islamshikhi.app.R.drawable.ic_qada) { onNavigate(Routes.QADA) },
+                    Quick("খতম", null, com.islamshikhi.app.R.drawable.ic_khatm) { onNavigate(Routes.KHATM) },
+                    Quick("হজ্জ-উমরা", null, com.islamshikhi.app.R.drawable.ic_hajj) { onNavigate(Routes.HAJJ) },
+                    Quick("ব্যাকআপ", null, com.islamshikhi.app.R.drawable.ic_backup) { onNavigate(Routes.BACKUP) },
+                    Quick("আপডেট", null, com.islamshikhi.app.R.drawable.ic_update) { onNavigate(Routes.UPDATE) }
                 )
-            } else {
-                // অ্যাপের সব প্রধান ফিচার এক জায়গায়: ৪ কলামের গ্রিড
-                ServiceGrid(
-                    listOf(
-                        Quick("নামাজ", null, com.islamshikhi.app.R.drawable.ic_prayer) { onNavigate(Routes.PRAYER) },
-                        Quick("কুরআন", null, com.islamshikhi.app.R.drawable.ic_quran) { onOpenTab(AppTab.QURAN) },
-                        Quick("দোয়া", null, com.islamshikhi.app.R.drawable.dua_hands) { onNavigate(Routes.DUA) },
-                        Quick("তাসবিহ", null, com.islamshikhi.app.R.drawable.ic_tasbih) { onNavigate(Routes.TASBIH) },
-                        Quick("কিবলা", null, com.islamshikhi.app.R.drawable.ic_qibla) { onNavigate(Routes.QIBLA) },
-                        Quick("মসজিদ", null, com.islamshikhi.app.R.drawable.ic_mosque) { onNavigate(Routes.MOSQUES) },
-                        Quick("ক্যালেন্ডার", null, com.islamshikhi.app.R.drawable.ic_calendar) { onNavigate(Routes.CALENDAR) },
-                        Quick("আমল", null, com.islamshikhi.app.R.drawable.ic_amal) { onNavigate(Routes.TRACKER) },
-                        Quick("অভ্যাস", null, com.islamshikhi.app.R.drawable.ic_habits) { onNavigate(Routes.HABITS) },
-                        Quick("জ্ঞান", null, com.islamshikhi.app.R.drawable.ic_ilm) { onNavigate(Routes.ILM) },
-                        Quick("যাকাত", null, com.islamshikhi.app.R.drawable.ic_zakat) { onNavigate(Routes.ZAKAT) },
-                        Quick("কুইজ", null, com.islamshikhi.app.R.drawable.ic_quiz) { onNavigate(Routes.QUIZ) },
-                        Quick("শিশুশিক্ষা", null, com.islamshikhi.app.R.drawable.ic_kids) { onNavigate(Routes.KIDS) },
-                        Quick("মুখস্থ", null, com.islamshikhi.app.R.drawable.ic_memorize) { onNavigate(Routes.QURAN_MEMORIZE) },
-                        Quick("মাসআলা", null, com.islamshikhi.app.R.drawable.ic_masail) { onNavigate(Routes.MASAIL) },
-                        Quick("জরুরি", null, com.islamshikhi.app.R.drawable.ic_emergency) { onNavigate(Routes.EMERGENCY) },
-                        Quick("বুকমার্ক", null, com.islamshikhi.app.R.drawable.ic_bookmark) { onNavigate(Routes.BOOKMARKS) },
-                        Quick("খুঁজুন", null, com.islamshikhi.app.R.drawable.ic_search) { onNavigate(Routes.SEARCH) },
-                        Quick("রমযান", null, com.islamshikhi.app.R.drawable.ic_ramadan) { onNavigate(Routes.RAMADAN) },
-                        Quick("কাযা", null, com.islamshikhi.app.R.drawable.ic_qada) { onNavigate(Routes.QADA) },
-                        Quick("খতম", null, com.islamshikhi.app.R.drawable.ic_khatm) { onNavigate(Routes.KHATM) },
-                        Quick("হজ্জ-উমরা", null, com.islamshikhi.app.R.drawable.ic_hajj) { onNavigate(Routes.HAJJ) },
-                        Quick("ব্যাকআপ", null, com.islamshikhi.app.R.drawable.ic_backup) { onNavigate(Routes.BACKUP) },
-                        Quick("আপডেট", null, com.islamshikhi.app.R.drawable.ic_update) { onNavigate(Routes.UPDATE) }
-                    )
-                )
+            )
 
-                OutlinedButton(
-                    onClick = { scope.launch { container.profileRepository.setSimpleMode(true) } },
-                    modifier = Modifier.fillMaxWidth()
-                ) { Text(tr("সহজ মোডে দেখুন (বড় বাটন)")) }
+            LastReadCard(onOpen = { chapter, ayah -> onNavigate(Routes.quranRead(chapter, ayah)) })
 
-                LastReadCard(onOpen = { chapter, ayah -> onNavigate(Routes.quranRead(chapter, ayah)) })
+            DailyDuaCard(onOpen = { onNavigate(Routes.DUA) })
 
-                DailyDuaCard(onOpen = { onNavigate(Routes.DUA) })
+            TodayAmalCard(today = date, onClick = { onNavigate(Routes.TRACKER) })
 
-                TodayAmalCard(today = date, onClick = { onNavigate(Routes.TRACKER) })
-
-                SuggestionsSection(profile, onOpenAssistant = { onOpenTab(AppTab.ASSISTANT) })
-            }
+            SuggestionsSection(profile, onOpenAssistant = { onOpenTab(AppTab.ASSISTANT) })
         }
     }
 
@@ -432,36 +407,6 @@ private fun PrayerStrip(today: DayTimes, next: Prayer, now: Long, zone: ZoneId, 
                 }
             }
         }
-    }
-}
-
-/** সহজ মোডের হোম: বড় ছবির বাটন, প্রতি সারিতে দুটি, বড় লেখা। */
-@Composable
-private fun SimpleHome(items: List<Quick>, onShowAll: () -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        items.chunked(2).forEach { row ->
-            Row(horizontalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.fillMaxWidth()) {
-                row.forEach { q ->
-                    LuxCard(modifier = Modifier.weight(1f), onClick = q.onClick) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 18.dp, horizontal = 8.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            IconChip(q.icon, size = 84, imageRes = q.imageRes)
-                            Spacer(Modifier.height(10.dp))
-                            Text(
-                                tr(q.label),
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    }
-                }
-                if (row.size == 1) Spacer(Modifier.weight(1f))
-            }
-        }
-        OutlinedButton(onClick = onShowAll, modifier = Modifier.fillMaxWidth()) { Text(tr("সব সেবা দেখুন")) }
     }
 }
 

@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
             IslamShikhiTheme(
                 themeMode = profile?.themeMode ?: ThemeMode.SYSTEM,
-                fontScale = (profile?.fontScale ?: 1.0f).let { if (profile?.simpleMode == true) maxOf(it, 1.25f) else it }
+                fontScale = profile?.fontScale ?: 1.0f
             ) {
                 androidx.compose.runtime.CompositionLocalProvider(
                     com.islamshikhi.app.ui.i18n.LocalLang provides (profile?.language ?: com.islamshikhi.app.domain.model.AppLanguage.BANGLA)
