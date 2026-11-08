@@ -58,4 +58,5 @@ object Routes {
     const val ABOUT = "profile/about"
     const val BACKUP = "profile/backup"
     const val ACCOUNT = "profile/account"
+    const val ADHAN_SETUP = "ibadah/adhan_setup"
 }

@@ -66,7 +66,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @Composable
-fun PrayerScreen(onBack: () -> Unit) {
+fun PrayerScreen(onBack: () -> Unit, onAdhanSetup: () -> Unit = {}) {
     val container = rememberContainer()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -160,6 +160,9 @@ fun PrayerScreen(onBack: () -> Unit) {
             style = MaterialTheme.typography.bodySmall
         )
 
+        OutlinedButton(onClick = onAdhanSetup, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
+            Text("আজান ও অনুমতি ঠিক আছে কি না দেখুন")
+        }
         SectionTitle("সময় কীভাবে চান?")
         listOf(
             false to ("ডিফল্ট সময়" to "ফোন নিজে হিসাব করে সময় দেয়। আপনাকে কিছু করতে হবে না।"),

@@ -9,6 +9,12 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- সঠিক সময়ে অ্যালার্ম; অনুমতি না পেলে কয়েক মিনিট দেরিতে বাজতে পারে -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <!-- আজানের অডিও ব্যাকগ্রাউন্ডে শেষ পর্যন্ত বাজাতে (ফোরগ্রাউন্ড সার্ভিস) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- ব্যাটারি-সেভারে অ্যাপ আটকে না যাওয়ার অনুরোধ দেখাতে; ব্যবহারকারী নিজে অনুমতি দিলে তবেই কার্যকর -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <!-- ফোন রিস্টার্টের পর অ্যালার্ম আবার বসাতে -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
@@ -42,6 +48,11 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_next_prayer_info" />
         </receiver>
+
+        <service
+            android:name=".feature.adhan.AdhanService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
 
         <receiver
             android:name=".feature.reminder.AlarmReceiver"

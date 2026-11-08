@@ -21,7 +21,8 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 /** একটি নির্ধারিত নোটিফিকেশন। */
-data class ScheduledItem(val title: String, val body: String, val atMillis: Long)
+/** [adhanPrayerId] থাকলে (ফরজ ওয়াক্তের শুরুর সময়) আজান বাজানো যাবে। */
+data class ScheduledItem(val title: String, val body: String, val atMillis: Long, val adhanPrayerId: String? = null)
 
 /**
  * সবচেয়ে কাছের নামাজ/রিমাইন্ডারের জন্য একটি অ্যালার্ম বসায়। অ্যালার্ম বাজলে [AlarmReceiver] নোটিফিকেশন দেখায়
@@ -77,7 +78,8 @@ class ReminderScheduler(
                     out += ScheduledItem(
                         title = "${p.labelBn}-এর সময় হয়েছে",
                         body = "${settings.placeLabelBn} — ${TimeFormatBn.format(times[p], zone)}",
-                        atMillis = times[p]
+                        atMillis = times[p],
+                        adhanPrayerId = p.id
                     )
                 }
             }
@@ -113,13 +115,24 @@ class ReminderScheduler(
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra(EXTRA_TITLE, group.first().title)
             putExtra(EXTRA_BODY, group.joinToString("\n") { if (it === group.first()) it.body else "${it.title} — ${it.body}" })
+            group.first().adhanPrayerId?.let { putExtra(EXTRA_ADHAN, it) }
         }
         val pi = PendingIntent.getBroadcast(
             context, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val exact = Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarmManager.canScheduleExactAlarms()
-        if (exact) alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, first.atMillis, pi)
-        else alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, first.atMillis, pi)
+        // setAlarmClock সবচেয়ে নির্ভরযোগ্য: ডোজ ও ব্যাটারি-সেভারেও ঠিক সময়ে বাজে এবং "সঠিক অ্যালার্ম" অনুমতি লাগে না।
+        // (স্ট্যাটাস বারে ছোট অ্যালার্ম-আইকন দেখা যেতে পারে।) ব্যর্থ হলে সাধারণ সঠিক-অ্যালার্মে ফিরে যায়।
+        val show = PendingIntent.getActivity(
+            context, REQUEST_CODE + 1, Intent(context, com.islamshikhi.app.MainActivity::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        try {
+            alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(first.atMillis, show), pi)
+        } catch (e: SecurityException) {
+            val exact = Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarmManager.canScheduleExactAlarms()
+            if (exact) alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, first.atMillis, pi)
+            else alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, first.atMillis, pi)
+        }
     }
 
     fun cancelAll() {
@@ -138,6 +151,7 @@ class ReminderScheduler(
         const val KEY_REMINDERS = "custom_reminders"
         const val EXTRA_TITLE = "title"
         const val EXTRA_BODY = "body"
+        const val EXTRA_ADHAN = "adhan_prayer"
         private const val REQUEST_CODE = 4101
     }
 }

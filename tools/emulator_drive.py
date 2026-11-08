@@ -388,6 +388,13 @@ def main():
     print("সেটআপ শেষ, হোম স্ক্রিনের জন্য অপেক্ষা", flush=True)
     time.sleep(5)
     check("সেটআপ শেষে হোম খোলার সময়")
+    if tap_text("ব্যবস্থা করুন", timeout=6, required=False):
+        shot("06-adhan-setup")
+        swipe_up(1)
+        shot("06-adhan-setup-2")
+        adb("shell", "input", "keyevent", "4")
+        time.sleep(1)
+    tap_text("পরে", timeout=3, required=False)
     tap_text("হোম", timeout=30)
     time.sleep(2)
     shot("06-home")

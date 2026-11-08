@@ -16,6 +16,7 @@ import com.islamshikhi.app.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 /** অ্যালার্ম বাজলে নোটিফিকেশন দেখায় এবং পরের অ্যালার্ম বসায়। */
@@ -26,9 +27,15 @@ class AlarmReceiver : BroadcastReceiver() {
         val container = (context.applicationContext as IslamShikhiApp).container
 
         container.scheduler.ensureChannel()
+        // আজান: ফরজ ওয়াক্তের শুরুতে, আজান-সুইচ চালু থাকলে অডিও বাজে (নোটিফিকেশন সেই সার্ভিসই দেখায়)
+        val adhanPrayer = intent.getStringExtra(ReminderScheduler.EXTRA_ADHAN)
+        val adhanOn = adhanPrayer != null && kotlinx.coroutines.runBlocking {
+            container.userData.bool(com.islamshikhi.app.feature.adhan.AdhanPrefs.KEY_ON, true).first()
+        }
+        val adhanStarted = adhanOn && com.islamshikhi.app.feature.adhan.AdhanService.start(context, adhanPrayer!!, body)
         val allowed = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
-        if (allowed) {
+        if (allowed && !adhanStarted) {
             val open = PendingIntent.getActivity(
                 context, 0, Intent(context, MainActivity::class.java),
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE

@@ -11,7 +11,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.luminance
@@ -83,6 +85,35 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
     val go: (String) -> Unit = { route -> navController.navigate(route) { launchSingleTop = true } }
     val back: () -> Unit = { navController.popBackStack() }
 
+    // প্রথমবার: আজান ঠিক সময়ে বাজাতে দরকারি ব্যবস্থার কথা জানানো (কেন লাগে লিখে, ব্যবহারকারীর সম্মতিতে)
+    val appContainer = rememberContainer()
+    val promptScope = androidx.compose.runtime.rememberCoroutineScope()
+    val prompted by appContainer.userData.bool(com.islamshikhi.app.feature.adhan.AdhanPrefs.KEY_PROMPTED, false)
+        .collectAsState(initial = true)
+    if (!prompted) {
+        androidx.compose.material3.AlertDialog(
+            onDismissRequest = {},
+            title = { androidx.compose.material3.Text("আজান ঠিক সময়ে বাজানোর ব্যবস্থা") },
+            text = {
+                androidx.compose.material3.Text(
+                    "ব্যাটারি-সেভার চালু থাকলে অনেক ফোন অ্যাপকে ঘুম পাড়িয়ে দেয়, তখন আজান দেরিতে বাজে বা বাজে না। " +
+                        "এজন্য নোটিফিকেশন ও ব্যাটারি-সীমা থেকে অ্যাপকে মুক্ত রাখার অনুমতি লাগবে। এগুলো শুধু আজান ও রিমাইন্ডারের জন্য ব্যবহার হয়। এখনই ব্যবস্থা করবেন?"
+                )
+            },
+            confirmButton = {
+                androidx.compose.material3.TextButton(onClick = {
+                    promptScope.launch { appContainer.userData.putBool(com.islamshikhi.app.feature.adhan.AdhanPrefs.KEY_PROMPTED, true) }
+                    go(Routes.ADHAN_SETUP)
+                }) { androidx.compose.material3.Text("ব্যবস্থা করুন") }
+            },
+            dismissButton = {
+                androidx.compose.material3.TextButton(onClick = {
+                    promptScope.launch { appContainer.userData.putBool(com.islamshikhi.app.feature.adhan.AdhanPrefs.KEY_PROMPTED, true) }
+                }) { androidx.compose.material3.Text("পরে") }
+            }
+        )
+    }
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
@@ -113,7 +144,8 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
                     onOpenAyah = { chapter, ayah -> go(Routes.quranRead(chapter, ayah)) }
                 )
             }
-            composable(Routes.PRAYER) { PrayerScreen(onBack = back) }
+            composable(Routes.PRAYER) { PrayerScreen(onBack = back, onAdhanSetup = { go(Routes.ADHAN_SETUP) }) }
+            composable(Routes.ADHAN_SETUP) { com.islamshikhi.app.ui.adhan.AdhanSetupScreen(onBack = back) }
             composable(Routes.QIBLA) { QiblaScreen(onBack = back) }
             composable(Routes.MOSQUES) { MosqueScreen(onBack = back) }
             composable(Routes.UPDATE) { UpdateScreen(onBack = back) }
