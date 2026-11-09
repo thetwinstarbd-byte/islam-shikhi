@@ -223,6 +223,50 @@ def custom_tour():
         time.sleep(1)
 
 
+def english_tour():
+    """ইংরেজি ভাষা বেছে মেনু, সাহায্য কেন্দ্র ও 'ভুল জানান'-এর ছবি। না মিললে ফেল নয়, শুধু ছবি বাদ যায়।"""
+    try:
+        ensure_foreground()
+        tap_text("প্রোফাইল", required=False, timeout=8)
+        swipe_down(4)
+        shot("90-profile-bn")
+        if tap_prefix("সাহায্য কেন্দ্র", required=False, scrolls=3):
+            shot("90-help-bn")
+            if tap_prefix("ভুল জানান", required=False, scrolls=2):
+                shot("90-report-bn")
+                adb("shell", "input", "keyevent", "4")
+                time.sleep(1)
+            adb("shell", "input", "keyevent", "4")
+            time.sleep(1)
+        swipe_up(3)
+        if tap_prefix("English", required=False, scrolls=4):
+            time.sleep(2)
+            swipe_down(4)
+            shot("91-profile-en")
+            for tab in ["Home", "Worship", "Quran", "Assistant"]:
+                if tap_text(tab, required=False, timeout=5):
+                    time.sleep(1.5)
+                    shot("91-en-" + tab.lower())
+            tap_text("Profile", required=False, timeout=5)
+            swipe_down(4)
+            if tap_prefix("Help center", required=False, scrolls=3):
+                shot("91-help-en")
+                if tap_prefix("Report a mistake", required=False, scrolls=2):
+                    shot("91-report-en")
+                    adb("shell", "input", "keyevent", "4")
+                    time.sleep(1)
+                adb("shell", "input", "keyevent", "4")
+                time.sleep(1)
+            # পরের ধাপগুলোর জন্য আবার বাংলায় ফেরা
+            swipe_up(3)
+            tap_prefix("Bangla", required=False, scrolls=4)
+            time.sleep(1.5)
+    except SystemExit:
+        raise
+    except Exception as e:  # noqa: BLE001
+        print("ইংরেজি ছবি তোলা যায়নি:", e)
+
+
 def feature_tour():
     """সার্চ, রমযান মোড, কাযা, খতম, হজ্জ গাইড ও ব্যাকআপ পাতার ছবি। কোনোটি না মিললে টেস্ট ফেল হয় না, শুধু ছবি বাদ যায়।"""
     ensure_foreground()
@@ -445,6 +489,7 @@ def main():
     net_tour()
     feature_tour()
     custom_tour()
+    english_tour()
 
     extra_screenshots()
 
