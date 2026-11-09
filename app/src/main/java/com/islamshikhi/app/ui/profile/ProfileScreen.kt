@@ -31,7 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
+import com.islamshikhi.app.ui.i18n.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -84,6 +84,8 @@ fun ProfileScreen(
         MenuCard("কনটেন্ট আপডেট", "নতুন প্রবন্ধ ও লেখা আনুন (ইন্টারনেট লাগে)") { onNavigate(Routes.UPDATE) }
         MenuCard("অ্যাকাউন্ট ও ক্লাউড", "Google দিয়ে সাইন-ইন (ঐচ্ছিক), ক্লাউডে ব্যাকআপ") { onNavigate(Routes.ACCOUNT) }
         MenuCard("ব্যাকআপ ও রিস্টোর", "বুকমার্ক, নোট ও হিসাব ফাইলে রাখুন বা ফেরত আনুন", imageRes = com.islamshikhi.app.R.drawable.ic_backup) { onNavigate(Routes.BACKUP) }
+        MenuCard("সাহায্য কেন্দ্র", "ব্যবহারের সহজ টিপস ও সমস্যার সমাধান") { onNavigate(Routes.HELP) }
+        MenuCard("ভুল জানান", "কোনো ভুল পেলে লিখে বা ফাইল দিয়ে আমাদের জানান") { onNavigate(Routes.REPORT) }
         MenuCard("অ্যাপ সম্পর্কে", "গোপনীয়তা, কনটেন্টের যাচাই-অবস্থা, উৎস ও লাইসেন্স") { onNavigate(Routes.ABOUT) }
 
         SectionTitle("লিঙ্গ")

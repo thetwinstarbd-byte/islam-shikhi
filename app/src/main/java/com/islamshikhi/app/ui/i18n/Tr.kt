@@ -12,9 +12,9 @@ val LocalLang = staticCompositionLocalOf { AppLanguage.BANGLA }
  * কুরআন, দোয়া, প্রবন্ধ ও মাসআলার কনটেন্ট সব সময় বাংলায় থাকে।
  */
 @Composable
-fun tr(bn: String): String = if (LocalLang.current == AppLanguage.ENGLISH) trEn(bn) else bn
+fun tr(bn: String): String = trAuto(bn)
 
-fun trEn(bn: String): String = EnglishDict.map[bn] ?: bn
+fun trEn(bn: String): String = En.translate(bn)
 
 object EnglishDict {
     val map: Map<String, String> = mapOf(

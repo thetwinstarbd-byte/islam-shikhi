@@ -9,7 +9,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import com.islamshikhi.app.ui.i18n.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -65,6 +65,8 @@ import com.islamshikhi.app.ui.quran.QuranSearchScreen
 fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
     val navController = rememberNavController()
     val content = rememberContainer().content
+    val reportCtx = androidx.compose.ui.platform.LocalContext.current
+    androidx.compose.runtime.LaunchedEffect(Unit) { com.islamshikhi.app.data.report.ReportSender.retryPending(reportCtx) }
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
     val isHome = currentRoute == null || currentRoute == AppTab.HOME.route
@@ -157,6 +159,8 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
             composable(Routes.QADA) { com.islamshikhi.app.ui.ibadah.QadaScreen(onBack = back) }
             composable(Routes.KHATM) { com.islamshikhi.app.ui.ibadah.KhatmScreen(onBack = back) }
             composable(Routes.SEARCH) { com.islamshikhi.app.ui.search.SearchScreen(onBack = back, onNavigate = go) }
+            composable(Routes.HELP) { com.islamshikhi.app.ui.profile.HelpScreen(onBack = back, onNavigate = go) }
+            composable(Routes.REPORT) { com.islamshikhi.app.ui.profile.ReportScreen(onBack = back) }
             composable(Routes.ACCOUNT) { com.islamshikhi.app.ui.profile.AccountScreen(onBack = back) }
             composable(Routes.BACKUP) { com.islamshikhi.app.ui.profile.BackupScreen(onBack = back) }
             composable(Routes.QURAN_SEARCH) {

@@ -11,6 +11,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # "ভুল জানান"-এর ঠিকানা ও গোপন কোড (GitHub Secrets); না থাকলে অ্যাপে ফিচারটি 'শীঘ্রই আসছে' দেখায়
+      REPORT_URL: ${{ secrets.REPORT_URL }}
+      REPORT_TOKEN: ${{ secrets.REPORT_TOKEN }}
     steps:
       - name: কোড নামানো
         uses: actions/checkout@v4

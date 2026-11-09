@@ -19,6 +19,9 @@ android {
         targetSdk = 35
         versionCode = 2
         versionName = "0.9.0"
+        // "ভুল জানান"-এর ঠিকানা ও গোপন কোড; রিপোজিটরিতে লেখা থাকে না, CI-এর Secrets থেকে আসে
+        buildConfigField("String", "REPORT_URL", "\"${System.getenv("REPORT_URL") ?: ""}\"")
+        buildConfigField("String", "REPORT_TOKEN", "\"${System.getenv("REPORT_TOKEN") ?: ""}\"")
     }
 
     val keystorePath: String? = System.getenv("KEYSTORE_FILE")
@@ -55,6 +58,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
