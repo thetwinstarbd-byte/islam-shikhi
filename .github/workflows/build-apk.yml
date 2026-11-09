@@ -33,6 +33,11 @@ jobs:
 
       # বিল্ড ব্যর্থ হলে মূল Error লাইনগুলো অ্যানোটেশন হিসেবে দেখানো হয়,
       # যেন লগ খুলে কপি করতে না হয়।
+      - name: ভুল জানান সেটআপ আছে কি না (মান দেখানো হয় না)
+        run: |
+          if [[ "$REPORT_URL" == https://script.google.com/macros/s/* && "$REPORT_URL" == */exec ]]; then echo "::notice title=ভুল জানান::REPORT_URL ঠিক আছে"; else echo "::warning title=ভুল জানান::REPORT_URL নেই বা ভুল (https://script.google.com/macros/s/.../exec হতে হবে)"; fi
+          if [ -n "$REPORT_TOKEN" ]; then echo "::notice title=ভুল জানান::REPORT_TOKEN আছে"; else echo "::warning title=ভুল জানান::REPORT_TOKEN নেই"; fi
+
       - name: Debug APK বিল্ড
         run: |
           set +e
