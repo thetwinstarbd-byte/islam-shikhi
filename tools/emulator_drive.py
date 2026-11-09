@@ -238,8 +238,8 @@ def english_tour():
                 time.sleep(1)
             adb("shell", "input", "keyevent", "4")
             time.sleep(1)
-        swipe_up(3)
-        if tap_prefix("English", required=False, scrolls=4):
+        swipe_down(4)
+        if tap_prefix("English", required=False, scrolls=10):
             time.sleep(2)
             swipe_down(4)
             shot("91-profile-en")
@@ -258,8 +258,8 @@ def english_tour():
                 adb("shell", "input", "keyevent", "4")
                 time.sleep(1)
             # পরের ধাপগুলোর জন্য আবার বাংলায় ফেরা
-            swipe_up(3)
-            tap_prefix("Bangla", required=False, scrolls=4)
+            swipe_down(4)
+            tap_prefix("Bangla", required=False, scrolls=10)
             time.sleep(1.5)
     except SystemExit:
         raise
