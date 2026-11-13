@@ -91,7 +91,25 @@ fun MosqueScreen(onBack: () -> Unit) {
         }
     }
 
+    fun openMapsSearch() {
+        // ফোনের ম্যাপ অ্যাপ নিজেই আপনার অবস্থানের কাছের মসজিদ দেখায়; আমাদের অ্যাপ কিছু পাঠায় না।
+        val tries = listOf(
+            Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + Uri.encode("mosque"))),
+            Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/mosque+near+me"))
+        )
+        for (i in tries) {
+            try { context.startActivity(i); return } catch (_: Exception) { }
+        }
+        message = "ম্যাপ খোলার মতো অ্যাপ পাওয়া যায়নি।"
+    }
+
     ScreenColumn("কাছের মসজিদ", onBack) {
+        Button(onClick = { openMapsSearch() }) { Text("ম্যাপে কাছের মসজিদ দেখুন (গুগল ম্যাপ)") }
+        Text(
+            "এটি সবচেয়ে সহজ: ফোনের ম্যাপ অ্যাপ খুলে আপনার অবস্থানের আশপাশের মসজিদ দেখাবে।",
+            style = MaterialTheme.typography.bodySmall
+        )
+        SectionTitle("অ্যাপের ভেতরে খুঁজুন")
         SectionTitle("দূরত্ব")
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf(1, 3, 5).forEach { km ->
@@ -102,7 +120,7 @@ fun MosqueScreen(onBack: () -> Unit) {
                 )
             }
         }
-        Button(
+        OutlinedButton(
             onClick = {
                 if (LocationHelper.hasPermission(context)) scope.launch { searchHere() }
                 else permission.launch(Manifest.permission.ACCESS_COARSE_LOCATION)

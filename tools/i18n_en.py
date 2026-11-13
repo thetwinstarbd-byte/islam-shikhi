@@ -67,7 +67,7 @@ D = {
 "আজকের পড়া থেকে সরান":"Remove from today's reading","আজকের পড়া হিসেবে চিহ্নিত করুন":"Mark as today's reading","আজকের পড়ার লক্ষ্য":"Today's reading goal","আজকের স্ক্রিন টাইম (নিজে লিখুন)":"Today's screen time (enter yourself)",
 "আফ্রিকা, সিরিয়া, লেবানন, মালয়েশিয়ায় প্রচলিত":"Used in Africa, Syria, Lebanon and Malaysia","আবদুর রহমান আস-সুদাইস":"Abdurrahman As-Sudais","আবদুল বাসিত (মুরাত্তাল)":"Abdul Basit (Murattal)",
 "আবু বকর যাকারিয়া — QuranEnc.com, সংস্করণ ১.১.১":"Abu Bakr Zakaria — QuranEnc.com, version 1.1.1","আমার অ্যাকাউন্ট ও ক্লাউডের তথ্য মুছুন":"Delete my account and cloud data",
-"আমার বর্তমান অবস্থান থেকে খুঁজুন":"Search from my current location","আমার বর্তমান অবস্থান ব্যবহার করুন":"Use my current location",
+"আমার বর্তমান অবস্থান থেকে খুঁজুন":"Search from my current location","ম্যাপে কাছের মসজিদ দেখুন (গুগল ম্যাপ)":"See nearby mosques on the map (Google Maps)","এটি সবচেয়ে সহজ: ফোনের ম্যাপ অ্যাপ খুলে আপনার অবস্থানের আশপাশের মসজিদ দেখাবে।":"The easiest way: opens your phone's map app and shows mosques around your location.","অ্যাপের ভেতরে খুঁজুন":"Search inside the app","আমার বর্তমান অবস্থান ব্যবহার করুন":"Use my current location",
 "আমার মসজিদের আজান ও জামাতের সময় আমি নিজে বসাব।":"I will set my own mosque's adhan and jamaat times.","আমি চালু করেছি":"I have turned it on",
 "আয়াত ও হাদীসসহ বিস্তারিত আলোচনা":"Detailed discussion with verses and hadith","আয়াত • পড়তে চাপুন":"Verses • tap to read","আরও সেটিংস (নোটিফিকেশন, গণনা-পদ্ধতি)":"More settings (notifications, calculation method)",
 "আরও সেটিংস লুকান":"Hide more settings","আরব উপদ্বীপে প্রচলিত":"Used in the Arabian Peninsula","আরবি বা বাংলা শব্দ":"Arabic or Bangla word","আরাফার দিন (৯ জিলহজ)":"Day of Arafah (9 Dhul Hijjah)",
