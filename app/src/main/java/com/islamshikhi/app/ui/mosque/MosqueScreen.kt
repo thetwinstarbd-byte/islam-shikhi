@@ -97,6 +97,8 @@ fun MosqueScreen(onBack: () -> Unit) {
     fun openMapsSearch() {
         // ফোনের ম্যাপ অ্যাপ নিজেই আপনার অবস্থানের কাছের মসজিদ দেখায়; আমাদের অ্যাপ কিছু পাঠায় না।
         val tries = listOf(
+            // প্রথমে সরাসরি গুগল ম্যাপ অ্যাপে (থাকলে), না থাকলে যেকোনো ম্যাপ অ্যাপে
+            Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + Uri.encode(MAPS_QUERY))).setPackage("com.google.android.apps.maps"),
             Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + Uri.encode(MAPS_QUERY))),
             Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/" + Uri.encode("$MAPS_QUERY near me")))
         )
