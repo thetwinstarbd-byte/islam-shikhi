@@ -103,8 +103,11 @@ for e in S.E:
         sources.append(f"কুরআন, সূরা {chapters[ch]['bn']} ({ref})")
         out["checkNoteBn"] = "আরবি টেক্সট Tanzil থেকে হুবহু নেওয়া।"
         if e.get("meaning_from_quran"):
-            out["meaningBn"] = " ".join(bn_tr[str(ch)][v - 1]["text"] for v in range(a, b + 1))
-            out["meaningCreditBn"] = "অনুবাদ: আবু বকর জাকারিয়া (QuranEnc.com, সংস্করণ ১.১.১); কোনো পরিবর্তন ছাড়া।"
+            raw = " ".join(bn_tr[str(ch)][v - 1]["text"] for v in range(a, b + 1))
+            raw = re.sub(r"\s*\[[০-৯]+\]", "", raw)
+            raw = re.sub(r"\s+([,।;:?])", r"\1", raw)
+            out["meaningBn"] = raw
+            out["meaningCreditBn"] = "অনুবাদ: আবু বকর জাকারিয়া (QuranEnc.com, সংস্করণ ১.১.১); শুধু টীকার নম্বর বাদ দেওয়া হয়েছে, অনুবাদে অন্য কোনো পরিবর্তন নেই।"
         else:
             out["meaningBn"] = e["meaning"]
         if e.get("extra_h"):
