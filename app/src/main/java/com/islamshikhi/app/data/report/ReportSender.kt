@@ -23,6 +23,7 @@ object ReportSender {
         object Queued : Result()      // নেট নেই: ফোনে রাখা হলো, পরে নিজে পাঠাবে
         object NotConfigured : Result()
         data class Invalid(val reason: String) : Result()
+        data class Rejected(val reason: String) : Result()   // সার্ভার পেয়েছে কিন্তু নেয়নি
     }
 
     fun isConfigured(): Boolean = BuildConfig.REPORT_URL.startsWith("https://")
@@ -66,20 +67,42 @@ object ReportSender {
         return o.toString()
     }
 
-    private fun post(payload: String): Boolean {
-        val conn = URL(BuildConfig.REPORT_URL).openConnection() as HttpURLConnection
-        return try {
-            conn.requestMethod = "POST"
-            conn.connectTimeout = 15000
-            conn.readTimeout = 45000
-            conn.doOutput = true
-            conn.instanceFollowRedirects = true
-            conn.setRequestProperty("Content-Type", "text/plain; charset=utf-8")
-            conn.outputStream.use { it.write(payload.toByteArray(Charsets.UTF_8)) }
-            val body = (if (conn.responseCode in 200..299) conn.inputStream else conn.errorStream)
-                ?.bufferedReader(Charsets.UTF_8)?.use { it.readText() }.orEmpty()
-            conn.responseCode in 200..299 && body.trim().startsWith("ok")
-        } finally { conn.disconnect() }
+    /** সার্ভারের উত্তর ("ok", "denied", HTML…) ফেরত দেয়; নেটওয়ার্ক ব্যর্থ হলে IOException ছোঁড়ে। */
+    private fun post(payload: String): String {
+        var url = BuildConfig.REPORT_URL
+        var method = "POST"
+        // Apps Script প্রথমে 302 দিয়ে অন্য ঠিকানায় পাঠায় — সেটা নিজে হাতে অনুসরণ করা হয় (GET দিয়ে)
+        for (hop in 0 until 6) {
+            val conn = URL(url).openConnection() as HttpURLConnection
+            try {
+                conn.instanceFollowRedirects = false
+                conn.requestMethod = method
+                conn.connectTimeout = 15000
+                conn.readTimeout = 45000
+                if (method == "POST") {
+                    conn.doOutput = true
+                    conn.setRequestProperty("Content-Type", "text/plain; charset=utf-8")
+                    conn.outputStream.use { it.write(payload.toByteArray(Charsets.UTF_8)) }
+                }
+                val code = conn.responseCode
+                if (code in 301..303 || code == 307 || code == 308) {
+                    val loc = conn.getHeaderField("Location") ?: return "redirect-no-location"
+                    url = java.net.URL(java.net.URL(url), loc).toString()
+                    method = "GET"
+                    continue
+                }
+                val body = (if (code in 200..299) conn.inputStream else conn.errorStream)
+                    ?.bufferedReader(Charsets.UTF_8)?.use { it.readText() }.orEmpty().trim()
+                return if (code in 200..299) body else "http$code"
+            } finally { conn.disconnect() }
+        }
+        return "too-many-redirects"
+    }
+
+    private fun classify(body: String): String? = when {
+        body.startsWith("ok") -> null
+        body.startsWith("<") -> "access"      // সাধারণত লগইন-পাতা: ডিপ্লয়ে "Who has access = Anyone" নয়
+        else -> body.take(30)
     }
 
     private fun pendingDir(context: Context) = File(context.filesDir, "reports_pending").apply { mkdirs() }
@@ -93,8 +116,12 @@ object ReportSender {
             if (att == null) return@withContext Result.Invalid("file")
         }
         val payload = buildPayload(category, message, contact, att)
-        val ok = try { post(payload) } catch (e: Exception) { false }
-        if (ok) Result.Sent else {
+        val reply: String? = try { post(payload) } catch (e: Exception) { null }
+        if (reply != null) {
+            val bad = classify(reply)
+            return@withContext if (bad == null) Result.Sent else Result.Rejected(bad)
+        }
+        run {
             // ইন্টারনেট না থাকলে ফোনে রেখে দেওয়া হয়; পরের বার অ্যাপ খুললে নিজে থেকেই আবার পাঠানো হয়
             val pending = pendingDir(context)
             if ((pending.listFiles()?.size ?: 0) < 5) File(pending, "${System.currentTimeMillis()}.json").writeText(payload, Charsets.UTF_8)
@@ -107,7 +134,7 @@ object ReportSender {
         if (!isConfigured()) return@withContext
         val files = pendingDir(context).listFiles()?.sortedBy { it.name } ?: return@withContext
         for (f in files) {
-            val sent = try { post(f.readText(Charsets.UTF_8)) } catch (e: Exception) { false }
+            val sent = try { classify(post(f.readText(Charsets.UTF_8))) == null } catch (e: Exception) { false }
             if (sent) f.delete() else break
         }
     }

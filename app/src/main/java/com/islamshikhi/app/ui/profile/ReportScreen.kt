@@ -99,6 +99,7 @@ fun ReportScreen(onBack: () -> Unit) {
                     when (val r = ReportSender.send(context, category, message, contact, fileUri)) {
                         ReportSender.Result.Sent -> { status = "আপনার বার্তা পাঠানো হয়েছে।"; done = true }
                         ReportSender.Result.Queued -> { status = "এখন ইন্টারনেট পাওয়া যায়নি। বার্তাটি ফোনে রাখা হলো; ইন্টারনেট পেলে অ্যাপ নিজেই পাঠিয়ে দেবে।"; done = true }
+                        is ReportSender.Result.Rejected -> status = "বার্তা পাঠানো যায়নি (কারণ: ${r.reason})। একটু পরে আবার চেষ্টা করুন।"
                         ReportSender.Result.NotConfigured -> status = "এই সুবিধা এখনো চালু হয়নি।"
                         is ReportSender.Result.Invalid -> status = if (r.reason == "file") "ফাইলটি পড়া যায়নি বা বেশি বড়।" else "কিছু লিখুন বা একটি ফাইল দিন।"
                     }
