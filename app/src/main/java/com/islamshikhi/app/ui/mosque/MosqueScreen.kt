@@ -35,6 +35,9 @@ import com.islamshikhi.app.util.DateFormatBn
 import kotlinx.coroutines.launch
 
 /** কাছের মসজিদ: OpenStreetMap ডেটা থেকে তালিকা; চাপলে ফোনের ম্যাপ অ্যাপে খোলে। শুধু ব্যবহারকারী বাটন চাপলে ইন্টারনেট ব্যবহার হয়। */
+// গুগল ম্যাপে যা লিখে খোঁজা হবে (ক্যাটাগরি 'mosque' দিলে মসজিদ ও জামে মসজিদ দুটোই আসে)
+private const val MAPS_QUERY = "mosque"
+
 @Composable
 fun MosqueScreen(onBack: () -> Unit) {
     val context = LocalContext.current
@@ -94,8 +97,8 @@ fun MosqueScreen(onBack: () -> Unit) {
     fun openMapsSearch() {
         // ফোনের ম্যাপ অ্যাপ নিজেই আপনার অবস্থানের কাছের মসজিদ দেখায়; আমাদের অ্যাপ কিছু পাঠায় না।
         val tries = listOf(
-            Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + Uri.encode("mosque"))),
-            Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/mosque+near+me"))
+            Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + Uri.encode(MAPS_QUERY))),
+            Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/" + Uri.encode("$MAPS_QUERY near me")))
         )
         for (i in tries) {
             try { context.startActivity(i); return } catch (_: Exception) { }
