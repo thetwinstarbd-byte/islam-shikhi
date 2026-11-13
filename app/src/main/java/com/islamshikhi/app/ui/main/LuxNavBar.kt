@@ -55,7 +55,7 @@ fun LuxNavBar(currentRoute: String?, onSelect: (AppTab) -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             AppTab.entries.forEach { tab ->
-                val selected = currentRoute?.startsWith(tab.route) == true
+                val selected = currentRoute == tab.route || currentRoute?.startsWith(tab.route + "/") == true
                 val tint by animateColorAsState(
                     if (selected) Color(0xFF2A1E00) else idle,
                     label = "navTint"
@@ -69,7 +69,7 @@ fun LuxNavBar(currentRoute: String?, onSelect: (AppTab) -> Unit) {
                         .padding(vertical = 8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(tab.icon, contentDescription = null, tint = tint, modifier = Modifier.size(24.dp))
+                    Icon(tab.icon, contentDescription = null, tint = tint, modifier = Modifier.size(if (tab == AppTab.HOME) 30.dp else 24.dp))
                     Text(tr(tab.label), style = MaterialTheme.typography.labelSmall, color = tint, maxLines = 1)
                 }
             }

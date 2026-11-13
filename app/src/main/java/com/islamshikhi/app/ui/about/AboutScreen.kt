@@ -36,7 +36,7 @@ fun AboutScreen(onBack: () -> Unit, onNavigate: (String) -> Unit) {
         MenuCard("কুরআনের টেক্সট ও অনুবাদ", "Tanzil (আরবি) ও QuranEnc (বাংলা অনুবাদ)-এর শর্ত ও কপিরাইট নোটিশ") { onNavigate(Routes.QURAN_NOTICE) }
         InfoCard(
             "হাদীসের আরবি টেক্সট",
-            "সহীহ বুখারী ও সহীহ মুসলিমের আরবি লেখা ওপেন ডেটাসেট (AhmedBaset/hadith-json, sunnah.com থেকে সংগৃহীত) থেকে হুবহু নেওয়া।"
+            "সহীহ বুখারী ও সহীহ মুসলিমের আরবি লেখা AhmedBaset/hadith-json (sunnah.com থেকে সংগৃহীত) উৎস থেকে নেওয়া।"
         )
         InfoCard(
             "প্রোগ্রামিং লাইব্রেরি",

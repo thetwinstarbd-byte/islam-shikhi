@@ -20,24 +20,53 @@ data class Mosque(val name: String?, val lat: Double, val lon: Double, val dista
 object MosqueFinder {
     private val ENDPOINTS = listOf(
         "https://overpass-api.de/api/interpreter",
-        "https://overpass.kumi.systems/api/interpreter"
+        "https://overpass.private.coffee/api/interpreter",
+        "https://overpass.kumi.systems/api/interpreter",
+        "https://maps.mail.ru/osm/tools/overpass/api/interpreter"
     )
 
     suspend fun nearby(lat: Double, lon: Double, radiusM: Int): List<Mosque> = withContext(Dispatchers.IO) {
-        val query = "[out:json][timeout:20];(" +
-            "node[\"amenity\"=\"place_of_worship\"][\"religion\"=\"muslim\"](around:$radiusM,$lat,$lon);" +
-            "way[\"amenity\"=\"place_of_worship\"][\"religion\"=\"muslim\"](around:$radiusM,$lat,$lon);" +
-            ");out center 80;"
+        val around = "(around:$radiusM,$lat,$lon)"
+        val query = "[out:json][timeout:25];(" +
+            "nwr[\"amenity\"=\"place_of_worship\"][\"religion\"=\"muslim\"]$around;" +
+            "nwr[\"building\"=\"mosque\"]$around;" +
+            ");out center 150;"
         var last: Exception? = null
-        for (url in ENDPOINTS) {
-            try {
-                val raw = Http.postForm(url, "data", query)
-                return@withContext parse(String(raw, Charsets.UTF_8), lat, lon)
-            } catch (e: Exception) {
-                last = e
+        for (round in 0 until 2) {
+            for (url in ENDPOINTS) {
+                try {
+                    val raw = Http.postForm(url, "data", query)
+                    return@withContext parse(String(raw, Charsets.UTF_8), lat, lon)
+                } catch (e: Exception) {
+                    last = e
+                }
             }
+            kotlinx.coroutines.delay(2000)
+        }
+        // শেষ চেষ্টা: Nominatim (OpenStreetMap-এর খোঁজ সেবা)
+        try {
+            return@withContext viaNominatim(lat, lon, radiusM)
+        } catch (e: Exception) {
+            last = e
         }
         throw last ?: IllegalStateException("অজানা ত্রুটি")
+    }
+
+    private fun viaNominatim(lat: Double, lon: Double, radiusM: Int): List<Mosque> {
+        val dLat = radiusM / 111_000.0
+        val dLon = radiusM / (111_000.0 * cos(Math.toRadians(lat)).coerceAtLeast(0.2))
+        val box = "${lon - dLon},${lat + dLat},${lon + dLon},${lat - dLat}"
+        val url = "https://nominatim.openstreetmap.org/search?q=mosque&format=jsonv2&limit=40&bounded=1&viewbox=$box"
+        val arr = org.json.JSONArray(String(Http.get(url), Charsets.UTF_8))
+        val out = ArrayList<Mosque>()
+        for (i in 0 until arr.length()) {
+            val o = arr.getJSONObject(i)
+            val la = o.optString("lat").toDoubleOrNull() ?: continue
+            val lo = o.optString("lon").toDoubleOrNull() ?: continue
+            val name = o.optString("name", "").trim().ifEmpty { null }
+            out.add(Mosque(name, la, lo, distanceMeters(lat, lon, la, lo), null))
+        }
+        return out.filter { it.distanceM <= radiusM }.sortedBy { it.distanceM }.take(40)
     }
 
     internal fun parse(json: String, lat: Double, lon: Double): List<Mosque> {

@@ -90,8 +90,6 @@ for a in il["articles"]:
         errors.append(f"ilm {a['id']}: অজানা বিভাগ")
     if len(a["sections"]) < 4:
         errors.append(f"ilm {a['id']}: প্রবন্ধ খুব ছোট (কমপক্ষে ৪টি অংশ লাগবে)")
-    if not a["readingBn"]:
-        errors.append(f"ilm {a['id']}: 'আরও পড়ুন' তালিকা নেই")
     for sec in a["sections"]:
         if not sec["paragraphs"]:
             errors.append(f"ilm {a['id']}: '{sec['headingBn']}' অংশে লেখা নেই")

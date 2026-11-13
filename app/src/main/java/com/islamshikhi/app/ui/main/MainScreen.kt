@@ -76,11 +76,20 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
     if (!isHome) SystemBarIcons(darkIcons = !isDark)
 
     val openTab: (AppTab) -> Unit = { tab ->
-        navController.navigate(tab.route) {
-            // ট্যাব বদলালে ব্যাক-স্ট্যাক জমা না করে প্রতিটি ট্যাবের অবস্থা মনে রাখে।
-            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-            launchSingleTop = true
-            restoreState = true
+        // হোম: যেখানেই থাকুন, সব ভেতরের পাতা বাদ দিয়ে সরাসরি হোমে ফেরা
+        if (tab == AppTab.HOME) {
+            if (!navController.popBackStack(AppTab.HOME.route, inclusive = false)) {
+                navController.navigate(AppTab.HOME.route) {
+                    popUpTo(navController.graph.findStartDestination().id) { inclusive = false }
+                    launchSingleTop = true
+                }
+            }
+        } else {
+            // অন্য ট্যাব: ট্যাবের মূল পাতায় যাওয়া (ভেতরের পাতায় থাকলেও)
+            navController.navigate(tab.route) {
+                popUpTo(navController.graph.findStartDestination().id) { inclusive = false }
+                launchSingleTop = true
+            }
         }
     }
 

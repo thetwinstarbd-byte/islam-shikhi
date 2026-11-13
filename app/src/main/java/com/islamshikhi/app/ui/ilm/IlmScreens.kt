@@ -308,10 +308,6 @@ private fun ViewpointBlock(v: Viewpoint) {
 @Composable
 private fun ArticleTail(a: IlmArticle) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.padding(top = 8.dp)) {
-        if (a.readingBn.isNotEmpty()) {
-            LuxSectionTitle("আরও পড়ুন")
-            a.readingBn.forEach { Text("• $it", style = MaterialTheme.typography.bodyMedium) }
-        }
         Text(
             "কুরআনের আরবি: Tanzil Project (উসমানী)। বাংলা অনুবাদ: আবু বকর যাকারিয়া, QuranEnc.com। হাদীসের আরবি: সহীহ বুখারী ও সহীহ মুসলিম।",
             style = MaterialTheme.typography.bodySmall,

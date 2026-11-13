@@ -201,7 +201,6 @@ fun DuaCard(
             entry.suggestedCount?.let { Text("সংখ্যা: $it বার", style = MaterialTheme.typography.bodySmall) }
             Text("সূত্র: ${entry.sourceRef}", style = MaterialTheme.typography.bodySmall)
             entry.hadithGrade?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
-            entry.checkNoteBn?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
             entry.meaningCreditBn?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
             if (note.isNotBlank()) {
                 Text("আপনার নোট: $note", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)

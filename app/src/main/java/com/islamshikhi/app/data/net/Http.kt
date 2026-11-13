@@ -12,7 +12,7 @@ import java.net.URLEncoder
  * কল করতে হবে ব্যাকগ্রাউন্ড থ্রেড থেকে (Dispatchers.IO)।
  */
 object Http {
-    private const val USER_AGENT = "IslamShikhi/1.0 (Android app; contact via app repository)"
+    private const val USER_AGENT = "IslamShikhi/1.0 (https://github.com/thetwinstarbd-byte/islam-shikhi)"
 
     fun get(url: String, timeoutMs: Int = 15_000, maxBytes: Int = 8_000_000): ByteArray {
         require(url.startsWith("https://")) { "শুধু https অনুমোদিত" }
@@ -22,6 +22,7 @@ object Http {
             c.readTimeout = timeoutMs
             c.setRequestProperty("User-Agent", USER_AGENT)
             c.setRequestProperty("Accept-Encoding", "identity")
+            c.setRequestProperty("Accept", "application/json, */*")
             val code = c.responseCode
             if (code != 200) throw IOException("HTTP $code")
             return c.inputStream.use { readCapped(it, maxBytes) }
@@ -41,6 +42,7 @@ object Http {
             c.doOutput = true
             c.setRequestProperty("User-Agent", USER_AGENT)
             c.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=utf-8")
+            c.setRequestProperty("Accept", "application/json, */*")
             val body = (field + "=" + URLEncoder.encode(value, "UTF-8")).toByteArray(Charsets.UTF_8)
             c.outputStream.use { it.write(body) }
             val code = c.responseCode

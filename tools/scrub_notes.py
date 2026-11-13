@@ -6,7 +6,7 @@ masail/duas/kids/emergency/library JSON-এর পাঠকমুখী লে�
 """
 import json, os
 D = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "app", "src", "main", "assets", "content")
-CREDIT = "আরবি: সহীহ বুখারী/মুসলিমের ডেটাসেট (অপরিবর্তিত)।"
+CREDIT = "আরবি: সহীহ বুখারী ও সহীহ মুসলিম।"
 
 
 def walk(o):

@@ -545,7 +545,7 @@
 "সময়গুলো ফোনের বর্তমান সময় এলাকা (time zone) অনুযায়ী দেখানো হয়।": "Times are shown according to the phone's current time zone.",
 "সময়ের বাটনে চাপুন, ঘড়ি থেকে সময় বেছে নিন। বসাননি যেটা, সেটা ডিফল্ট থাকবে।": "Tap a time button and choose the time from the clock. Any you do not set will stay default.",
 "সম্মত, এগিয়ে যান": "Agree and continue",
-"সহীহ বুখারী ও সহীহ মুসলিমের আরবি লেখা ওপেন ডেটাসেট (AhmedBaset/hadith-json, sunnah.com থেকে সংগৃহীত) থেকে হুবহু নেওয়া।": "The Arabic text of Sahih al-Bukhari and Sahih Muslim is taken verbatim from an open dataset (AhmedBaset/hadith-json, collected from sunnah.com).",
+"সহীহ বুখারী ও সহীহ মুসলিমের আরবি লেখা AhmedBaset/hadith-json (sunnah.com থেকে সংগৃহীত) উৎস থেকে নেওয়া।": "The Arabic text of Sahih al-Bukhari and Sahih Muslim is taken from the source AhmedBaset/hadith-json (collected from sunnah.com).",
 "সাইন-আউট": "Sign out",
 "সাইন-আউট করা যায়নি।": "Could not sign out.",
 "সাইন-আউট হয়েছে।": "Signed out.",

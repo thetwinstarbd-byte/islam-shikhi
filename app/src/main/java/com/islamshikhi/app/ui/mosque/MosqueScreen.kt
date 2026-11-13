@@ -57,7 +57,7 @@ fun MosqueScreen(onBack: () -> Unit) {
                 if (list.isEmpty()) message = "এই ব্যাসার্ধে কোনো মসজিদ পাওয়া যায়নি। দূরত্ব বাড়িয়ে চেষ্টা করুন।"
             } catch (e: Exception) {
                 results = null
-                message = "মসজিদের তালিকা আনা যায়নি — ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।"
+                message = "মসজিদের তালিকা আনা যায়নি — ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন। (${e.message ?: e.javaClass.simpleName})"
             }
             busy = false
         }
