@@ -95,6 +95,14 @@ private fun ReaderContent(chapter: Chapter, text: ChapterText, startAyah: Int) {
     val container = rememberContainer()
     val scope = rememberCoroutineScope()
     val today = remember { LocalDate.now() }
+    val arabicSp by container.userData.int(UserKeys.QURAN_ARABIC_SP, UserKeys.QURAN_ARABIC_SP_DEFAULT)
+        .collectAsState(initial = UserKeys.QURAN_ARABIC_SP_DEFAULT)
+    val keepOn by container.userData.bool(UserKeys.KEEP_SCREEN_ON, false).collectAsState(initial = false)
+    val view = androidx.compose.ui.platform.LocalView.current
+    androidx.compose.runtime.DisposableEffect(keepOn) {
+        view.keepScreenOn = keepOn
+        onDispose { view.keepScreenOn = false }
+    }
 
     val bookmarks by container.userData.bookmarks.collectAsState(initial = emptySet())
     val notes by container.userData.notes.collectAsState(initial = emptyMap())
@@ -182,12 +190,13 @@ private fun ReaderContent(chapter: Chapter, text: ChapterText, startAyah: Int) {
             }
         }
         text.bismillah?.let { b ->
-            item { ArabicText(b, sizeSp = 28) }
+            item { ArabicText(b, sizeSp = arabicSp) }
         }
         itemsIndexed(text.ayahs, key = { _, a -> a.number }) { _, a ->
             val key = UserKeys.ayahKey(chapter.id, a.number)
             AyahCard(
                 ayah = a,
+                arabicSp = arabicSp,
                 bookmarked = key in bookmarks,
                 read = "${chapter.id}:${a.number}" in readToday,
                 note = notes[key].orEmpty(),
@@ -222,6 +231,7 @@ private fun ReaderContent(chapter: Chapter, text: ChapterText, startAyah: Int) {
 @Composable
 private fun AyahCard(
     ayah: Ayah,
+    arabicSp: Int,
     bookmarked: Boolean,
     read: Boolean,
     note: String,
@@ -275,7 +285,7 @@ private fun AyahCard(
                     )
                 }
             }
-            ArabicText(ayah.arabic, sizeSp = 28)
+            ArabicText(ayah.arabic, sizeSp = arabicSp)
             Text(ayah.bengali, style = MaterialTheme.typography.bodyLarge)
             if (ayah.footnote != null) {
                 TextButton(onClick = { showFootnote = !showFootnote }) {

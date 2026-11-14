@@ -22,6 +22,11 @@ object UserKeys {
     const val DAILY_VERSE_ON = "daily_verse_on"
     const val DAILY_VERSE_MIN = "daily_verse_min"
 
+    /** কুরআন পড়ার পাতা: আরবি লেখার আকার (sp) ও স্ক্রিন জাগিয়ে রাখা। */
+    const val QURAN_ARABIC_SP = "quran_arabic_sp"
+    const val QURAN_ARABIC_SP_DEFAULT = 28
+    const val KEEP_SCREEN_ON = "keep_screen_on"
+
     // বুকমার্ক ও নোটের কী। বিদ্যমান DuaScreen "dua:ID" আকারই ব্যবহার করে।
     fun duaKey(id: String) = "dua:$id"
     fun ayahKey(chapter: Int, ayah: Int) = "ayah:$chapter:$ayah"

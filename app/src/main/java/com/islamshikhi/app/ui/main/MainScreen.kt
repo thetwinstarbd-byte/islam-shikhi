@@ -271,7 +271,8 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
                 )
             }
 
-            composable(AppTab.PROFILE.route) { ProfileScreen(profile = profile, onResetData = onResetData, onNavigate = go) }
+            composable(AppTab.PROFILE.route) { ProfileScreen(profile = profile, onNavigate = go) }
+            composable(Routes.SETTINGS) { com.islamshikhi.app.ui.profile.SettingsScreen(profile = profile, onResetData = onResetData, onBack = back, onNavigate = go) }
         }
     }
 }
