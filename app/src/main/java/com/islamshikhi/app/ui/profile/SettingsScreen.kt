@@ -132,10 +132,6 @@ fun SettingsScreen(
             scope.launch { container.userData.putBool(UserKeys.TASBIH_HAPTIC, on) }
         }
 
-        SectionTitle("নামাজ")
-        MenuCard("নামাজের সময় ও গণনা", "স্থান, গণনা-পদ্ধতি ও আসরের হিসাব") { onNavigate(Routes.PRAYER) }
-        MenuCard("আজান ও নামাজের সতর্কতা", "আজানের সুর, ব্যাটারি ও অ্যালার্মের অনুমতি ঠিক করা") { onNavigate(Routes.ADHAN_SETUP) }
-
         SectionTitle("নোটিফিকেশন")
         Row(
             modifier = Modifier.fillMaxWidth(),

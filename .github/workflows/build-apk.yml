@@ -38,6 +38,22 @@ jobs:
           if [[ "$REPORT_URL" == https://script.google.com/macros/s/* && "$REPORT_URL" == */exec ]]; then echo "::notice title=ভুল জানান::REPORT_URL ঠিক আছে"; else echo "::warning title=ভুল জানান::REPORT_URL নেই বা ভুল (https://script.google.com/macros/s/.../exec হতে হবে)"; fi
           if [ -n "$REPORT_TOKEN" ]; then echo "::notice title=ভুল জানান::REPORT_TOKEN আছে"; else echo "::warning title=ভুল জানান::REPORT_TOKEN নেই"; fi
 
+      # Firebase: GOOGLE_SERVICES_JSON secret-এ পুরো google-services.json বসানো থাকলে সেটি দিয়ে ফাইল বানানো হয়
+      - name: Firebase কনফিগ (থাকলে)
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          if [ -n "$GOOGLE_SERVICES_JSON" ]; then
+            printf '%s' "$GOOGLE_SERVICES_JSON" > app/google-services.json
+            if python3 -c "import json;d=json.load(open('app/google-services.json'));assert d['client'][0]['client_info']['android_client_info']['package_name']=='com.islamshikhi.app'"; then
+              echo "::notice title=Firebase::google-services.json ঠিক আছে"
+            else
+              echo "::warning title=Firebase::google-services.json ভুল (package name com.islamshikhi.app হতে হবে)"; rm -f app/google-services.json
+            fi
+          else
+            echo "::notice title=Firebase::GOOGLE_SERVICES_JSON secret নেই — ক্লাউড সুবিধা বন্ধ থাকবে"
+          fi
+
       - name: Debug APK বিল্ড
         run: |
           set +e

@@ -24,6 +24,17 @@ android {
         buildConfigField("String", "REPORT_TOKEN", "\"${System.getenv("REPORT_TOKEN") ?: ""}\"")
     }
 
+    // সবসময় একই ডিবাগ কী দিয়ে সই: তাহলে SHA-1 স্থির থাকে এবং Firebase-এর Google সাইন-ইন চলে।
+    // (এটি শুধু ডিবাগ কী — পাবলিক রিপোজিটরিতে রাখা নিরাপদ; রিলিজ কী কখনোই নয়।)
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     val keystorePath: String? = System.getenv("KEYSTORE_FILE")
     if (keystorePath != null) {
         signingConfigs {
