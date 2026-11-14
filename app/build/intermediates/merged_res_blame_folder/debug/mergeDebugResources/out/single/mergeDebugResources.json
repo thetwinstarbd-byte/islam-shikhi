@@ -1,0 +1,146 @@
+[
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_update.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_update.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/font_hind_siliguri_bold.ttf.flat",
+        "source": "com.islamshikhi.app-main-68:/font/hind_siliguri_bold.ttf"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/font_amiri_quran_regular.ttf.flat",
+        "source": "com.islamshikhi.app-main-68:/font/amiri_quran_regular.ttf"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_masail.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_masail.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_search.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_search.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_kids.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_kids.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/raw_adhan_normal.mp3.flat",
+        "source": "com.islamshikhi.app-main-68:/raw/adhan_normal.mp3"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_quran.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_quran.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/layout_widget_next_prayer.xml.flat",
+        "source": "com.islamshikhi.app-main-68:/layout/widget_next_prayer.xml"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_dua_hands.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/dua_hands.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_qibla.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_qibla.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_ramadan.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_ramadan.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_prayer.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_prayer.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/raw_adhan_fajr.mp3.flat",
+        "source": "com.islamshikhi.app-main-68:/raw/adhan_fajr.mp3"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_emergency.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_emergency.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_memorize.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_memorize.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/font_hind_siliguri_semibold.ttf.flat",
+        "source": "com.islamshikhi.app-main-68:/font/hind_siliguri_semibold.ttf"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_zakat.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_zakat.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/xml_widget_next_prayer_info.xml.flat",
+        "source": "com.islamshikhi.app-main-68:/xml/widget_next_prayer_info.xml"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_khatm.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_khatm.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.islamshikhi.app-main-68:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/font_hind_siliguri_medium.ttf.flat",
+        "source": "com.islamshikhi.app-main-68:/font/hind_siliguri_medium.ttf"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_habits.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_habits.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_backup.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_backup.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_hajj.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_hajj.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_bookmark.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_bookmark.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_qada.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_qada.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable_widget_bg.xml.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable/widget_bg.xml"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_tasbih.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_tasbih.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/font_hind_siliguri_regular.ttf.flat",
+        "source": "com.islamshikhi.app-main-68:/font/hind_siliguri_regular.ttf"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_quiz.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_quiz.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_amal.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_amal.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_ilm.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_ilm.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_calendar.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_calendar.png"
+    },
+    {
+        "merged": "com.islamshikhi.app-debug-66:/drawable-nodpi_ic_mosque.png.flat",
+        "source": "com.islamshikhi.app-main-68:/drawable-nodpi/ic_mosque.png"
+    }
+]
