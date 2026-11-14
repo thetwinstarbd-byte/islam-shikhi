@@ -97,6 +97,7 @@ private fun ReaderContent(chapter: Chapter, text: ChapterText, startAyah: Int) {
     val today = remember { LocalDate.now() }
     val arabicSp by container.userData.int(UserKeys.QURAN_ARABIC_SP, UserKeys.QURAN_ARABIC_SP_DEFAULT)
         .collectAsState(initial = UserKeys.QURAN_ARABIC_SP_DEFAULT)
+    val showTranslation by container.userData.bool(UserKeys.SHOW_TRANSLATION, true).collectAsState(initial = true)
     val keepOn by container.userData.bool(UserKeys.KEEP_SCREEN_ON, false).collectAsState(initial = false)
     val view = androidx.compose.ui.platform.LocalView.current
     androidx.compose.runtime.DisposableEffect(keepOn) {
@@ -197,6 +198,7 @@ private fun ReaderContent(chapter: Chapter, text: ChapterText, startAyah: Int) {
             AyahCard(
                 ayah = a,
                 arabicSp = arabicSp,
+                showTranslation = showTranslation,
                 bookmarked = key in bookmarks,
                 read = "${chapter.id}:${a.number}" in readToday,
                 note = notes[key].orEmpty(),
@@ -232,6 +234,7 @@ private fun ReaderContent(chapter: Chapter, text: ChapterText, startAyah: Int) {
 private fun AyahCard(
     ayah: Ayah,
     arabicSp: Int,
+    showTranslation: Boolean,
     bookmarked: Boolean,
     read: Boolean,
     note: String,
@@ -286,7 +289,7 @@ private fun AyahCard(
                 }
             }
             ArabicText(ayah.arabic, sizeSp = arabicSp)
-            Text(ayah.bengali, style = MaterialTheme.typography.bodyLarge)
+            if (showTranslation) Text(ayah.bengali, style = MaterialTheme.typography.bodyLarge)
             if (ayah.footnote != null) {
                 TextButton(onClick = { showFootnote = !showFootnote }) {
                     Text(if (showFootnote) "টীকা লুকান" else "টীকা দেখুন")

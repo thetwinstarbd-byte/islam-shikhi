@@ -26,7 +26,10 @@ object DateFormatBn {
     /** সংখ্যার ইংরেজি অঙ্ক বাংলা অঙ্কে বদলায়। */
     fun digits(number: Int): String = digits(number.toString())
 
-    fun digits(text: String): String =
+    /** সেটিংস থেকে চালু হলে অঙ্ক ইংরেজিই থাকে (1,2,3)। */
+    @Volatile var englishDigits: Boolean = false
+
+    fun digits(text: String): String = if (englishDigits) text else
         text.map { if (it in '0'..'9') bnDigits[it - '0'] else it }.joinToString("")
 
     /** যেমন: "সোমবার, ২৭ অক্টোবর ২০২৫" */

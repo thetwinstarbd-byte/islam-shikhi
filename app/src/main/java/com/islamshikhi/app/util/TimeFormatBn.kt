@@ -16,7 +16,11 @@ object TimeFormatBn {
         else -> "রাত"
     }
 
+    /** সেটিংস থেকে চালু হলে ২৪ ঘণ্টার সময় (যেমন 16:45)। */
+    @Volatile var use24h: Boolean = false
+
     fun format(hour24: Int, minute: Int): String {
+        if (use24h) return "${DateFormatBn.digits("%02d".format(hour24))}:${DateFormatBn.digits("%02d".format(minute))}"
         val h12 = when (val h = hour24 % 12) { 0 -> 12 else -> h }
         return "${period(hour24)} ${DateFormatBn.digits(h12)}:${DateFormatBn.digits("%02d".format(minute))}"
     }

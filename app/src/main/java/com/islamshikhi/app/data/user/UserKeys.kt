@@ -26,6 +26,10 @@ object UserKeys {
     const val QURAN_ARABIC_SP = "quran_arabic_sp"
     const val QURAN_ARABIC_SP_DEFAULT = 28
     const val KEEP_SCREEN_ON = "keep_screen_on"
+    const val SHOW_TRANSLATION = "show_translation"      // আয়াতের বাংলা অনুবাদ দেখানো (ডিফল্ট চালু)
+    const val TASBIH_HAPTIC = "tasbih_haptic"            // তাসবিহে কম্পন (ডিফল্ট চালু)
+    const val DIGITS_ENGLISH = "digits_english"          // ১২৩ এর বদলে 123
+    const val TIME_24H = "time_24h"                      // ২৪ ঘণ্টার সময়
 
     // বুকমার্ক ও নোটের কী। বিদ্যমান DuaScreen "dua:ID" আকারই ব্যবহার করে।
     fun duaKey(id: String) = "dua:$id"

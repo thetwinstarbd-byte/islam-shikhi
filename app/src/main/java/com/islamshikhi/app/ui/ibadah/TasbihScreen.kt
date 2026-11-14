@@ -34,6 +34,8 @@ fun TasbihScreen(onBack: () -> Unit) {
     val ud = container.userData
     val scope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
+    val hapticOn by ud.bool(com.islamshikhi.app.data.user.UserKeys.TASBIH_HAPTIC, true)
+        .collectAsState(initial = true)
     val today = remember { LocalDate.now().toString() }
 
     val count by ud.int("tasbih_count").collectAsState(initial = 0)
@@ -58,7 +60,7 @@ fun TasbihScreen(onBack: () -> Unit) {
                     ud.incrementInt("tasbih_total:$today")
                 }
                 // লক্ষ্যে পৌঁছালে একটু জোরে কম্পন
-                haptic.performHapticFeedback(
+                if (hapticOn) haptic.performHapticFeedback(
                     if ((count + 1) % target == 0) HapticFeedbackType.LongPress
                     else HapticFeedbackType.TextHandleMove
                 )

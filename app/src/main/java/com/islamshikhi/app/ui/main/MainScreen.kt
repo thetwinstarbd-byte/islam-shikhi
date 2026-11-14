@@ -67,6 +67,14 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
     val content = rememberContainer().content
     val reportCtx = androidx.compose.ui.platform.LocalContext.current
     androidx.compose.runtime.LaunchedEffect(Unit) { com.islamshikhi.app.data.report.ReportSender.retryPending(reportCtx) }
+    // প্রদর্শনের সেটিংস (অঙ্ক ও সময়ের ধরন) অ্যাপ জুড়ে প্রয়োগ
+    val prefsStore = rememberContainer().userData
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        prefsStore.bool(com.islamshikhi.app.data.user.UserKeys.DIGITS_ENGLISH, false).collect { com.islamshikhi.app.util.DateFormatBn.englishDigits = it }
+    }
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        prefsStore.bool(com.islamshikhi.app.data.user.UserKeys.TIME_24H, false).collect { com.islamshikhi.app.util.TimeFormatBn.use24h = it }
+    }
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
     val isHome = currentRoute == null || currentRoute == AppTab.HOME.route

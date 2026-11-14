@@ -97,7 +97,21 @@ fun SettingsScreen(
         )
         Text("নমুনা লেখা: আসসালামু আলাইকুম", style = MaterialTheme.typography.bodyLarge)
 
+        SectionTitle("প্রদর্শন")
+        val digitsEn by container.userData.bool(UserKeys.DIGITS_ENGLISH, false).collectAsState(initial = false)
+        val time24 by container.userData.bool(UserKeys.TIME_24H, false).collectAsState(initial = false)
+        SettingSwitch("ইংরেজি অঙ্ক (1, 2, 3)", "বাংলা অঙ্কের (১, ২, ৩) বদলে ইংরেজি অঙ্কে তারিখ, সময় ও সংখ্যা দেখাবে", digitsEn) { on ->
+            scope.launch { container.userData.putBool(UserKeys.DIGITS_ENGLISH, on) }
+        }
+        SettingSwitch("২৪ ঘণ্টার সময়", "\"বিকাল ৪:৪৫\"-এর বদলে \"16:45\" দেখাবে", time24) { on ->
+            scope.launch { container.userData.putBool(UserKeys.TIME_24H, on) }
+        }
+
         SectionTitle("কুরআন পড়া")
+        val showTr by container.userData.bool(UserKeys.SHOW_TRANSLATION, true).collectAsState(initial = true)
+        SettingSwitch("বাংলা অনুবাদ দেখান", "বন্ধ করলে কুরআন পড়ার পাতায় শুধু আরবি আয়াত দেখাবে", showTr) { on ->
+            scope.launch { container.userData.putBool(UserKeys.SHOW_TRANSLATION, on) }
+        }
         Text("আরবি লেখার আকার", style = MaterialTheme.typography.bodyMedium)
         Slider(
             value = arabicSp,
@@ -111,6 +125,12 @@ fun SettingsScreen(
             "কুরআন পড়ার পাতায় থাকলে ফোনের স্ক্রিন নিজে থেকে বন্ধ হবে না",
             keepOn
         ) { on -> scope.launch { container.userData.putBool(UserKeys.KEEP_SCREEN_ON, on) } }
+
+        SectionTitle("তাসবিহ")
+        val hapticOn by container.userData.bool(UserKeys.TASBIH_HAPTIC, true).collectAsState(initial = true)
+        SettingSwitch("গোনার সময় কম্পন", "প্রতিবার চাপলে হালকা কম্পন; লক্ষ্যে পৌঁছালে একটু জোরে", hapticOn) { on ->
+            scope.launch { container.userData.putBool(UserKeys.TASBIH_HAPTIC, on) }
+        }
 
         SectionTitle("নামাজ")
         MenuCard("নামাজের সময় ও গণনা", "স্থান, গণনা-পদ্ধতি ও আসরের হিসাব") { onNavigate(Routes.PRAYER) }
@@ -170,7 +190,6 @@ fun SettingsScreen(
         SectionTitle("কনটেন্ট ও ডেটা")
         MenuCard("কনটেন্ট আপডেট", "নতুন প্রবন্ধ ও লেখা আনুন (ইন্টারনেট লাগে)") { onNavigate(Routes.UPDATE) }
         MenuCard("ব্যাকআপ ও রিস্টোর", "বুকমার্ক, নোট ও হিসাব ফাইলে রাখুন বা ফেরত আনুন") { onNavigate(Routes.BACKUP) }
-        MenuCard("অ্যাকাউন্ট ও ক্লাউড", "Google দিয়ে সাইন-ইন (ঐচ্ছিক), ক্লাউডে ব্যাকআপ") { onNavigate(Routes.ACCOUNT) }
 
         SectionTitle("ডিফল্টে ফেরান")
         Text("ভাষা, থিম, লেখার আকার ও কুরআন পড়ার সেটিংস আগের অবস্থায় ফিরবে। আপনার নোট, বুকমার্ক ও হিসাব মুছবে না।", style = MaterialTheme.typography.bodySmall)
@@ -198,6 +217,10 @@ fun SettingsScreen(
                     scope.launch {
                         container.userData.putInt(UserKeys.QURAN_ARABIC_SP, UserKeys.QURAN_ARABIC_SP_DEFAULT)
                         container.userData.putBool(UserKeys.KEEP_SCREEN_ON, false)
+                        container.userData.putBool(UserKeys.SHOW_TRANSLATION, true)
+                        container.userData.putBool(UserKeys.TASBIH_HAPTIC, true)
+                        container.userData.putBool(UserKeys.DIGITS_ENGLISH, false)
+                        container.userData.putBool(UserKeys.TIME_24H, false)
                     }
                 }) { Text("ফেরান") }
             },

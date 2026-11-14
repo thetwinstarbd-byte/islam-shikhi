@@ -78,9 +78,7 @@ fun ProfileScreen(
         MenuCard("আমল ট্র্যাকার", "প্রতিদিনের আমল ও সাপ্তাহিক অগ্রগতি") { onNavigate(Routes.TRACKER) }
         MenuCard("অভ্যাস ও মনোযোগ", "ব্যক্তিগত লক্ষ্য, স্ক্রিন টাইমের নোট ও সাপ্তাহিক সারাংশ") { onNavigate(Routes.HABITS) }
         MenuCard("সেটিংস", "ভাষা, থিম, লেখার আকার, নোটিফিকেশন, কুরআন পড়ার ও আরও অনেক কিছু") { onNavigate(Routes.SETTINGS) }
-        MenuCard("কনটেন্ট আপডেট", "নতুন প্রবন্ধ ও লেখা আনুন (ইন্টারনেট লাগে)") { onNavigate(Routes.UPDATE) }
         MenuCard("অ্যাকাউন্ট ও ক্লাউড", "Google দিয়ে সাইন-ইন (ঐচ্ছিক), ক্লাউডে ব্যাকআপ") { onNavigate(Routes.ACCOUNT) }
-        MenuCard("ব্যাকআপ ও রিস্টোর", "বুকমার্ক, নোট ও হিসাব ফাইলে রাখুন বা ফেরত আনুন", imageRes = com.islamshikhi.app.R.drawable.ic_backup) { onNavigate(Routes.BACKUP) }
         MenuCard("সাহায্য কেন্দ্র", "ব্যবহারের সহজ টিপস ও সমস্যার সমাধান") { onNavigate(Routes.HELP) }
         MenuCard("ভুল জানান", "কোনো ভুল পেলে লিখে বা ফাইল দিয়ে আমাদের জানান") { onNavigate(Routes.REPORT) }
         MenuCard("অ্যাপ সম্পর্কে", "গোপনীয়তা, কনটেন্টের যাচাই-অবস্থা, উৎস ও লাইসেন্স") { onNavigate(Routes.ABOUT) }
