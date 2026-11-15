@@ -78,6 +78,17 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
         com.islamshikhi.app.data.cloud.AppRemote.setPushEnabled(reportCtx, true)
         com.islamshikhi.app.data.cloud.AppRemote.refresh(reportCtx)
     }
+    // নতুন কনটেন্ট চুপচাপ নামানো: অ্যাপ খুললে, শেষ চেকের ১২ ঘণ্টা পর। শুধু বদলানো ফাইল নামে; ব্যর্থ হলে কিছুই বদলায় না।
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        val key = com.islamshikhi.app.data.user.UserKeys.CONTENT_CHECKED_AT
+        val last = prefsStore.string(key).first()?.toLongOrNull() ?: 0L
+        val now = System.currentTimeMillis()
+        if (now - last > 12L * 3600_000L) {
+            val r = com.islamshikhi.app.data.update.ContentUpdater.check(reportCtx)
+            if (r !is com.islamshikhi.app.data.update.UpdateResult.Failed) prefsStore.putString(key, now.toString())
+            if (r is com.islamshikhi.app.data.update.UpdateResult.Applied) content.clearCaches()
+        }
+    }
     // Android ১৩+: নোটিফিকেশনের অনুমতি প্রথমবার একবার চাওয়া হয়
     val notifPerm = androidx.activity.compose.rememberLauncherForActivityResult(
         androidx.activity.result.contract.ActivityResultContracts.RequestPermission()
@@ -289,6 +300,25 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
                     loader = { content.library() },
                     onBack = back,
                     onOpen = { go(Routes.library(it)) }
+                )
+            }
+            composable(Routes.BOOKS) {
+                InfoListScreen(
+                    title = "বই ও লেখক",
+                    intro = "লেখকভিত্তিক বই ও তার অধ্যায়সমূহ।",
+                    warning = null,
+                    loader = { content.books() },
+                    onBack = back,
+                    onOpen = { go(Routes.books(it)) }
+                )
+            }
+            composable(Routes.BOOKS_DETAIL, arguments = listOf(navArgument("id") { type = NavType.StringType })) { entry ->
+                InfoDetailScreen(
+                    id = entry.arguments?.getString("id").orEmpty(),
+                    headerTitle = "বই",
+                    loader = { content.books() },
+                    bookmarkKey = UserKeys::bookKey,
+                    onBack = back
                 )
             }
             composable(Routes.LIBRARY_DETAIL, arguments = listOf(navArgument("id") { type = NavType.StringType })) { entry ->

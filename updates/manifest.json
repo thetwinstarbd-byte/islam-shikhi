@@ -4,15 +4,15 @@
  "files": {
   "ilm": {
    "path": "ilm.json",
-   "sha256": "fc80a97a622731d7e7863a70b9316c9c521f6922e2a31146fea0d30f52191db9"
+   "sha256": "42fbbd73320619351245bce5130010d3ef8b64ce9f7eb76d00e6c53cd0f7fc31"
   },
   "masail": {
    "path": "masail.json",
-   "sha256": "63cb4aa6d82d1bf09286bda5a4f38257de7f9963aa9dc114cb66020368a1dded"
+   "sha256": "772b2b14b8f1ef354f6a8d740e9ee109c801c2b86e8cd5cb02d516d1ab37305b"
   },
   "duas": {
    "path": "duas.json",
-   "sha256": "30779b642a5c70ebc065a17179e4eb1d8c5d88b20e67109e074368a9e0ac4a2a"
+   "sha256": "a78bd07dd9c7f2e07e059cc5d0dedff55645850b665b63fe4284c30c81dff860"
   },
   "quiz": {
    "path": "quiz.json",
@@ -29,6 +29,10 @@
   "library": {
    "path": "library.json",
    "sha256": "fcd275cd9c73f98dd2c11423f0dd918b0677cc68ac6505b58b4e5d4aed0b2816"
+  },
+  "books": {
+   "path": "books.json",
+   "sha256": "ebaf3850e5fcdfa75ea2a3559a19ef6236280ccdee086efea0c63fdb36c96ed0"
   }
  }
 }

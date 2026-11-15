@@ -7,7 +7,7 @@ import hashlib, json, os, shutil, sys
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src = os.path.join(root, "app/src/main/assets/content")
 out = os.path.join(root, "updates")
-names = ["ilm", "masail", "duas", "quiz", "kids", "emergency", "library"]
+names = ["ilm", "masail", "duas", "quiz", "kids", "emergency", "library", "books"]
 mpath = os.path.join(out, "manifest.json")
 ver = json.load(open(mpath))["version"] if os.path.exists(mpath) else 1
 if "--bump" in sys.argv: ver += 1

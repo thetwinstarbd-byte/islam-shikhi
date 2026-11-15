@@ -21,6 +21,7 @@ class ContentRepository(private val context: Context) {
     private var emergencyCache: InfoData? = null
     private var libraryCache: InfoData? = null
     private var kidsCache: InfoData? = null
+    private var booksCache: InfoData? = null
     private var quizCache: List<QuizQuestion>? = null
     private var ilmCache: IlmData? = null
     private var searchIndex: List<Pair<Int, List<String>>>? = null   // (সূরা, আয়াতের হরকতহীন আরবি)
@@ -177,6 +178,17 @@ class ContentRepository(private val context: Context) {
     suspend fun library(): InfoData = lock.withLock {
         libraryCache ?: withContext(Dispatchers.IO) { parseInfo(JSONObject(readAsset("content/library.json"))) }
             .also { libraryCache = it }
+    }
+
+    suspend fun books(): InfoData = lock.withLock {
+        booksCache ?: withContext(Dispatchers.IO) { parseInfo(JSONObject(readAsset("content/books.json"))) }
+            .also { booksCache = it }
+    }
+
+    /** নতুন কনটেন্ট নামার পর পুরোনো ক্যাশ ফেলে দেয়, যাতে পরের পাতা খুললেই নতুন লেখা আসে। */
+    suspend fun clearCaches() = lock.withLock {
+        duaCache = null; masailCache = null; emergencyCache = null; libraryCache = null
+        kidsCache = null; booksCache = null; quizCache = null; ilmCache = null
     }
 
     suspend fun kids(): InfoData = lock.withLock {

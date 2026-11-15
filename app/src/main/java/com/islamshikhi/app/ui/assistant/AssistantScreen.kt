@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.MedicalServices
 import androidx.compose.material.icons.filled.LocalLibrary
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import com.islamshikhi.app.ui.common.MenuCard
 import com.islamshikhi.app.ui.common.ScreenColumn
 import com.islamshikhi.app.ui.navigation.Routes
@@ -15,12 +16,15 @@ import com.islamshikhi.app.ui.navigation.Routes
 /** সহকারী ট্যাবের হাব: ইসলামি জ্ঞান, যাকাত, শিশুদের শিক্ষা, কুইজ, জরুরি গাইড ও মাসআলা। */
 @Composable
 fun AssistantScreen(onNavigate: (String) -> Unit) {
+    val content = com.islamshikhi.app.ui.common.rememberContainer().content
+    val hasBooks by androidx.compose.runtime.produceState(false) { value = runCatching { content.books().items.isNotEmpty() }.getOrDefault(false) }
     ScreenColumn("ইসলামিক সহকারী") {
         MenuCard("ইসলামি জ্ঞান", "ঈমান ও আকীদা: বিস্তারিত প্রবন্ধ", Icons.Filled.Lightbulb) { onNavigate(Routes.ILM) }
         MenuCard("যাকাত ক্যালকুলেটর", "আনুমানিক হিসাব", Icons.Filled.Calculate) { onNavigate(Routes.ZAKAT) }
         MenuCard("শিশুদের শিক্ষা", "বয়সোপযোগী শিক্ষা", Icons.Filled.ChildCare) { onNavigate(Routes.KIDS) }
         MenuCard("ইসলামিক কুইজ", "নিজেকে যাচাই করুন", Icons.Filled.Quiz) { onNavigate(Routes.QUIZ) }
         MenuCard("জরুরি গাইড", "অসুস্থতা, সফর ও জানাজা", Icons.Filled.MedicalServices) { onNavigate(Routes.EMERGENCY) }
+        if (hasBooks) MenuCard("বই ও লেখক", "লেখকভিত্তিক বই ও অধ্যায়", Icons.Filled.LocalLibrary) { onNavigate(Routes.BOOKS) }
         MenuCard("মাসআলা-মাসায়েল", "প্রশ্ন ও উত্তরে দৈনন্দিন বিধান", Icons.Filled.LocalLibrary) { onNavigate(Routes.MASAIL) }
     }
 }

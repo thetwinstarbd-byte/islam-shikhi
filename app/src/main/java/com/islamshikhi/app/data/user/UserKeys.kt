@@ -39,4 +39,6 @@ object UserKeys {
     fun masalaKey(id: String) = "masala:$id"
     fun kidKey(id: String) = "kid:$id"
     fun libraryKey(id: String) = "library:$id"
+    fun bookKey(id: String) = "book:$id"
+    const val CONTENT_CHECKED_AT = "content_checked_at"
 }

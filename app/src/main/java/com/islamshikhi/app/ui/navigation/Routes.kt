@@ -50,6 +50,9 @@ object Routes {
     const val EMERGENCY_DETAIL = "assistant/emergency/{id}"
     fun emergency(id: String) = "assistant/emergency/$id"
     const val LIBRARY = "assistant/library"
+    const val BOOKS = "assistant/books"
+    const val BOOKS_DETAIL = "assistant/books/{id}"
+    fun books(id: String) = "assistant/books/$id"
     const val LIBRARY_DETAIL = "assistant/library/{id}"
     fun library(id: String) = "assistant/library/$id"
 

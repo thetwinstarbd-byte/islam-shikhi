@@ -22,7 +22,7 @@ sealed class UpdateResult {
 object ContentUpdater {
     const val MANIFEST_URL = "https://raw.githubusercontent.com/thetwinstarbd-byte/islam-shikhi/main/updates/manifest.json"
     private const val SCHEMA = 1
-    private val ALLOWED = setOf("ilm", "masail", "duas", "quiz", "kids", "emergency", "library")
+    private val ALLOWED = setOf("ilm", "masail", "duas", "quiz", "kids", "emergency", "library", "books")
 
     private fun dir(context: Context) = File(context.filesDir, "content_updates")
 
@@ -43,6 +43,13 @@ object ContentUpdater {
 
     fun currentVersion(context: Context): Int = maxOf(bundledVersion(context), appliedVersion(context))
 
+    private fun sha256(b: ByteArray) = MessageDigest.getInstance("SHA-256").digest(b).joinToString("") { "%02x".format(it) }
+
+    private fun localBytes(context: Context, name: String): ByteArray? = runCatching {
+        val f = activeDir(context)?.let { File(it, "$name.json") }
+        if (f != null && f.isFile) f.readBytes() else context.assets.open("content/$name.json").use { it.readBytes() }
+    }.getOrNull()
+
     suspend fun check(context: Context): UpdateResult = withContext(Dispatchers.IO) {
         try {
             val m = JSONObject(String(Http.get(MANIFEST_URL, maxBytes = 200_000), Charsets.UTF_8))
@@ -56,9 +63,12 @@ object ContentUpdater {
             for (name in files.keys()) {
                 if (name !in ALLOWED) continue
                 val f = files.getJSONObject(name)
+                val want = f.getString("sha256")
+                // শুধু বদলানো ফাইল নামে: ফোনে থাকা ফাইলের হ্যাশ মিললে সেটাই রাখা হয়
+                val local = localBytes(context, name)
+                if (local != null && sha256(local).equals(want, ignoreCase = true)) { staged[name] = local; continue }
                 val bytes = Http.get(base + f.getString("path"), timeoutMs = 25_000)
-                val sha = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
-                if (!sha.equals(f.getString("sha256"), ignoreCase = true)) return@withContext UpdateResult.Failed("ফাইল যাচাই মেলেনি; কিছু বদলানো হয়নি।")
+                if (!sha256(bytes).equals(want, ignoreCase = true)) return@withContext UpdateResult.Failed("ফাইল যাচাই মেলেনি; কিছু বদলানো হয়নি।")
                 JSONObject(String(bytes, Charsets.UTF_8)) // বৈধ JSON কি না
                 staged[name] = bytes
             }
