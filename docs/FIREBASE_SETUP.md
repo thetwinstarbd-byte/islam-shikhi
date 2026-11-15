@@ -24,3 +24,19 @@ Facebook for Developers-এ অ্যাপ বানাতে হবে, Androi
 ## বড় ফাইল (অডিও, বাড়তি কনটেন্ট) সার্ভারে রাখা
 - Firebase Storage-এ রেখে ব্যবহারকারী চাইলে নামানো যাবে; অ্যাপ হালকা থাকবে। তবে অডিওর লাইসেন্স আগে নিশ্চিত করতে হবে।
 - এখনকার "কনটেন্ট আপডেট" ব্যবস্থা (`updates/` ফোল্ডার ও sha256 যাচাই) Storage বা নিজের সার্ভারেও চলবে; শুধু ঠিকানা বদলাতে হবে।
+
+## ঘোষণা ও নোটিফিকেশন পাঠানো (Remote Config ও Cloud Messaging)
+ব্যবহারকারীকে আগে সেটিংসে "ঘোষণা ও আপডেটের খবর" সুইচ চালু করতে হয় (ডিফল্টে বন্ধ)।
+
+**হোমে ঘোষণা দেখানো (Remote Config):**
+1. Firebase > **Remote Config** (Product categories > DevOps & Engagement বা Search for products) > **Create configuration**।
+2. প্যারামিটার যোগ করুন (Data type: String):
+   - `announcement_id` = `a1` (যেকোনো ছোট লেখা; ঘোষণা বদলালে এটিও বদলান, তাহলে আগে "বন্ধ করা" ঘোষণা আবার দেখাবে)
+   - `announcement_bn` = ঘোষণার লেখা (খালি রাখলে কিছু দেখাবে না)
+   - `latest_version_code` (Number) = নতুন সংস্করণের versionCode (এখন ২); অ্যাপের নম্বরের চেয়ে বড় হলে আপডেটের খবর দেখায়
+   - `update_message_bn` = "নতুন সংস্করণ এসেছে…"
+3. **Publish changes**। ব্যবহারকারীর ফোনে সর্বোচ্চ ৬ ঘণ্টার মধ্যে পৌঁছায়।
+
+**নোটিফিকেশন পাঠানো (Cloud Messaging):**
+1. Firebase > **Messaging** (Engagement) > **Create your first campaign** > **Firebase Notification messages**।
+2. শিরোনাম ও লেখা দিন > **Target: Topic** > `announcements` > পাঠান।
