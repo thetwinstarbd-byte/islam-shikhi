@@ -432,13 +432,12 @@ def main():
     print("সেটআপ শেষ, হোম স্ক্রিনের জন্য অপেক্ষা", flush=True)
     time.sleep(5)
     check("সেটআপ শেষে হোম খোলার সময়")
-    if tap_text("ব্যবস্থা করুন", timeout=20, required=False):
-        shot("06-adhan-setup")
-        swipe_up(1)
-        shot("06-adhan-setup-2")
-        adb("shell", "input", "keyevent", "4")
-        time.sleep(1)
-    tap_text("পরে", timeout=4, required=False)
+    # প্রথম-চালুর আজান-ডায়ালগ: "পরে" চেপে সরানো (দেরিতে এলেও ধরার জন্য কয়েকবার চেষ্টা)
+    for _ in range(4):
+        if tap_text("পরে", timeout=15, required=False):
+            time.sleep(1.5)
+            if not any(n["text"] == "পরে" for n in dump()):
+                break
     tap_text("হোম", timeout=30)
     time.sleep(2)
     shot("06-home")
