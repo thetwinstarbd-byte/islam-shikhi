@@ -73,6 +73,12 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
         prefsStore.bool(com.islamshikhi.app.data.user.UserKeys.DIGITS_ENGLISH, false).collect { com.islamshikhi.app.util.DateFormatBn.englishDigits = it }
     }
     androidx.compose.runtime.LaunchedEffect(Unit) {
+        prefsStore.bool(com.islamshikhi.app.data.user.UserKeys.ANNOUNCEMENTS_ON, false).collect { on ->
+            com.islamshikhi.app.data.cloud.AppRemote.setPushEnabled(reportCtx, on)
+            if (on) com.islamshikhi.app.data.cloud.AppRemote.refresh(reportCtx) else com.islamshikhi.app.data.cloud.AppRemote.clear()
+        }
+    }
+    androidx.compose.runtime.LaunchedEffect(Unit) {
         prefsStore.bool(com.islamshikhi.app.data.user.UserKeys.TIME_24H, false).collect { com.islamshikhi.app.util.TimeFormatBn.use24h = it }
     }
     val backStackEntry by navController.currentBackStackEntryAsState()

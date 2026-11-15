@@ -44,6 +44,7 @@ import androidx.compose.material.icons.filled.QuestionAnswer
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
+import kotlinx.coroutines.launch
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -158,6 +159,7 @@ fun HomeScreen(
             .fillMaxSize()
             .verticalScroll(scroll)
     ) {
+        RemoteNotices()
         SkyHero(
             sky = sky,
             next = next,
@@ -582,6 +584,32 @@ private fun SuggestionsSection(profile: UserProfile, onOpenAssistant: () -> Unit
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             topics.forEach { topic ->
                 AssistChip(onClick = onOpenAssistant, label = { Text(topic) })
+            }
+        }
+    }
+}
+
+/** Firebase Remote Config থেকে আসা ঘোষণা/আপডেটের খবর (সেটিংসে চালু থাকলে)। বন্ধ করলে ওই ঘোষণা আর দেখায় না। */
+@Composable
+private fun RemoteNotices() {
+    val container = rememberContainer()
+    val notes by com.islamshikhi.app.data.cloud.AppRemote.notes.collectAsState()
+    val dismissed by container.userData.string(com.islamshikhi.app.data.user.UserKeys.NOTE_DISMISSED).collectAsState(initial = "")
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
+    val dismissedIds = (dismissed ?: "").split("|")
+    val shown = notes.filter { n -> dismissedIds.none { d -> d == n.id } }
+    shown.forEach { n ->
+        Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)) {
+            Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                Text(n.text, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                androidx.compose.material3.TextButton(onClick = {
+                    scope.launch {
+                        container.userData.putString(
+                            com.islamshikhi.app.data.user.UserKeys.NOTE_DISMISSED,
+                            (dismissedIds.filter { it.isNotEmpty() } + n.id).takeLast(20).joinToString("|")
+                        )
+                    }
+                }) { Text("বন্ধ করুন") }
             }
         }
     }

@@ -172,6 +172,17 @@ fun SettingsScreen(
                 }
             })
         }
+        val annOn by container.userData.bool(UserKeys.ANNOUNCEMENTS_ON, false).collectAsState(initial = false)
+        SettingSwitch(
+            "ঘোষণা ও আপডেটের খবর",
+            "অ্যাপের নতুন সংস্করণ ও গুরুত্বপূর্ণ ঘোষণা পেতে চালু করুন। চালু করলে অ্যাপ Google Firebase-এর সাথে যোগাযোগ করে; বন্ধ থাকলে কিছু পাঠায় না।",
+            annOn
+        ) { on ->
+            scope.launch { container.userData.putBool(UserKeys.ANNOUNCEMENTS_ON, on) }
+            if (on && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                notifPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
         if (verseOn) {
             OutlinedButton(onClick = {
                 TimePickerDialog(context, { _, h, m ->

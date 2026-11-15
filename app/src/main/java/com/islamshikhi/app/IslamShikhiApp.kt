@@ -17,6 +17,7 @@ class IslamShikhiApp : Application() {
     override fun onCreate() {
         super.onCreate()
         CrashReporter.install(this)
+        com.islamshikhi.app.feature.push.AppMessagingService.ensureChannel(this)
         container = AppContainer(this)
         // অ্যাপ চালু হলে নামাজ/রিমাইন্ডারের অ্যালার্ম নতুন করে বসানো হয়
         appScope.launch { runCatching { container.scheduler.rescheduleNext() } }

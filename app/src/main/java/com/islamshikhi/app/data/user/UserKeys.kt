@@ -29,6 +29,8 @@ object UserKeys {
     const val SHOW_TRANSLATION = "show_translation"      // আয়াতের বাংলা অনুবাদ দেখানো (ডিফল্ট চালু)
     const val TASBIH_HAPTIC = "tasbih_haptic"            // তাসবিহে কম্পন (ডিফল্ট চালু)
     const val DIGITS_ENGLISH = "digits_english"          // ১২৩ এর বদলে 123
+    const val ANNOUNCEMENTS_ON = "announcements_on"        // ঘোষণা ও আপডেটের খবর (ডিফল্ট বন্ধ)
+    const val NOTE_DISMISSED = "remote_note_dismissed"
     const val TIME_24H = "time_24h"                      // ২৪ ঘণ্টার সময়
 
     // বুকমার্ক ও নোটের কী। বিদ্যমান DuaScreen "dua:ID" আকারই ব্যবহার করে।
