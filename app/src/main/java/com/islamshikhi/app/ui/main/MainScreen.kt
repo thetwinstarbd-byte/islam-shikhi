@@ -78,12 +78,12 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
         com.islamshikhi.app.data.cloud.AppRemote.setPushEnabled(reportCtx, true)
         com.islamshikhi.app.data.cloud.AppRemote.refresh(reportCtx)
     }
-    // নতুন কনটেন্ট চুপচাপ নামানো: অ্যাপ খুললে, শেষ চেকের ১২ ঘণ্টা পর। শুধু বদলানো ফাইল নামে; ব্যর্থ হলে কিছুই বদলায় না।
+    // নতুন কনটেন্ট চুপচাপ নামানো: অ্যাপ খুললে, শেষ চেকের ১০ মিনিট পর। শুধু বদলানো ফাইল নামে; ব্যর্থ হলে কিছুই বদলায় না।
     androidx.compose.runtime.LaunchedEffect(Unit) {
         val key = com.islamshikhi.app.data.user.UserKeys.CONTENT_CHECKED_AT
         val last = prefsStore.string(key).first()?.toLongOrNull() ?: 0L
         val now = System.currentTimeMillis()
-        if (now - last > 12L * 3600_000L) {
+        if (now - last > 10L * 60_000L) {
             val r = com.islamshikhi.app.data.update.ContentUpdater.check(reportCtx)
             if (r !is com.islamshikhi.app.data.update.UpdateResult.Failed) prefsStore.putString(key, now.toString())
             if (r is com.islamshikhi.app.data.update.UpdateResult.Applied) content.clearCaches()

@@ -1,0 +1,26 @@
+name: Publish Content
+# app/src/main/assets/content/ এর কোনো লেখা বদলালে নিজে থেকে যাচাই করে ব্যবহারকারীদের জন্য প্রকাশ করে।
+on:
+  push:
+    branches: [main]
+    paths: ["app/src/main/assets/content/*.json"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: লেখা যাচাই
+        run: python3 tools/check_content.py
+      - name: প্রকাশের ফাইল বানানো
+        run: python3 tools/publish_update.py --auto
+      - name: কমিট
+        run: |
+          git config user.name "content-bot"
+          git config user.email "content-bot@users.noreply.github.com"
+          git add updates
+          git diff --cached --quiet || (git commit -m "Publish content update [skip ci]" && git push)

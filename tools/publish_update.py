@@ -10,6 +10,7 @@ out = os.path.join(root, "updates")
 names = ["ilm", "masail", "duas", "quiz", "kids", "emergency", "library", "books"]
 mpath = os.path.join(out, "manifest.json")
 ver = json.load(open(mpath))["version"] if os.path.exists(mpath) else 1
+old = json.load(open(mpath))["files"] if os.path.exists(mpath) else {}
 if "--bump" in sys.argv: ver += 1
 os.makedirs(out, exist_ok=True)
 files = {}
@@ -18,5 +19,7 @@ for n in names:
     json.loads(b.decode("utf-8"))
     shutil.copyfile(os.path.join(src, n + ".json"), os.path.join(out, n + ".json"))
     files[n] = {"path": n + ".json", "sha256": hashlib.sha256(b).hexdigest()}
+if "--auto" in sys.argv and {k: v["sha256"] for k, v in old.items()} != {k: v["sha256"] for k, v in files.items()}:
+    ver += 1   # লেখা সত্যিই বদলালে তবেই সংস্করণ বাড়ে
 json.dump({"schema": 1, "version": ver, "files": files}, open(mpath, "w"), indent=1)
 print("সংস্করণ", ver, "—", len(files), "ফাইল")
