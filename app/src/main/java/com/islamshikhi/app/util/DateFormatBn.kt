@@ -44,7 +44,7 @@ object DateFormatBn {
      * সতর্কতা: স্থানীয় চাঁদ দেখার ওপর ভিত্তি করে বাস্তবে এক দিন পর্যন্ত পার্থক্য হতে পারে।
      */
     fun hijri(date: LocalDate): String {
-        val hijri = HijrahDate.from(date)
+        val hijri = RemoteTune.hijri(date)
         val day = hijri.get(ChronoField.DAY_OF_MONTH)
         val month = hijri.get(ChronoField.MONTH_OF_YEAR)
         val year = hijri.get(ChronoField.YEAR)

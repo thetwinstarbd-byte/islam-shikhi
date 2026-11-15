@@ -51,15 +51,17 @@ object PrayerEngine {
             DateComponents(date.year, date.monthValue, date.dayOfMonth),
             params
         )
+        val adj = com.islamshikhi.app.util.RemoteTune.prayerAdjustMin
+        fun at(p: Prayer, millis: Long): Long = millis + (adj[p.id] ?: 0) * 60_000L
         return DayTimes(
             date,
             mapOf(
-                Prayer.FAJR to pt.fajr.toEpochMilliseconds(),
+                Prayer.FAJR to at(Prayer.FAJR, pt.fajr.toEpochMilliseconds()),
                 Prayer.SUNRISE to pt.sunrise.toEpochMilliseconds(),
-                Prayer.DHUHR to pt.dhuhr.toEpochMilliseconds(),
-                Prayer.ASR to pt.asr.toEpochMilliseconds(),
-                Prayer.MAGHRIB to pt.maghrib.toEpochMilliseconds(),
-                Prayer.ISHA to pt.isha.toEpochMilliseconds()
+                Prayer.DHUHR to at(Prayer.DHUHR, pt.dhuhr.toEpochMilliseconds()),
+                Prayer.ASR to at(Prayer.ASR, pt.asr.toEpochMilliseconds()),
+                Prayer.MAGHRIB to at(Prayer.MAGHRIB, pt.maghrib.toEpochMilliseconds()),
+                Prayer.ISHA to at(Prayer.ISHA, pt.isha.toEpochMilliseconds())
             )
         )
     }

@@ -49,7 +49,7 @@
                 android:resource="@xml/widget_next_prayer_info" />
         </receiver>
 
-        <!-- ঘোষণার নোটিফিকেশন: ডিফল্টে বন্ধ; ব্যবহারকারী সেটিংসে চালু করলেই Firebase-এ নিবন্ধন হয় -->
+        <!-- ঘোষণার নোটিফিকেশন: সবার জন্য চালু -->
         <service
             android:name=".feature.push.AppMessagingService"
             android:exported="false">
@@ -57,7 +57,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <meta-data android:name="firebase_messaging_auto_init_enabled" android:value="false" />
         <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"

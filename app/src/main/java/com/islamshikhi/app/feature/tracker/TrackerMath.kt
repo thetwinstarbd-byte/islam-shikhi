@@ -49,8 +49,8 @@ object KhatmMath {
 object RamadanMath {
     data class Info(val start: LocalDate, val inRamadan: Boolean, val dayNumber: Int, val daysUntil: Int)
 
-    private fun hijriMonth(d: LocalDate): Int = HijrahDate.from(d).get(ChronoField.MONTH_OF_YEAR)
-    private fun hijriDay(d: LocalDate): Int = HijrahDate.from(d).get(ChronoField.DAY_OF_MONTH)
+    private fun hijriMonth(d: LocalDate): Int = com.islamshikhi.app.util.RemoteTune.hijri(d).get(ChronoField.MONTH_OF_YEAR)
+    private fun hijriDay(d: LocalDate): Int = com.islamshikhi.app.util.RemoteTune.hijri(d).get(ChronoField.DAY_OF_MONTH)
 
     fun info(today: LocalDate): Info {
         if (hijriMonth(today) == 9) {

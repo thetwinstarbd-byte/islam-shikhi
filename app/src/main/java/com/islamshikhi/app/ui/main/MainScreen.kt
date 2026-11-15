@@ -1,5 +1,6 @@
 package com.islamshikhi.app.ui.main
 
+import kotlinx.coroutines.flow.first
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -72,10 +73,25 @@ fun MainScreen(profile: UserProfile, onResetData: () -> Unit) {
     androidx.compose.runtime.LaunchedEffect(Unit) {
         prefsStore.bool(com.islamshikhi.app.data.user.UserKeys.DIGITS_ENGLISH, false).collect { com.islamshikhi.app.util.DateFormatBn.englishDigits = it }
     }
+    // ঘোষণা/নোটিফিকেশন/দূর-নিয়ন্ত্রিত সমন্বয়: সবসময় চালু
     androidx.compose.runtime.LaunchedEffect(Unit) {
-        prefsStore.bool(com.islamshikhi.app.data.user.UserKeys.ANNOUNCEMENTS_ON, false).collect { on ->
-            com.islamshikhi.app.data.cloud.AppRemote.setPushEnabled(reportCtx, on)
-            if (on) com.islamshikhi.app.data.cloud.AppRemote.refresh(reportCtx) else com.islamshikhi.app.data.cloud.AppRemote.clear()
+        com.islamshikhi.app.data.cloud.AppRemote.setPushEnabled(reportCtx, true)
+        com.islamshikhi.app.data.cloud.AppRemote.refresh(reportCtx)
+    }
+    // Android ১৩+: নোটিফিকেশনের অনুমতি প্রথমবার একবার চাওয়া হয়
+    val notifPerm = androidx.activity.compose.rememberLauncherForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()
+    ) { }
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        if (android.os.Build.VERSION.SDK_INT >= 33 &&
+            androidx.core.content.ContextCompat.checkSelfPermission(reportCtx, android.Manifest.permission.POST_NOTIFICATIONS) !=
+            android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+            val asked = prefsStore.bool(com.islamshikhi.app.data.user.UserKeys.NOTIF_ASKED, false).first()
+            if (!asked) {
+                prefsStore.putBool(com.islamshikhi.app.data.user.UserKeys.NOTIF_ASKED, true)
+                notifPerm.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
     }
     androidx.compose.runtime.LaunchedEffect(Unit) {

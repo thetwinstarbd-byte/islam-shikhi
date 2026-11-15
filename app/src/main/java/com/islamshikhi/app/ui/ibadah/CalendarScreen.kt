@@ -61,7 +61,7 @@ fun CalendarScreen(onBack: () -> Unit) {
     val month = monthStart.get(ChronoField.MONTH_OF_YEAR)
     val length = monthStart.lengthOfMonth()
     val firstGregorian = LocalDate.from(monthStart)
-    val todayHijri = remember { HijrahDate.from(today) }
+    val todayHijri = remember { com.islamshikhi.app.util.RemoteTune.hijri(today) }
 
     // শনিবার = ০ ... শুক্রবার = ৬
     val lead = (firstGregorian.dayOfWeek.value + 1) % 7

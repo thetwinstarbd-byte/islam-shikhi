@@ -26,7 +26,7 @@ Facebook for Developers-এ অ্যাপ বানাতে হবে, Androi
 - এখনকার "কনটেন্ট আপডেট" ব্যবস্থা (`updates/` ফোল্ডার ও sha256 যাচাই) Storage বা নিজের সার্ভারেও চলবে; শুধু ঠিকানা বদলাতে হবে।
 
 ## ঘোষণা ও নোটিফিকেশন পাঠানো (Remote Config ও Cloud Messaging)
-ব্যবহারকারীকে আগে সেটিংসে "ঘোষণা ও আপডেটের খবর" সুইচ চালু করতে হয় (ডিফল্টে বন্ধ)।
+এগুলো সব ব্যবহারকারীর জন্য সবসময় চালু (অ্যাপের ভেতরে বন্ধ করার সুইচ নেই)।
 
 **হোমে ঘোষণা দেখানো (Remote Config):**
 1. Firebase > **Remote Config** (Product categories > DevOps & Engagement বা Search for products) > **Create configuration**।
@@ -40,3 +40,9 @@ Facebook for Developers-এ অ্যাপ বানাতে হবে, Androi
 **নোটিফিকেশন পাঠানো (Cloud Messaging):**
 1. Firebase > **Messaging** (Engagement) > **Create your first campaign** > **Firebase Notification messages**।
 2. শিরোনাম ও লেখা দিন > **Target: Topic** > `announcements` > পাঠান।
+
+**দূর-নিয়ন্ত্রিত সমন্বয় (Remote Config-এ Number প্যারামিটার):**
+- `hijri_offset_days` — হিজরি তারিখ সরানো। চাঁদ দেখা অনুযায়ী দেশে তারিখ ১ দিন পিছিয়ে থাকলে `-1`। সীমা -2..+2। হোমের তারিখ, ক্যালেন্ডার ও রোযার হিসাবে প্রয়োগ হয়।
+- `prayer_adjust_fajr_min`, `prayer_adjust_dhuhr_min`, `prayer_adjust_asr_min`, `prayer_adjust_maghrib_min`, `prayer_adjust_isha_min` — ওই ওয়াক্তের সময়ে মিনিট যোগ (+) বা বিয়োগ (-)। সীমা -15..+15। সবার স্ক্রিন ও আজান/রিমাইন্ডারে প্রয়োগ হয়।
+- মান না বসালে বা শূন্য রাখলে আগের মতোই চলে। বদল ফোনে পৌঁছাতে সর্বোচ্চ ৬ ঘণ্টা।
+- সতর্কতা: ভুল মান বসালে সবার ওয়াক্ত ভুল দেখাবে। বসানোর আগে নিশ্চিত হোন, প্রথমে ছোট মানে পরীক্ষা করুন। নামাজের সময় বদলানোর আগে ইসলামিক ফাউন্ডেশনের তালিকার সাথে মিলিয়ে নিন।
