@@ -46,7 +46,13 @@ class AdhanService : Service() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
             } else startForeground(NOTIFICATION_ID, notification)
-        } catch (e: Exception) { stopSelf(); return START_NOT_STICKY }
+        } catch (e: Exception) {
+            // সার্ভিস চালু করা না গেলেও অন্তত নোটিফিকেশন দেখানো হয়, যাতে ওয়াক্ত চুপচাপ চলে না যায়
+            runCatching {
+                getSystemService(NotificationManager::class.java).notify(NOTIFICATION_ID + 1, notification)
+            }
+            stopSelf(); return START_NOT_STICKY
+        }
 
         play(prayerId)
         return START_NOT_STICKY

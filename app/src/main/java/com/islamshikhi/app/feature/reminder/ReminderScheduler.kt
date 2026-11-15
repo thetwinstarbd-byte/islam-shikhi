@@ -103,44 +103,48 @@ class ReminderScheduler(
         return out.sortedBy { it.atMillis }
     }
 
-    /** সবচেয়ে কাছের আইটেমের জন্য অ্যালার্ম বসায়; কিছু না থাকলে বাতিল করে। */
+    /**
+     * আসন্ন প্রতিটি আইটেমের জন্য আলাদা অ্যালার্ম বসায় (সর্বোচ্চ [MAX_SLOTS]টি, প্রায় ২ দিনের নামাজ)।
+     * আগে শুধু "পরের একটি" অ্যালার্ম বসত এবং বাজলে পরেরটি বসাত: কোনো কারণে এক ধাপ ফসকালে (যেমন ফোনের
+     * ব্যাটারি-ম্যানেজার অ্যাপ বন্ধ করে দিলে) এরপরের সব ওয়াক্ত নীরব হয়ে যেত। এখন একটি ফসকালেও বাকিগুলো বাজে।
+     */
     suspend fun rescheduleNext() {
         ensureChannel()
+        cancelAll()
         val now = System.currentTimeMillis()
-        val items = upcoming(now + 1000)
-        if (items.isEmpty()) { cancelAll(); return }
-        val first = items.first()
-        // একই মিনিটের আইটেম একসঙ্গে একটি নোটিফিকেশনে
-        val group = items.filter { it.atMillis in first.atMillis..(first.atMillis + 60_000) }
-        val intent = Intent(context, AlarmReceiver::class.java).apply {
-            putExtra(EXTRA_TITLE, group.first().title)
-            putExtra(EXTRA_BODY, group.joinToString("\n") { if (it === group.first()) it.body else "${it.title} — ${it.body}" })
-            group.first().adhanPrayerId?.let { putExtra(EXTRA_ADHAN, it) }
-        }
-        val pi = PendingIntent.getBroadcast(
-            context, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-        // setAlarmClock সবচেয়ে নির্ভরযোগ্য: ডোজ ও ব্যাটারি-সেভারেও ঠিক সময়ে বাজে এবং "সঠিক অ্যালার্ম" অনুমতি লাগে না।
-        // (স্ট্যাটাস বারে ছোট অ্যালার্ম-আইকন দেখা যেতে পারে।) ব্যর্থ হলে সাধারণ সঠিক-অ্যালার্মে ফিরে যায়।
+        val items = upcoming(now + 1000).take(MAX_SLOTS)
+        if (items.isEmpty()) return
         val show = PendingIntent.getActivity(
             context, REQUEST_CODE + 1, Intent(context, com.islamshikhi.app.MainActivity::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        try {
-            alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(first.atMillis, show), pi)
-        } catch (e: SecurityException) {
-            val exact = Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarmManager.canScheduleExactAlarms()
-            if (exact) alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, first.atMillis, pi)
-            else alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, first.atMillis, pi)
+        items.forEachIndexed { idx, item ->
+            val intent = Intent(context, AlarmReceiver::class.java).apply {
+                putExtra(EXTRA_TITLE, item.title)
+                putExtra(EXTRA_BODY, item.body)
+                item.adhanPrayerId?.let { putExtra(EXTRA_ADHAN, it) }
+            }
+            val pi = PendingIntent.getBroadcast(
+                context, SLOT_BASE + idx, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            // setAlarmClock সবচেয়ে নির্ভরযোগ্য: ডোজ ও ব্যাটারি-সেভারেও ঠিক সময়ে বাজে এবং "সঠিক অ্যালার্ম" অনুমতি লাগে না।
+            // ব্যর্থ হলে সাধারণ সঠিক-অ্যালার্মে ফিরে যায়।
+            try {
+                alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(item.atMillis, show), pi)
+            } catch (e: SecurityException) {
+                val exact = Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarmManager.canScheduleExactAlarms()
+                if (exact) alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, item.atMillis, pi)
+                else alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, item.atMillis, pi)
+            }
         }
     }
 
     fun cancelAll() {
-        val pi = PendingIntent.getBroadcast(
-            context, REQUEST_CODE, Intent(context, AlarmReceiver::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-        alarmManager.cancel(pi)
+        val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        // আগের সংস্করণের একক অ্যালার্ম + নতুন স্লটগুলো
+        (listOf(REQUEST_CODE) + (SLOT_BASE until SLOT_BASE + MAX_SLOTS)).forEach { code ->
+            alarmManager.cancel(PendingIntent.getBroadcast(context, code, Intent(context, AlarmReceiver::class.java), flags))
+        }
     }
 
     fun canScheduleExact(): Boolean =
@@ -153,5 +157,7 @@ class ReminderScheduler(
         const val EXTRA_BODY = "body"
         const val EXTRA_ADHAN = "adhan_prayer"
         private const val REQUEST_CODE = 4101
+        private const val SLOT_BASE = 4200
+        const val MAX_SLOTS = 12
     }
 }

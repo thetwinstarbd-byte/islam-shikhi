@@ -29,9 +29,11 @@ class AlarmReceiver : BroadcastReceiver() {
         container.scheduler.ensureChannel()
         // আজান: ফরজ ওয়াক্তের শুরুতে, আজান-সুইচ চালু থাকলে অডিও বাজে (নোটিফিকেশন সেই সার্ভিসই দেখায়)
         val adhanPrayer = intent.getStringExtra(ReminderScheduler.EXTRA_ADHAN)
-        val adhanOn = adhanPrayer != null && kotlinx.coroutines.runBlocking {
-            container.userData.bool(com.islamshikhi.app.feature.adhan.AdhanPrefs.KEY_ON, true).first()
-        }
+        val adhanOn = adhanPrayer != null && runCatching {
+            kotlinx.coroutines.runBlocking {
+                container.userData.bool(com.islamshikhi.app.feature.adhan.AdhanPrefs.KEY_ON, true).first()
+            }
+        }.getOrDefault(true)
         val adhanStarted = adhanOn && com.islamshikhi.app.feature.adhan.AdhanService.start(context, adhanPrayer!!, body)
         val allowed = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
@@ -56,7 +58,7 @@ class AlarmReceiver : BroadcastReceiver() {
         com.islamshikhi.app.feature.widget.NextPrayerWidget.refreshAll(context)
         val pending = goAsync()
         CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
-            try { container.scheduler.rescheduleNext() } finally { pending.finish() }
+            try { runCatching { container.scheduler.rescheduleNext() } } finally { pending.finish() }
         }
     }
 }
