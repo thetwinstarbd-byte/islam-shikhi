@@ -27,14 +27,18 @@ class ContentRepository(private val context: Context) {
     private var searchIndex: List<Pair<Int, List<String>>>? = null   // (সূরা, আয়াতের হরকতহীন আরবি)
     private var bnIndex: List<Pair<Int, List<String>>>? = null
 
-    private fun readAsset(path: String): String {
+    private fun readAsset(path: String, allowUpdate: Boolean = true): String {
         // অ্যাপের ভেতরের content/*.json-এর জায়গায় যাচাই-করা আপডেট থাকলে সেটি পড়া হয় (কুরআনের ফাইল কখনো নয়)
-        if (path.startsWith("content/") && path != "content/version.json") {
+        if (allowUpdate && path.startsWith("content/") && path != "content/version.json") {
             val f = com.islamshikhi.app.data.update.ContentUpdater.activeDir(context)?.let { java.io.File(it, path.removePrefix("content/")) }
             if (f != null && f.isFile) return f.readText(Charsets.UTF_8)
         }
         return context.assets.open(path).bufferedReader(Charsets.UTF_8).use { it.readText() }
     }
+
+    /** নতুন (আপডেট-করা) লেখা পড়তে বা বুঝতে ব্যর্থ হলে অ্যাপের ভেতরের আসল লেখায় ফেরে। */
+    private fun <T> guarded(block: (Boolean) -> T): T =
+        try { block(true) } catch (e: Exception) { block(false) }
 
     private fun JSONObject.str(name: String): String? =
         if (isNull(name)) null else optString(name).takeIf { it.isNotBlank() }
@@ -44,8 +48,8 @@ class ContentRepository(private val context: Context) {
     // ---------------- দোয়া ----------------
 
     suspend fun duas(): DuaData = lock.withLock {
-        duaCache ?: withContext(Dispatchers.IO) {
-            val root = JSONObject(readAsset("content/duas.json"))
+        duaCache ?: withContext(Dispatchers.IO) { guarded { up ->
+            val root = JSONObject(readAsset("content/duas.json", up))
             val cats = root.getJSONArray("categories").let { a ->
                 List(a.length()) { DuaCategory(a.getJSONObject(it).getString("id"), a.getJSONObject(it).getString("titleBn")) }
             }
@@ -74,6 +78,7 @@ class ContentRepository(private val context: Context) {
             }
             // নিয়ম: সূত্র ফাঁকা থাকলে এন্ট্রি দেখানো হবে না (docs/CONTENT_VERIFICATION.md)
             DuaData(cats, entries.filter { it.sourceRef.isNotBlank() })
+        }
         }.also { duaCache = it }
     }
 
@@ -166,22 +171,22 @@ class ContentRepository(private val context: Context) {
     // ---------------- মাসআলা, জরুরি গাইড, লাইব্রেরি, শিশু ----------------
 
     suspend fun masail(): MasalaData = lock.withLock {
-        masailCache ?: withContext(Dispatchers.IO) { parseMasail(JSONObject(readAsset("content/masail.json"))) }
+        masailCache ?: withContext(Dispatchers.IO) { guarded { up -> parseMasail(JSONObject(readAsset("content/masail.json", up))) } }
             .also { masailCache = it }
     }
 
     suspend fun emergency(): InfoData = lock.withLock {
-        emergencyCache ?: withContext(Dispatchers.IO) { parseInfo(JSONObject(readAsset("content/emergency.json"))) }
+        emergencyCache ?: withContext(Dispatchers.IO) { guarded { up -> parseInfo(JSONObject(readAsset("content/emergency.json", up))) } }
             .also { emergencyCache = it }
     }
 
     suspend fun library(): InfoData = lock.withLock {
-        libraryCache ?: withContext(Dispatchers.IO) { parseInfo(JSONObject(readAsset("content/library.json"))) }
+        libraryCache ?: withContext(Dispatchers.IO) { guarded { up -> parseInfo(JSONObject(readAsset("content/library.json", up))) } }
             .also { libraryCache = it }
     }
 
     suspend fun books(): InfoData = lock.withLock {
-        booksCache ?: withContext(Dispatchers.IO) { parseInfo(JSONObject(readAsset("content/books.json"))) }
+        booksCache ?: withContext(Dispatchers.IO) { guarded { up -> parseInfo(JSONObject(readAsset("content/books.json", up))) } }
             .also { booksCache = it }
     }
 
@@ -192,13 +197,13 @@ class ContentRepository(private val context: Context) {
     }
 
     suspend fun kids(): InfoData = lock.withLock {
-        kidsCache ?: withContext(Dispatchers.IO) { parseInfo(JSONObject(readAsset("content/kids.json"))) }
+        kidsCache ?: withContext(Dispatchers.IO) { guarded { up -> parseInfo(JSONObject(readAsset("content/kids.json", up))) } }
             .also { kidsCache = it }
     }
 
     suspend fun quiz(): List<QuizQuestion> = lock.withLock {
-        quizCache ?: withContext(Dispatchers.IO) {
-            val a = JSONObject(readAsset("content/quiz.json")).getJSONArray("questions")
+        quizCache ?: withContext(Dispatchers.IO) { guarded { up ->
+            val a = JSONObject(readAsset("content/quiz.json", up)).getJSONArray("questions")
             List(a.length()) {
                 val o = a.getJSONObject(it)
                 QuizQuestion(
@@ -207,6 +212,7 @@ class ContentRepository(private val context: Context) {
                     o.getString("explanationBn"), o.str("sourceRef")
                 )
             }
+        }
         }.also { quizCache = it }
     }
 
@@ -278,8 +284,8 @@ class ContentRepository(private val context: Context) {
     // ---------------- ইসলামি জ্ঞান (বিস্তারিত প্রবন্ধ) ----------------
 
     suspend fun ilm(): IlmData = lock.withLock {
-        ilmCache ?: withContext(Dispatchers.IO) {
-            val root = JSONObject(readAsset("content/ilm.json"))
+        ilmCache ?: withContext(Dispatchers.IO) { guarded { up ->
+            val root = JSONObject(readAsset("content/ilm.json", up))
             val cats = root.getJSONArray("categories").let { a ->
                 List(a.length()) {
                     val o = a.getJSONObject(it)
@@ -335,6 +341,7 @@ class ContentRepository(private val context: Context) {
                 }
             }
             IlmData(cats, articles)
+        }
         }.also { ilmCache = it }
     }
 
