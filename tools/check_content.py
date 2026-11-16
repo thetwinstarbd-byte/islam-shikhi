@@ -68,7 +68,7 @@ for e in m["entries"]:
     status_ok("masala", e)
 
 # ---- শিশু, জরুরি, লাইব্রেরি ----
-for name in ("kids.json", "emergency.json", "library.json"):
+for name in ("kids.json", "emergency.json", "library.json", "books.json"):
     x = load(name)
     cats = {c["id"] for c in x["categories"]}
     unique(name, x["items"])
