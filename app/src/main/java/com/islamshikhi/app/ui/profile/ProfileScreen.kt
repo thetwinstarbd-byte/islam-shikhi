@@ -69,8 +69,9 @@ fun ProfileScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text("প্রোফাইল", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+        ProfileHeader(onManage = { onNavigate(Routes.ACCOUNT) })
         Text(
-            "সব তথ্য শুধু এই ফোনে সংরক্ষিত। লিঙ্গ ও বয়স শুধু প্রাসঙ্গিক বিষয় সাজাতে ব্যবহৃত হয়, পরিচয় যাচাইয়ের জন্য নয়।",
+            "সাইন ইন না করলে সব তথ্য শুধু এই ফোনে সংরক্ষিত থাকে। লিঙ্গ ও বয়স শুধু প্রাসঙ্গিক বিষয় সাজাতে ব্যবহৃত হয়, পরিচয় যাচাইয়ের জন্য নয়।",
             style = MaterialTheme.typography.bodySmall
         )
 
