@@ -1,15 +1,10 @@
 package com.islamshikhi.app.ui.profile
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -22,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -48,25 +42,9 @@ fun ProfileHeader(onManage: () -> Unit) {
 
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                Box(
-                    modifier = Modifier.size(56.dp).background(MaterialTheme.colorScheme.primary, CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    val initial = (u?.name ?: u?.email ?: "").trim().take(1).uppercase()
-                    Text(
-                        initial.ifEmpty { "ই" },
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(u?.name?.takeIf { it.isNotBlank() } ?: if (u != null) "Google অ্যাকাউন্ট" else "আপনি এখনো সাইন ইন করেননি",
-                        style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                    Text(u?.email ?: "সাইন ইন ছাড়াও অ্যাপের সব কিছু চলবে",
-                        style = MaterialTheme.typography.bodySmall)
-                }
+            if (u != null) {
+                Text(u.name?.takeIf { it.isNotBlank() } ?: "Google অ্যাকাউন্ট", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                u.email?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
             }
             if (u == null) {
                 Button(
@@ -79,7 +57,6 @@ fun ProfileHeader(onManage: () -> Unit) {
                     enabled = !busy,
                     modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)
                 ) { Text("Google দিয়ে সাইন ইন করুন") }
-                Text("সাইন ইন করলে বুকমার্ক ও নোট ক্লাউডে ব্যাকআপ রেখে নতুন ফোনে ফেরত আনতে পারবেন।", style = MaterialTheme.typography.bodySmall)
             } else {
                 OutlinedButton(onClick = onManage, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
                     Text("ক্লাউড ব্যাকআপ ও অ্যাকাউন্ট")
