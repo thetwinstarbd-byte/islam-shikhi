@@ -33,6 +33,18 @@ object AppRemote {
     private val _notes = MutableStateFlow<List<RemoteNote>>(emptyList())
     val notes: StateFlow<List<RemoteNote>> = _notes
 
+    /** ফেসবুক পেজের লিংক। কোডে বসানো ডিফল্ট ফাঁকা; Remote Config-এর `facebook_page_url` থেকে আসে। ফাঁকা হলে অ্যাপে কিছু দেখায় না। */
+    const val DEFAULT_PAGE_URL = ""
+    private val _pageUrl = MutableStateFlow(DEFAULT_PAGE_URL)
+    val pageUrl: StateFlow<String> = _pageUrl
+
+    /** শুধু ফেসবুকের https লিংক গ্রহণযোগ্য; অন্য কিছু এলে উপেক্ষা করা হয়। */
+    fun safePageUrl(raw: String): String {
+        val u = raw.trim()
+        val ok = Regex("^https://((www|m|web)\\.)?(facebook\\.com|fb\\.com|fb\\.me)/\\S+$").matches(u)
+        return if (ok) u else ""
+    }
+
     suspend fun refresh(context: Context) {
         if (!CloudSync.isConfigured(context)) return
         runCatching {
@@ -41,7 +53,7 @@ object AppRemote {
             rc.setDefaultsAsync(
                 mapOf(
                     "announcement_id" to "", "announcement_bn" to "", "latest_version_code" to 0L, "update_message_bn" to "",
-                    "hijri_offset_days" to 0L,
+                    "hijri_offset_days" to 0L, "facebook_page_url" to "",
                     "prayer_adjust_fajr_min" to 0L, "prayer_adjust_dhuhr_min" to 0L, "prayer_adjust_asr_min" to 0L,
                     "prayer_adjust_maghrib_min" to 0L, "prayer_adjust_isha_min" to 0L
                 )
@@ -62,6 +74,7 @@ object AppRemote {
     }
 
     private fun applyTunables(rc: FirebaseRemoteConfig) {
+        _pageUrl.value = safePageUrl(rc.getString("facebook_page_url")).ifEmpty { DEFAULT_PAGE_URL }
         RemoteTune.hijriOffsetDays = RemoteTune.clampHijri(rc.getLong("hijri_offset_days"))
         RemoteTune.prayerAdjustMin = listOf("fajr", "dhuhr", "asr", "maghrib", "isha").associateWith {
             RemoteTune.clampMinutes(rc.getLong("prayer_adjust_${it}_min"))
